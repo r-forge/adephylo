@@ -20,7 +20,9 @@ listTips <- function(x){
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
 
     ## computations
-    res <- lapply(1:nNodes(x), function(i) descendants(x, i))
+    nodIdx <- nTips(x)+1
+    nodIdx <- nodIdx:(nodIdx+nNodes(x)-1)
+    res <- lapply(nodIdx, function(i) descendants(x, i))
 
     if(hasNodeLabels(x)) {names(res) <- nodeLabels(x)}
 
