@@ -93,10 +93,10 @@ treePart <- function(x){
 
 
 
-############
-# path2tips
-############
-path2tips <- function(x, tip1, tip2){
+###############
+# shortestPath
+###############
+shortestPath <- function(x, node1, node2){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
@@ -106,8 +106,8 @@ path2tips <- function(x, tip1, tip2){
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
 
     ## main computations
-    t1 <- getnodes(x,tip1)
-    t2 <- getnodes(x,tip2)
+    t1 <- getnodes(x, node1)
+    t2 <- getnodes(x, node2)
 
     comAnc <- MRCA(x, t1, t2) # common ancestor
     desComAnc <- descendants(x, comAnc, which="all")
@@ -118,10 +118,11 @@ path2tips <- function(x, tip1, tip2){
     path2 <- intersect(desComAnc, ancT2) # path: common anc -> t2
 
     res <- union(path1, path2) # union of the path
-    res <- getnodes(res)
+    res <- c(comAnc,res) # add the common ancestor
+    res <- getnodes(x, res)
 
     return(res)
-} # end path2tips
+} # end shortestPath
 
 
 
