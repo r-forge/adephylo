@@ -1,0 +1,84 @@
+#######################
+#
+# adegenet TODO list
+#
+#######################
+#
+# please list here all intended modifications
+# and all detected bugs
+#
+# please add a "-- done" or "-- fixed" tag when
+# you achieved something
+#
+# Inside a given section, priority goes decreasing.
+#
+# Delete fixed things each new release.
+#
+# T.J. 2008
+#
+######################
+
+
+
+# FOR NEXT STABLE VERSION
+=========================
+=========================
+
+# CODE ISSUES:
+==============
+* fix bug 1.2-2.01 (read.structure issue) -- fixed: was due to the default of "onerowperind" argument.
+* fix bug 1.2-2.02 (read.genetix issue) -- fixed: was due to an error in the data file (wrong nloc); now read.genetix corrects that automatically and issues a warning. (TJ)
+* fix bug 1.2-2.03 (monmonier issue) -- fixed: was a non-detected code 2 due to intersection check with previously drawn segment (was not always removed). (TJ)
+* fix request 1.2-2.04 (implement adjusted heretozygosity in summary)
+
+# DOCUMENTATION ISSUES:
+=======================
+* make a tutorial for the sPCA -- done (TJ)
+
+
+# NEW IMPLEMENTATIONS:
+=====================
+* color plot for the sPCA results, based on RGB representation of Cavalli-Sforza -- done(TJ)
+* loadingplot for plotting loadings of one axis -- done (TJ)
+* adegenetTutorial function which opens the online tutorials -- done (TJ)
+* allow for the use of na.replace and scaleGen in spca function -- done (TJ)
+* add rupica dataset -- done (TJ)
+
+
+# TESTING:
+==========
+* 
+
+
+
+# LOW PRIORITY / MINOR ISSUES
+===========================
+===========================
+* in spca, when nfposi=0, the returned object actually contains what corresponds to nfposi=1. Comes from multispati in ade4. To correct in ade4.
+* use spcaIllus to illustrate global.rtest and local.rtest
+* check all examples and look for possible improvements
+* Implement a method to merge different markers for the same individuals
+* Build accessors for marker names, indiv names, pop names, spatial coords, ... -- done in part (nLoc) (TJ)
+* Return a spatial object from monmonier (class sp?)
+* implement classical Fst sensu Weir 1996
+* Implement different levels of ploidy in:
+- hybridize
+- read.structure
+- propShared
+* Permit specification of a matrix of spatial weights in spca (email A. Piotti).
+*
+
+
+# LONG TERM
+==========================
+==========================
+* import from geneticsBase -- wait for geneSet to be stable
+* export to geneticsBase -- same thing
+* see where code needs tuning, and use C/C++
+* implement global.rtest and local.rtest for genind/genpop objects
+* Implement dudi wrappers for genind / genpop objects -- one step (automatic coercion as data.frames) (TJ)
+* Check the formulae provided for Reynolds (consistent with Felsenstein's
+formulae, not straightforward reading the original article)
+* Implement wrappers for spatial function (Moran's I, Mantel's correlogram, etc.).
+
+
