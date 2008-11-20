@@ -35,11 +35,13 @@
 
 # NEW IMPLEMENTATIONS:
 =====================
-* plot methods from phylobase ('old' version)
-* proximities like Abouheif, etc.
+* plot methods from phylobase ('old' version) -- done (TJ)
+* proximities between OTUs like Abouheif, etc.
+* distances between OTUs (like sum of branch lengths)
+* dummy vectors indicating class of related OTUs (like in orthogram)
 * orthogram
 * ppca
-* put some sample datasets from ade4
+* put some datasets from ade4
 
 
 
@@ -52,7 +54,7 @@
 # LOW PRIORITY / MINOR ISSUES
 ===========================
 ===========================
-* 
+* draw a rectangle around legend in s.phylo4d
 
 
 # LONG TERM
