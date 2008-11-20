@@ -85,4 +85,59 @@ treePart <- function(x){
     res <- res[,-1]
 
     return(res)
+} # end treePart
+
+
+
+
+
+############
+# path2tips
+############
+path2tips <- function(x, tip1, tip2){
+    if(!require(phylobase)) stop("phylobase package is not installed")
+
+    ## conversion from phylo, phylo4 and phylo4d
+    x <- as(x, "phylo4")
+
+    ## check phylo4 object
+    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+
+    ## main computations
+    t1 <- getnodes(x,tip1)
+    t2 <- getnodes(x,tip2)
+
+    comAnc <- MRCA(x, t1, t2) # common ancestor
+    desComAnc <- descendants(x, comAnc, which="all")
+    ancT1 <- ancestors(x, t1, which="all")
+    path1 <- intersect(desComAnc, ancT1) # path: common anc -> t1
+
+    ancT2 <- ancestors(x, t2, which="all")
+    path2 <- intersect(desComAnc, ancT2) # path: common anc -> t2
+
+    res <- union(path1, path2) # union of the path
+    res <- getnodes(res)
+
+    return(res)
+}
+
+
+
+
+
+###########
+# distRoot
+###########
+distRoot <- function(x, tip){
+    if(!require(phylobase)) stop("phylobase package is not installed")
+    
+    ## conversion from phylo, phylo4 and phylo4d
+    x <- as(x, "phylo4")
+    
+    ## check phylo4 object
+    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    
+    ## main computations
+  tip <- getnodes(tip)
+    
 }
