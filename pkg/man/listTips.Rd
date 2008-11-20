@@ -17,7 +17,7 @@ listTips(x)
   A list whose components are vectors of named tips for a given node.
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
-\seealso{\code{\link{treeNodes}} which lists the direct descendants for
+\seealso{\code{\link{listNodes}} which lists the direct descendants for
   each node. \cr
   
   \code{\link{treePart}} which defines partitions of tips
