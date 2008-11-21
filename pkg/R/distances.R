@@ -1,7 +1,9 @@
 ############
 # distNodes
 ############
-distNodes <- function(x, node1, node2, method=c("brlength","nAncestors","Abouheif")){
+distNodes <- function(x, node1, node2,
+                      method=c("brlength","nNodes","Abouheif","sumDD")){
+
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
@@ -10,10 +12,10 @@ distNodes <- function(x, node1, node2, method=c("brlength","nAncestors","Abouhei
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
-    t1 <- getnodes(x, node1)
-    t2 <- getnodes(x, node2)
-    if(any(is.na(c(t1,t2)))) stop("wrong node specified")
-    if(t1==t2) return(0)
+    node1 <- getnodes(x, node1)
+    node2 <- getnodes(x, node2)
+    if(any(is.na(c(node1,node2)))) stop("wrong node specified")
+    if(node1==node2) return(0)
 
     ## get the path between node1 and node2
     path <- shortestPath(x, node1, node2)
@@ -22,24 +24,33 @@ distNodes <- function(x, node1, node2, method=c("brlength","nAncestors","Abouhei
     if(method=="brlength"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         path <- c(node1, node2, path)
+        path <- path[path != MRCA(x, node1, node2)]
         edge.idx <- getedges(x, path)
-        res <- sum(edgeLength(x)[edge.idx])
+        res <- sum(edgeLength(x)[edge.idx], na.rm=TRUE)
         return(res)
     } # end brlength
 
-    if(method=="nAncestors"){
+    if(method=="nNodes"){
         res <- length(path)
         return(res)
-    } # end nAncestors
+    } # end nNodes
 
     if(method=="Abouheif"){
-
+        E <- x@edge
+        temp <- table(E[,1])[as.character(path)] # number of dd per node
+        res <- prod(temp)
+        return(res)
     } # end Abouheif
 
+    if(method=="sumDD"){
+        E <- x@edge
+        temp <- table(E[,1])[as.character(path)] # number of dd per node
+        res <- sum(temp)
+        return(res)
+ } # end Abouheif
 
-
-    return(res)
 } # end distNodes
+
 
 
 
@@ -47,7 +58,7 @@ distNodes <- function(x, node1, node2, method=c("brlength","nAncestors","Abouhei
 ###########
 # distRoot
 ###########
-distRoot <- function(x, method=c("brlength","nAncestors","Abouheif")){
+distRoot <- function(x, method=c("brlength","nNodes","Abouheif")){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
