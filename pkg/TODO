@@ -36,9 +36,10 @@
 # NEW IMPLEMENTATIONS:
 =====================
 * plot methods from phylobase ('old' version) -- done (TJ)
+* basic stuff existing in phylog objects (while option=TRUE), e.g. distance to the root for tips, etc.
 * proximities between OTUs like Abouheif, etc.
 * distances between OTUs (like sum of branch lengths)
-* dummy vectors indicating class of related OTUs (like in orthogram)
+* dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ)
 * orthogram
 * ppca
 * put some datasets from ade4
