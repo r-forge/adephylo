@@ -102,14 +102,14 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 # examples
 # source("/home/master/dev/adephylo/pkg/R/utils.R")
 #phy <- as(rtree(15),"phylo4")
-plot(phy,show.n=T)
-tip1 <- "t1"
-tip2 <- "t2"
+## plot(phy,show.n=T)
+## tip1 <- "t1"
+## tip2 <- "t2"
 
 
-sp.tips(phy, "t1", "t2")
-sp.tips(phy, rep(1,15), 1:15)
-sp.tips(phy, rep(1, 15), 1:15, TRUE)
+## sp.tips(phy, "t1", "t2")
+## sp.tips(phy, rep(1,15), 1:15)
+## sp.tips(phy, rep(1, 15), 1:15, TRUE)
 
 ## heavier tree
 # x <- as(rtree(1000), "phylo4")

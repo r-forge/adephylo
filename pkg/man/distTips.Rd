@@ -1,14 +1,14 @@
-\name{distNodes}
-\alias{distNodes}
+\name{distTips}
+\alias{distTips}
 \title{Compute some phylogenetic distance between two nodes}
 \description{
-  The function \code{distNodes} computes a given distance between two
-  nodes of a phylogeny. This distance corresponds to the shortest path
-  between the two nodes. Several distances can be used, defaulting to the
+  The function \code{distTips} computes a given distance between a set
+  of tips of a phylogeny. This distance is computed from the shortest path
+  between the nodes. Several distances can be used, defaulting to the
   sum of branch lengths (see argument \code{method}).
 }
 \usage{
-distNodes(x, node1, node2, method=c("brlength","nNodes","Abouheif","sumDD"))
+distTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
 }
 \arguments{
   \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
@@ -54,10 +54,10 @@ x <- as(rtree(10),"phylo4")
 plot(x, show.node=TRUE)
 axisPhylo()
 ## compute different distances
-distNodes(x, "t1", "t2")
-distNodes(x, "t1", "t2", "nNodes")
-distNodes(x, "t1", "t2", "Abouheif")
-distNodes(x, "t1", "t2", "sumDD")
+distTips(x, 1:3)
+distTips(x, 1:3, "nNodes")
+distTips(x, 1:3, "Abouheif")
+distTips(x, 1:3, "sumDD")
 }
 }
 \keyword{manip}

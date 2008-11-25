@@ -9,9 +9,10 @@ distTips <- function(x, tips="all",
     ## handle arguments
     x <- as(x, "phylo4")
     method <- match.arg(method)
-    tips <- getnodes(x, tips)
     N <- nTips(x)
-    if(tips=="all") { tips <- 1:N }
+    if(tips[1]=="all") { tips <- 1:N }
+    tips <- getnodes(x, tips)
+    tips.names <- names(tips)
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
@@ -54,12 +55,10 @@ distTips <- function(x, tips="all",
         edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
         res <- lapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
-        return(res)
     } # end brlength
 
     if(method=="nNodes"){
         res <- lapply(allPath, length)
-        return(res)
     } # end nNodes
 
     if(method=="Abouheif"){
@@ -69,7 +68,6 @@ distTips <- function(x, tips="all",
             return(prod(temp))
         }
         res <- lapply(allPath, f1)
-        return(res)
     } # end Abouheif
 
     if(method=="sumDD"){
@@ -79,18 +77,23 @@ distTips <- function(x, tips="all",
             return(sum(temp))
         }
         res <- lapply(allPath, f1)
-        return(res)
-
     } # end sumDD
+
+    ## convert res to a dist object
+    res <- unlist(res)
+    class(res) <- "dist"
+    attr(res, "Size") <- length(res)
+    attr(res, "Diag") <- FALSE
+    attr(res, "Upper") <- FALSE
+    attr(res, "method") <- paste("Phylogenetic: ",method,sep="")
+    attr(res, "call") <- match.call()
+    attr(res, "Labels") <- tips.names
+
+    return(res)
 
 } # end distNodes
 
 
-## examples
-# source("/home/master/dev/adephylo/pkg/R/distances.R")
- x <- as(rtree(10),"phylo4")
-     plot(x, show.node=TRUE)
-     axisPhylo()
 
 
 
