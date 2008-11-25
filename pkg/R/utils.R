@@ -14,6 +14,13 @@ sp.tips <- function(phy, tip1, tip2){
     if(any(is.na(c(t1,t2)))) stop("wrong tip specified")
     if(any(c(t1,t2) > N)) stop("specified nodes are internal nodes")
     if(length(t1) != length(t2)) stop("tip1 and tip2 must have the same length")
+    toRemove <- (t1==t2)
+    if(sum(toRemove)>0) {
+        t1 <- t1[!toRemove]
+        t2 <- t2[!toRemove]
+        if(length(t1)==0) stop("tip1 and tip2 are the same vectors")
+        warning("tip1 and tip2 are sometimes the same; erasing these cases")
+    }
 
 
     ## some global variables
@@ -44,9 +51,10 @@ sp.tips <- function(phy, tip1, tip2){
         CA <- temp[table(temp)==2][1] # most recent common ancestor (MRCA)
         CA <- as.integer(as.character(CA)) # retrieve integer type
         path1 <- path1[1:(which(path1==CA))] # cut path1 after MRCA (keep MRCA)
-        path2 <- path2[1:(which(path2==CA)-1)] # cut path2 after MRCA (erase MRCA)
-        res <- c(path1, path2)
-        return(res)
+        temp <- which(path2==CA)
+        if(temp==1) return(path1)
+        path2 <- path2[1:(temp-1)] # cut path2 after MRCA (erase MRCA)
+        return(c(path1,path2))
     } # end pathTwoTips
 
 
