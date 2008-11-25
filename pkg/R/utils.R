@@ -1,7 +1,7 @@
 ##########
 # sp.tips
 ##########
-sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
+sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=TRUE){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
@@ -62,6 +62,15 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
     } # end pathTwoTips
 
 
+    pathTwoTips.no.mrca <- function(path1, path2){
+        cpath <- c(path1, path2)
+        temp <- intersect(path1, path2)
+        res <- setdiff(cpath, temp)
+        return(res)
+    } # end pathTwoTips
+
+
+
     ## main computations
     allPathToRoot <- lapply(allTips, function(i) tipToRoot(E, i))
     names(allPathToRoot) <- allTips
@@ -69,7 +78,15 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
     allPath1 <- allPathToRoot[as.character(t1)]
     allPath2 <- allPathToRoot[as.character(t2)]
 
-    res <- lapply(1:length(allPath1), function(i) pathTwoTips(allPath1[[i]], allPath2[[i]]) )
+    if(include.mrca) {
+        res <- lapply(1:length(allPath1), function(i) pathTwoTips(allPath1[[i]], allPath2[[i]]) )
+    } else {
+        res <- lapply(1:length(allPath1), function(i) pathTwoTips.no.mrca(allPath1[[i]], allPath2[[i]]) )
+        temp.names <- names(res)
+        temp <- sapply(res, function(vec) length(vec)>0)
+        res[temp] <- lapply(res[temp], function(vec) getnodes(x, vec) ) # name the nodes
+        names(res) <- temp.names
+    }
 
     if(useTipNames) {
         names(res) <- paste(names(t1), names(t2), sep="-")
@@ -84,15 +101,15 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
 
 # examples
 # source("/home/master/dev/adephylo/pkg/R/utils.R")
-## phy <- as(rtree(15),"phylo4")
-## plot(phy,show.n=T)
-## tip1 <- "t1"
-## tip2 <- "t2"
+#phy <- as(rtree(15),"phylo4")
+plot(phy,show.n=T)
+tip1 <- "t1"
+tip2 <- "t2"
 
 
-## sp.tips(phy, "t1", "t2")
-## sp.tips(phy, rep(1,15), 1:15)
-## sp.tips(phy, rep(1, 15), 1:15, TRUE)
+sp.tips(phy, "t1", "t2")
+sp.tips(phy, rep(1,15), 1:15)
+sp.tips(phy, rep(1, 15), 1:15, TRUE)
 
 ## heavier tree
 # x <- as(rtree(1000), "phylo4")

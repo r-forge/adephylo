@@ -1,50 +1,70 @@
 ############
 # distNodes
 ############
-distNodes <- function(x, node1, node2,
+distTips <- function(x, tips="all",
                       method=c("brlength","nNodes","Abouheif","sumDD")){
 
     if(!require(phylobase)) stop("phylobase package is not installed")
 
-    ## conversion from phylo, phylo4 and phylo4d
+    ## handle arguments
     x <- as(x, "phylo4")
     method <- match.arg(method)
+    tips <- getnodes(x, tip1)
+    N <- nTips(x)
+    if(tips="all") { tips <- 1:N }
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
-    node1 <- getnodes(x, node1)
-    node2 <- getnodes(x, node2)
-    if(any(is.na(c(node1,node2)))) stop("wrong node specified")
-    if(node1==node2) return(0)
+    if(any(is.na(tips))) stop("wrong tips specified")
 
-    ## get the path between node1 and node2
-    path <- shortestPath(x, node1, node2)
+    ## create all couples of observations
+    findAllPairs <- function(vec){
+        res <- list(i=NULL,j=NULL)
+        k <- 0
+        for(i in 1:(length(vec)-1)){
+            for(j in 2:length(vec)){
+                k <- k+1
+                res[[1]][k] <- i
+                res[[2]][k] <- j
+            }
+        }
+        res <- data.frame(res)
+        return(res)
+    }
+
+    allPairs <- findAllPairs(tips) # this contains all possible pairs of tips
+
+    ## get the shortest path between all pairs of tips
+    allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE)
 
     ## compute distances
     if(method=="brlength"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
-        path <- c(node1, node2, path)
-        path <- path[path != MRCA(x, node1, node2)]
-        edge.idx <- getedges(x, path)
+        ## add tip1 and tip2 to the paths, so that these edges are counted
+        allPath <- as.data.frame
+        
+        allPath <- lapply(allPath, c, (node1, node2, allPath)
+        allPath <- allPath[allPath != MRCA(x, node1, node2)]
+        edge.idx <- getedges(x, allPath)
         res <- sum(edgeLength(x)[edge.idx], na.rm=TRUE)
         return(res)
     } # end brlength
 
     if(method=="nNodes"){
-        res <- length(path)
+        res <- length(allPath)
         return(res)
     } # end nNodes
 
     if(method=="Abouheif"){
         E <- x@edge
-        temp <- table(E[,1])[as.character(path)] # number of dd per node
+        temp <- table(E[,1])[as.character(allPath)] # number of dd per node
         res <- prod(temp)
         return(res)
     } # end Abouheif
 
     if(method=="sumDD"){
         E <- x@edge
-        temp <- table(E[,1])[as.character(path)] # number of dd per node
+        temp <- table(E[,1])[as.character(allPath)] # number of dd per node
         res <- sum(temp)
         return(res)
  } # end sumDD
