@@ -24,7 +24,7 @@ distTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
    }
 }
 \value{
-  A numeric vector containing one distance value for each tip.
+  An object of class \code{dist}, containing phylogenetic distances.
 }
 \details{
   \code{Abouheif} distance refers to the phylogenetic distance
