@@ -11,7 +11,7 @@ distTips <- function(x, tips="all",
     method <- match.arg(method)
     tips <- getnodes(x, tips)
     N <- nTips(x)
-    if(tips="all") { tips <- 1:N }
+    if(tips=="all") { tips <- 1:N }
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
@@ -45,39 +45,52 @@ distTips <- function(x, tips="all",
     if(method=="brlength"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         ## add tip1 and tip2 to the paths, so that these edges are counted
-        allPath <- as.data.frame(allPath)
         tip1 <- allPairs$i
         tip2 <- allPairs$j
         for(i in 1:length(allPath)){
             allPath[[i]] <- c(allPath[[i]], tip1, tip2)
         }
 
-        edge.idx <- lapply(allPath, function(e) getedges(x, e) )
+        edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
         res <- lapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
         return(res)
     } # end brlength
 
     if(method=="nNodes"){
-        res <- length(allPath)
+        res <- lapply(allPath, length)
         return(res)
     } # end nNodes
 
     if(method=="Abouheif"){
         E <- x@edge
-        temp <- table(E[,1])[as.character(allPath)] # number of dd per node
-        res <- prod(temp)
+        f1 <- function(onePath){ # computes product of dd for one path
+            temp <- table(E[,1])[as.character(onePath)] # number of dd per node
+            return(prod(temp))
+        }
+        res <- lapply(allPath, f1)
         return(res)
     } # end Abouheif
 
     if(method=="sumDD"){
         E <- x@edge
-        temp <- table(E[,1])[as.character(allPath)] # number of dd per node
-        res <- sum(temp)
+        f1 <- function(onePath){ # computes sum of dd for one path
+            temp <- table(E[,1])[as.character(onePath)] # number of dd per node
+            return(sum(temp))
+        }
+        res <- lapply(allPath, f1)
         return(res)
- } # end sumDD
+
+    } # end sumDD
 
 } # end distNodes
+
+
+## examples
+# source("/home/master/dev/adephylo/pkg/R/distances.R")
+ x <- as(rtree(10),"phylo4")
+     plot(x, show.node=TRUE)
+     axisPhylo()
 
 
 
