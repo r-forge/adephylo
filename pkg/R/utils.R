@@ -1,7 +1,7 @@
 ##########
 # sp.tips
 ##########
-sp.tips <- function(phy, tip1, tip2){
+sp.tips <- function(phy, tip1, tip2, useTipNames=FALSE){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
@@ -66,7 +66,12 @@ sp.tips <- function(phy, tip1, tip2){
     allPath2 <- allPathToRoot[as.character(t2)]
 
     res <- lapply(1:length(allPath1), function(i) pathTwoTips(allPath1[[i]], allPath2[[i]]) )
-    names(res) <- paste(tip1,tip2,sep="-")
+
+    if(useTipNames) {
+        names(res) <- paste(names(t1), names(t2), sep="-")
+    } else {
+        names(res) <- paste(t1,t2,sep="-")
+    }
 
     return(res)
 } # end sp.tips
@@ -74,10 +79,13 @@ sp.tips <- function(phy, tip1, tip2){
 
 
 # examples
-phy <- as(rtree(15),"phylo4")
-plot(phy,show.n=T)
-tip1 <- "t1"
-tip2 <- "t2"
+# source("/home/master/dev/adephylo/pkg/R/utils.R")
+## phy <- as(rtree(15),"phylo4")
+## plot(phy,show.n=T)
+## tip1 <- "t1"
+## tip2 <- "t2"
 
 
-sp.tips(phy, "t1", "t2")
+## sp.tips(phy, "t1", "t2")
+## sp.tips(phy, rep(1,15), 1:15)
+## sp.tips(phy, rep(1, 15), 1:15, TRUE)
