@@ -1,7 +1,7 @@
 ##########
 # sp.tips
 ##########
-sp.tips <- function(phy, tip1, tip2, useTipNames=FALSE){
+sp.tips <- function(phy, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
@@ -12,14 +12,18 @@ sp.tips <- function(phy, tip1, tip2, useTipNames=FALSE){
     t1 <- getnodes(x, tip1)
     t2 <- getnodes(x, tip2)
     if(any(is.na(c(t1,t2)))) stop("wrong tip specified")
-    if(any(c(t1,t2) > N)) stop("specified nodes are internal nodes")
-    if(length(t1) != length(t2)) stop("tip1 and tip2 must have the same length")
+    if(any(c(t1,t2) > nTips(x))) stop("specified nodes are internal nodes")
+    if(length(t1) != length(t2)) { # recycle tip1 and tip2
+        maxLength <- max(length(t1), length(t2))
+        t1 <- rep(t1, length.out=maxLength)
+        t2 <- rep(t2, length.out=maxLength)
+    }
     toRemove <- (t1==t2)
     if(sum(toRemove)>0) {
         t1 <- t1[!toRemove]
         t2 <- t2[!toRemove]
         if(length(t1)==0) stop("tip1 and tip2 are the same vectors")
-        warning("tip1 and tip2 are sometimes the same; erasing these cases")
+        if(!quiet) warning("tip1 and tip2 are sometimes the same; erasing these cases")
     }
 
 
@@ -89,3 +93,7 @@ sp.tips <- function(phy, tip1, tip2, useTipNames=FALSE){
 ## sp.tips(phy, "t1", "t2")
 ## sp.tips(phy, rep(1,15), 1:15)
 ## sp.tips(phy, rep(1, 15), 1:15, TRUE)
+
+## heavier tree
+# x <- as(rtree(1000), "phylo4")
+# system.time(sp.tips(x,1,1:1000))
