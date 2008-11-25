@@ -22,6 +22,8 @@ sp.tips(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE)
     of \code{tip1} and \code{tip2} will be used.}
   \item{quiet}{a logical stating whether a warning must be issued when
     tip1==tip2, or not (see details).}
+  \item{include.mrca}{a logical stating whether the most recent common
+    ancestor shall be included in the returned path (TRUE, default) or not (FALSE).}
 }
 \value{
   A list whose components are vectors of named nodes forming the

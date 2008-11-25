@@ -9,7 +9,7 @@ distTips <- function(x, tips="all",
     ## handle arguments
     x <- as(x, "phylo4")
     method <- match.arg(method)
-    tips <- getnodes(x, tip1)
+    tips <- getnodes(x, tips)
     N <- nTips(x)
     if(tips="all") { tips <- 1:N }
 
@@ -35,18 +35,26 @@ distTips <- function(x, tips="all",
     allPairs <- findAllPairs(tips) # this contains all possible pairs of tips
 
     ## get the shortest path between all pairs of tips
-    allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE)
+    if(method != "brlength") {
+        allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE)
+    } else {
+        allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE, include.mrca=FALSE)
+    }
 
     ## compute distances
     if(method=="brlength"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         ## add tip1 and tip2 to the paths, so that these edges are counted
-        allPath <- as.data.frame
-        
-        allPath <- lapply(allPath, c, (node1, node2, allPath)
-        allPath <- allPath[allPath != MRCA(x, node1, node2)]
-        edge.idx <- getedges(x, allPath)
-        res <- sum(edgeLength(x)[edge.idx], na.rm=TRUE)
+        allPath <- as.data.frame(allPath)
+        tip1 <- allPairs$i
+        tip2 <- allPairs$j
+        for(i in 1:length(allPath)){
+            allPath[[i]] <- c(allPath[[i]], tip1, tip2)
+        }
+
+        edge.idx <- lapply(allPath, function(e) getedges(x, e) )
+        allEdgeLength <- edgeLength(x)
+        res <- lapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
         return(res)
     } # end brlength
 
