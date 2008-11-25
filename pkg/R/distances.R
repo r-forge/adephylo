@@ -47,7 +47,7 @@ distNodes <- function(x, node1, node2,
         temp <- table(E[,1])[as.character(path)] # number of dd per node
         res <- sum(temp)
         return(res)
- } # end Abouheif
+ } # end sumDD
 
 } # end distNodes
 
