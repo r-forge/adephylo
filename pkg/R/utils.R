@@ -1,11 +1,11 @@
 ##########
 # sp.tips
 ##########
-sp.tips <- function(phy, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
+sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
-    x <- as(phy, "phylo4")
+    x <- as(x, "phylo4")
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
