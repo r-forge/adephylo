@@ -1,35 +1,75 @@
-##############
-# pathTwoTips
-##############
-pathTwoTips <- function(phy, tip1, tip2){
-    ## if(!require(phylobase)) stop("phylobase package is not installed")
+##########
+# sp.tips
+##########
+sp.tips <- function(phy, tip1, tip2){
+    if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(phy, "phylo4")
 
-    ## come checks
+    ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
-    t1 <- getnodes(x, node1)
-    t2 <- getnodes(x, node2)
-    if(any(is.na(c(t1,t2)))) stop("wrong node specified")
-    # if(t1==t2) return(NULL)
+    t1 <- getnodes(x, tip1)
+    t2 <- getnodes(x, tip2)
+    if(any(is.na(c(t1,t2)))) stop("wrong tip specified")
+    if(any(c(t1,t2) > N)) stop("specified nodes are internal nodes")
+    if(length(t1) != length(t2)) stop("tip1 and tip2 must have the same length")
+
+
+    ## some global variables
+    root <- rootNode(x)
+    N <- nTips(x)
+    E <- x@edge
+    allTips <- unique(c(t1,t2))
+
+
+    ## function tipToRoot
+    tipToRoot <- function(E, tip){
+        path <- NULL
+        curNode <- tip
+        while(curNode != root){
+            curNode <- E[(curNode==E[,2]),1] # one node <- its ancestor
+            path <- c(path, curNode)
+        } # end while
+
+        path <- getnodes(x, path)
+        return(path)
+    } # end tipToRoot
+
+
+    ## function pathTwoTips (takes two path-to-root as args)
+    pathTwoTips <- function(path1, path2){
+        cpath <- c(path1, path2)
+        temp <- factor(cpath, level=unique(cpath))
+        CA <- temp[table(temp)==2][1] # most recent common ancestor (MRCA)
+        CA <- as.integer(as.character(CA)) # retrieve integer type
+        path1 <- path1[1:(which(path1==CA))] # cut path1 after MRCA (keep MRCA)
+        path2 <- path2[1:(which(path2==CA)-1)] # cut path2 after MRCA (erase MRCA)
+        res <- c(path1, path2)
+        return(res)
+    } # end pathTwoTips
+
 
     ## main computations
-    comAnc <- MRCA(x, t1, t2) # common ancestor
-    desComAnc <- descendants(x, comAnc, which="all")
-    ancT1 <- ancestors(x, t1, which="all")
-    path1 <- intersect(desComAnc, ancT1) # path: common anc -> t1
+    allPathToRoot <- lapply(allTips, function(i) tipToRoot(E, i))
+    names(allPathToRoot) <- allTips
 
-    ancT2 <- ancestors(x, t2, which="all")
-    path2 <- intersect(desComAnc, ancT2) # path: common anc -> t2
+    allPath1 <- allPathToRoot[as.character(t1)]
+    allPath2 <- allPathToRoot[as.character(t2)]
 
-    res <- union(path1, path2) # union of the path
-    ## add the common ancestor if it differs from t1 or t2
-    if(!comAnc %in% c(t1,t2)){
-        res <- c(comAnc,res)
-    }
-
-    res <- getnodes(x, res)
+    res <- lapply(1:length(allPath1), function(i) pathTwoTips(allPath1[[i]], allPath2[[i]]) )
+    names(res) <- paste(tip1,tip2,sep="-")
 
     return(res)
-} # end shortestPath
+} # end sp.tips
+
+
+
+# examples
+phy <- as(rtree(15),"phylo4")
+plot(phy,show.n=T)
+tip1 <- "t1"
+tip2 <- "t2"
+
+
+sp.tips(phy, "t1", "t2")
