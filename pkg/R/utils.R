@@ -1,3 +1,40 @@
+##
+## SEVERAL UTILS FUNCTIONS
+## =======================
+##
+## Hidden functions are intended to go fast, and thus make no validity test.
+## >.tipToRoot< is an hidden function return path to the root for a tip
+## >sp.tips< computes the shortest path between two tips
+##
+##
+
+
+#############
+# .tipToRoot
+#############
+##
+## x: a phylo4/phylo4d
+## tip: an integer identifying a tip by its number
+## root: to root node; could be computed inside the function,
+## but will often be computed outside, once and for all.
+##
+.tipToRoot <- function(x, tip, root){
+    E <- x$edge
+    path <- NULL
+    curNode <- tip
+    while(curNode != root){
+        curNode <- E[(curNode==E[,2]),1] # one node <- its ancestor
+        path <- c(path, curNode)
+    } # end while
+
+    path <- getnodes(x, path)
+    return(path)
+} # end tipToRoot
+
+
+
+
+
 ##########
 # sp.tips
 ##########
@@ -34,18 +71,18 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
     allTips <- unique(c(t1,t2))
 
 
-    ## function tipToRoot
-    tipToRoot <- function(E, tip){
-        path <- NULL
-        curNode <- tip
-        while(curNode != root){
-            curNode <- E[(curNode==E[,2]),1] # one node <- its ancestor
-            path <- c(path, curNode)
-        } # end while
+    ##   ## tipToRoot -> call to .tipToRoot
+    ##     tipToRoot <- function(E, tip){
+    ##         path <- NULL
+    ##         curNode <- tip
+    ##         while(curNode != root){
+    ##             curNode <- E[(curNode==E[,2]),1] # one node <- its ancestor
+    ##             path <- c(path, curNode)
+    ##         } # end while
 
-        path <- getnodes(x, path)
-        return(path)
-    } # end tipToRoot
+    ##         path <- getnodes(x, path)
+    ##         return(path)
+    ##     } # end tipToRoot
 
 
     ## function pathTwoTips (takes two path-to-root as args)
@@ -72,7 +109,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 
 
     ## main computations
-    allPathToRoot <- lapply(allTips, function(i) tipToRoot(E, i))
+    allPathToRoot <- lapply(allTips, function(i) .tipToRoot(x, i, root))
     names(allPathToRoot) <- allTips
 
     allPath1 <- allPathToRoot[as.character(t1)]

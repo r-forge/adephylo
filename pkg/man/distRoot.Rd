@@ -23,7 +23,7 @@ distRoot(x, method=c("brlength","nAncestors","Abouheif"))
   A numeric vector containing one distance value for each tip.
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
-\seealso{\code{\link{distPhylo4}} which computes several phylogenetic
+\seealso{\code{\link{distTips}} which computes several phylogenetic
   distances between tips.
 }
 \examples{
