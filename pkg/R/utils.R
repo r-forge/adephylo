@@ -18,7 +18,7 @@
 ## root: to root node; could be computed inside the function,
 ## but will often be computed outside, once and for all.
 ##
-.tipToRoot <- function(x, tip, root){
+.tipToRoot <- function(x, tip, root, include.root=FALSE){
     E <- x$edge
     path <- NULL
     curNode <- tip
@@ -27,7 +27,9 @@
         path <- c(path, curNode)
     } # end while
 
-    path <- getnodes(x, path[-length(path)]) # exclude the root
+    if(!include.root) {
+        path <- getnodes(x, path[-length(path)]) # exclude the root
+    }
     return(path)
 } # end tipToRoot
 
@@ -109,7 +111,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 
 
     ## main computations
-    allPathToRoot <- lapply(allTips, function(i) .tipToRoot(x, i, root))
+    allPathToRoot <- lapply(allTips, function(i) .tipToRoot(x, i, root, include.root=TRUE))
     names(allPathToRoot) <- allTips
 
     allPath1 <- allPathToRoot[as.character(t1)]

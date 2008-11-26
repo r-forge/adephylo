@@ -13,12 +13,16 @@
 
 }
 \usage{
-.tipToRoot(x, tip, root)
+.tipToRoot(x, tip, root, include.root=FALSE)
 }
 \arguments{
   \item{x}{A valid tree of  class \linkS4class{phylo4}.}
   \item{tip}{An integer identifying a tip by its numbers.}
-  \item{root}{An integer identifying the root of the tree by its numbers.}
+  \item{root}{An integer identifying the root of the tree by its
+    numbers.}
+  \item{include.root}{a logical stating whether the root must be
+    included as a node of the path from tip to root (TRUE), or not
+    (FALSE, default).}
 }
 \value{
   \code{.tipToRoot}: a vector of named integers identifying nodes.\cr
