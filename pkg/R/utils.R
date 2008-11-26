@@ -27,7 +27,7 @@
         path <- c(path, curNode)
     } # end while
 
-    path <- getnodes(x, path)
+    path <- getnodes(x, path[-length(path)]) # exclude the root
     return(path)
 } # end tipToRoot
 

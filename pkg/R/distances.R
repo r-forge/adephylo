@@ -1,6 +1,6 @@
-############
-# distNodes
-############
+###########
+# distTips
+###########
 distTips <- function(x, tips="all",
                       method=c("brlength","nNodes","Abouheif","sumDD")){
 
@@ -46,11 +46,9 @@ distTips <- function(x, tips="all",
     if(method=="brlength"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         ## add tip1 and tip2 to the paths, so that these edges are counted
-        tip1 <- allPairs$i
-        tip2 <- allPairs$j
-        for(i in 1:length(allPath)){
-            allPath[[i]] <- c(allPath[[i]], tip1, tip2)
-        }
+        allPath.names <- names(allPath)
+        allPath <- lapply(1:length(allPath), function(i) c(allPath[[i]], allPairs[i,]) )
+        names(allPath) <- allPath.names
 
         edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
@@ -102,26 +100,29 @@ distTips <- function(x, tips="all",
 ###########
 # distRoot
 ###########
-distRoot <- function(x, method=c("brlength","nNodes","Abouheif")){
+distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sumDD"){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
-    ## conversion from phylo, phylo4 and phylo4d
+    ## handle arguments
     x <- as(x, "phylo4")
+    method <- match.arg(method)
+    N <- nTips(x)
+    if(tips[1]=="all") { tips <- 1:N }
+    tips <- getnodes(x, tips)
+    tips.names <- names(tips)
+    x <- as(x, "phylo4")
+    root <- rootNode(x)
 
-    ## check phylo4 object
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    ## some checks
+    if(is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if(any(is.na(tips))) stop("wrong tips specified")
+
 
     ## main computations
-    tip <- getnodes(x, tip)
-    root <- getnodes(x, nTips(x)+1)
-    ancTip <- ancestors(x, tip, which="all")
 
-    pathNodes <- setdiff(ancTip, root) # only internal nodes, without root
-    pathNodes <- c(tip, pathNodes)
+    ## get path from root to tops
+    allPath <- lapply(tips, function(tip) .tipToRoot(x, tip, root))
 
-    pathNodes <- getnodes(x, pathNodes)
-
-    res <- sumEdgeLength(x, pathNodes)
 
     return(res)
 } # end distRoot
