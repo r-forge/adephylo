@@ -1,13 +1,13 @@
-\name{listNodes}
-\alias{listNodes}
+\name{listDD}
+\alias{listDD}
 \title{List direct descendants for all nodes of a tree}
 \description{
-  The function \code{listNodes} lists the direct descendants from each node
+  The function \code{listDD} lists the direct descendants from each node
   of a tree. The tree can be of class \code{\link[pkg:ape]{phylo}},
   \linkS4class{phylo4} or \linkS4class{phylo4d}.
 }
 \usage{
-listNodes(x)
+listDD(x)
 }
 \arguments{
   \item{x}{A tree of  class \code{\link[pkg:ape]{phylo}},
@@ -28,7 +28,7 @@ if(require(ape) & require(phylobase)){
 ## make a tree
 x <- as(rtree(20),"phylo4")
 plot(x,show.node=TRUE)
-listNodes(x)
+listDD(x)
 }
 }
 \keyword{manip}

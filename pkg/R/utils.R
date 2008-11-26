@@ -151,3 +151,30 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 ## heavier tree
 # x <- as(rtree(1000), "phylo4")
 # system.time(sp.tips(x,1,1:1000))
+
+
+
+
+
+############
+# listDD
+############
+listDD <- function(x){
+    if(!require(phylobase)) stop("phylobase package is not installed")
+
+    ## conversion from phylo, phylo4 and phylo4d
+    x <- as(x, "phylo4")
+
+    ## check phylo4 object
+    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+
+    ## computations
+    nodIdx <- nTips(x)+1
+    nodIdx <- nodIdx:(nodIdx+nNodes(x)-1)
+    res <- lapply(nodIdx, function(i) children(x, i))
+
+    if(hasNodeLabels(x)) {names(res) <- nodeLabels(x)}
+
+    return(res)
+} # end listDD
+

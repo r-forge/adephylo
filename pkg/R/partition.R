@@ -33,32 +33,6 @@ listTips <- function(x){
 
 
 
-############
-# listNodes
-############
-listNodes <- function(x){
-    if(!require(phylobase)) stop("phylobase package is not installed")
-
-    ## conversion from phylo, phylo4 and phylo4d
-    x <- as(x, "phylo4")
-
-    ## check phylo4 object
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
-
-    ## computations
-    nodIdx <- nTips(x)+1
-    nodIdx <- nodIdx:(nodIdx+nNodes(x)-1)
-    res <- lapply(nodIdx, function(i) children(x, i))
-
-    if(hasNodeLabels(x)) {names(res) <- nodeLabels(x)}
-
-    return(res)
-} # end listNodes
-
-
-
-
-
 ###########
 # treePart
 ###########
