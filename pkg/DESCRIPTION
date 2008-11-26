@@ -4,8 +4,8 @@ Date: 2008/11/20
 Title: adephylo: multivariate analysis for the comparative method.
 Author: Thibaut Jombart <jombart@biomserv.univ-lyon1.fr>, Stephane Dray <dray@biomserv.univ-lyon1.fr>
 Maintainer: Thibaut Jombart <jombart@biomserv.univ-lyon1.fr>
-Suggests: ade4, ape, phylobase
-Depends: methods
+Suggests: ade4
+Depends: methods, phylobase, ape
 Description: Multivariate tools to analyze comparative data, i.e. a phylogeny and some traits measured for each taxa.
 License: GPL (>=2)
 LazyLoad: yes
