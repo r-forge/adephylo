@@ -89,7 +89,7 @@ distTips <- function(x, tips="all",
 
     return(res)
 
-} # end distNodes
+} # end distTips
 
 
 
@@ -100,7 +100,7 @@ distTips <- function(x, tips="all",
 ###########
 # distRoot
 ###########
-distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sumDD"){
+distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sumDD") ){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## handle arguments
@@ -111,7 +111,7 @@ distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sum
     tips <- getnodes(x, tips)
     tips.names <- names(tips)
     x <- as(x, "phylo4")
-    root <- rootNode(x)
+    root <- getnodes(x,rootNode(x)) # so that we have a named node
 
     ## some checks
     if(is.character(checkval <- check_phylo4(x))) stop(checkval)
@@ -123,6 +123,44 @@ distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sum
     ## get path from root to tops
     allPath <- lapply(tips, function(tip) .tipToRoot(x, tip, root))
 
+    ## compute distances
+    if(method=="brlength"){
+        if(!hasEdgeLength(x)) stop("x does not have branch length")
+        ## add the concerned tips to the paths, so that these edges are counted
+        allPath.names <- names(allPath)
+        allPath <- lapply(1:length(allPath), function(i) c(allPath[[i]], tips[i]) )
+        names(allPath) <- allPath.names
 
+        edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
+        allEdgeLength <- edgeLength(x)
+        res <- sapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
+    } # end brlength
+
+    if(method=="nNodes"){
+        res <- sapply(allPath, length)
+    } # end nNodes
+
+    if(method=="Abouheif"){
+        E <- x@edge
+        f1 <- function(onePath){ # computes product of dd for one path
+            temp <- table(E[,1])[as.character(onePath)] # number of dd per node
+            return(prod(temp))
+        }
+
+        res <- sapply(allPath, f1)
+    } # end Abouheif
+
+    if(method=="sumDD"){
+        E <- x@edge
+        f1 <- function(onePath){ # computes sum of dd for one path
+            temp <- table(E[,1])[as.character(onePath)] # number of dd per node
+            return(sum(temp))
+        }
+
+        res <- sapply(allPath, f1)
+    } # end sumDD
+
+
+    ## the output is a named numeric vector
     return(res)
 } # end distRoot
