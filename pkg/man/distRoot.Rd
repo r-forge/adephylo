@@ -11,6 +11,8 @@ distRoot(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
 \arguments{
   \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
+  \item{tips}{A vector of integers identifying tips by their numbers, or
+    a vector of characters identifying tips by their names.}
   \item{method}{a character string (full or abbreviated without
     ambiguity) specifying the method used to compute distances ;
     possible values are:\cr

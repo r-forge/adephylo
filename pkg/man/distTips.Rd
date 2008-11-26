@@ -3,8 +3,10 @@
 \title{Compute some phylogenetic distance between two nodes}
 \description{
   The function \code{distTips} computes a given distance between a set
-  of tips of a phylogeny. This distance is computed from the shortest path
-  between the nodes. Several distances can be used, defaulting to the
+  of tips of a phylogeny. A vector of tips is supplied: distances
+  between all possible pairs of these tips are computed.
+  The distances are computed from the shortest path
+  between the tips. Several distances can be used, defaulting to the
   sum of branch lengths (see argument \code{method}).
 }
 \usage{
@@ -13,6 +15,9 @@ distTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
 \arguments{
   \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
+  \item{tips}{A vector of integers identifying tips by their numbers, or
+    a vector of characters identifying tips by their names. Distances
+    will be computed between all possible pairs of tips.}
   \item{method}{a character string (full or abbreviated without
     ambiguity) specifying the method used to compute distances ;
     possible values are:\cr

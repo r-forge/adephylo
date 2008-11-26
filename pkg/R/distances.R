@@ -23,7 +23,7 @@ distTips <- function(x, tips="all",
         res <- list(i=NULL,j=NULL)
         k <- 0
         for(i in 1:(length(vec)-1)){
-            for(j in 2:length(vec)){
+            for(j in (i+1):length(vec)){
                 k <- k+1
                 res[[1]][k] <- i
                 res[[2]][k] <- j
@@ -39,7 +39,8 @@ distTips <- function(x, tips="all",
     if(method != "brlength") {
         allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE)
     } else {
-        allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE, include.mrca=FALSE)
+        allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE,
+                           include.mrca=FALSE)
     }
 
     ## compute distances
@@ -47,7 +48,8 @@ distTips <- function(x, tips="all",
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         ## add tip1 and tip2 to the paths, so that these edges are counted
         allPath.names <- names(allPath)
-        allPath <- lapply(1:length(allPath), function(i) c(allPath[[i]], allPairs[i,]) )
+        allPath <- lapply(1:length(allPath), function(i)
+                          c(allPath[[i]], allPairs[i,1], allPairs[i,2]) )
         names(allPath) <- allPath.names
 
         edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges

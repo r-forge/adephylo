@@ -8,7 +8,7 @@
   \linkS4class{phylo4d}. Several tips can be provided at a time.
 }
 \usage{
-sp.tips(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE)
+sp.tips(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=TRUE)
 }
 \arguments{
   \item{x}{A tree of  class \code{\link[pkg:ape]{phylo}},
