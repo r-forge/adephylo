@@ -28,9 +28,10 @@
     } # end while
 
     if(!include.root) {
-        path <- getnodes(x, path[-length(path)]) # exclude the root
+        path <- path[-length(path)] # exclude the root
     }
-    return(path)
+
+    return(getnodes(x, path))
 } # end tipToRoot
 
 

@@ -19,7 +19,7 @@ treePart(x)
   tip (rows).
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
-\seealso{\code{\link{listNodes}} which is called by \code{treePart}.
+\seealso{\code{\link{listDD}} which is called by \code{treePart}.
 }
 \examples{
 if(require(ape) & require(phylobase)){
