@@ -82,7 +82,7 @@ distTips <- function(x, tips="all",
     ## convert res to a dist object
     res <- unlist(res)
     class(res) <- "dist"
-    attr(res, "Size") <- length(res)
+    attr(res, "Size") <- length(tips)
     attr(res, "Diag") <- FALSE
     attr(res, "Upper") <- FALSE
     attr(res, "method") <- paste("Phylogenetic: ",method,sep="")

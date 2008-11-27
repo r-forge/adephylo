@@ -9,4 +9,4 @@ Depends: methods, phylobase, ape
 Description: Multivariate tools to analyze comparative data, i.e. a phylogeny and some traits measured for each taxa.
 License: GPL (>=2)
 LazyLoad: yes
-Collate: utils.R partition.R s.phylo4d.R distances.R
+Collate: utils.R partition.R s.phylo4d.R distances.R proximities.R
