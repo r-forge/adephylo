@@ -7,9 +7,9 @@
 # please list here all intended modifications
 # and all detected bugs
 #
-# please add a "-- done" or "-- fixed" tag when
+# please add a '-- done' or '-- fixed' tag when
 # you achieved something, and replace the 
-# initial star "*" with a "o"
+# initial star '*' (to do) with a 'o' (done).
 #
 # Inside a given section, priority goes decreasing.
 #
@@ -27,7 +27,7 @@
 
 # CODE ISSUES:
 ==============
-* make a working package that passes the check
+o make a working package that passes the check -- done (TJ)
 
 # DOCUMENTATION ISSUES:
 =======================
@@ -39,10 +39,10 @@
 o plot methods from phylobase ('old' version) -- done (TJ)
 o implement a pathTwoTips method, which has to go fast to find shortest path between two tips - done (TJ): is now sp.tips.
 o basic stuff existing in phylog objects (while option=TRUE), e.g. distance to the root for tips, etc.
-* proximities between OTUs like Abouheif, etc.
+o proximities between OTUs like Abouheif, etc. -- done (TJ)
 o distances between OTUs (like sum of branch lengths) -- done (TJ)
 o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ)
-* add a orthobasis method for objects inheriting phylo4.
+* add a orthobasis method for objects inheriting phylo4 or phylo.
 * orthogram
 * ppca
 * migrate some (all ?) datasets from ade4 to adephylo (lizards, mjrochet, ...)
@@ -51,7 +51,7 @@ o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ
 
 # TESTING:
 ==========
-* test distTips a little more
+* test distTips a little more (see Abouheif with an outgroup, otherwise seems ok)
 
 
 
@@ -65,7 +65,7 @@ o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ
 ==========================
 ==========================
 * re-implement all relevant phylogenetic methods from ade4 in adephylo
-* implement several phylogenetic proximities
+o implement several phylogenetic proximities -- done (TJ)
 * implement an orthobasis for phylogenies
 * write a comprehensive tutorial, going through adephylo, ade4, ape, phylobase, etc. 
 
