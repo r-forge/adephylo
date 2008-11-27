@@ -42,10 +42,11 @@ o basic stuff existing in phylog objects (while option=TRUE), e.g. distance to t
 o proximities between OTUs like Abouheif, etc. -- done (TJ)
 o distances between OTUs (like sum of branch lengths) -- done (TJ)
 o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ)
-* add a orthobasis method for objects inheriting phylo4 or phylo.
-* orthogram
+o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
+* orthogram and multivariate orthogram; use Stephane's version
 * ppca
 * migrate some (all ?) datasets from ade4 to adephylo (lizards, mjrochet, ...)
+* add a Moran's index test
 
 
 
@@ -66,6 +67,6 @@ o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ
 ==========================
 * re-implement all relevant phylogenetic methods from ade4 in adephylo
 o implement several phylogenetic proximities -- done (TJ)
-* implement an orthobasis for phylogenies
+o implement an orthobasis for phylogenies -- done (TJ)
 * write a comprehensive tutorial, going through adephylo, ade4, ape, phylobase, etc. 
 

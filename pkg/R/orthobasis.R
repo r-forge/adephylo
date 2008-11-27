@@ -24,29 +24,13 @@ orthobasis.phylo <- function(x=NULL, prox=NULL,
     n <- nrow(W)
 
 
-    ## main computation
-    W0 <- bicenter.wt(W)
-    decomp <- eigen(W0, sym=TRUE)
-    E <- decomp$vectors # Moran eigenvectors (ME)
-    ## must be re-orthogonalized
-    temp <- cbind(rep(1,n) , E)
-    temp <- qr.Q(qr(temp))
-    E <- as.data.frame(temp[,-1])*sqrt(n)
-    row.names(E) <- rownames(W)
-    names(E) <- paste("ME", 1:ncol(E), sep=".")
-
-    ## retrieve Moran' I for each ME
-    f1 <- function(vec){
-        res <- mean( vec * (W0 %*% vec) )
-        return(res)
-    }
-
-    Ival <- apply(E, 2, f1)
+    ## main computation -> call to orthobasis.mat
+    res <- orthobasis.mat(W, cnw=FALSE)
 
     ## build output
-    res <- E
-    attr(res,"values") <- Ival
-    attr(res,"weights") <- rep(1/n,n)
+    row.names(res) <- rownames(W)
+    names(res) <- paste("ME", 1:ncol(res))
+    names(attr(res,"values")) <- names(res)
     attr(res,"call") <- match.call()
     attr(res,"class") <- c("orthobasis","data.frame")
 

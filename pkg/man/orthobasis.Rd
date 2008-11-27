@@ -55,12 +55,12 @@ if(require(ape) & require(ade4)){
 x <- rtree(50)
 
 ## compute Moran's eigenvectors
-ME <- me.phylo(x)
+ME <- me.phylo(x, met="Abouheif")
 ME
 
-## plot the 5 first vectors
-obj <- phylo4d(x, ME[,1:5])
-s.phylo4d(obj, cent=FALSE, scale=FALSE)
+## plot the 10 first vectors
+obj <- phylo4d(x, as.data.frame(ME[,1:10]))
+s.phylo4d(obj, cex.sym=.7, cex.lab=.7)
 }
 }
 \keyword{manip}
