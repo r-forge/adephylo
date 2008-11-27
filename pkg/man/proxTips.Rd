@@ -16,7 +16,6 @@
   and
    \deqn{m_{ii} = 0}
 
-   ~\cr
   Several distances can be used, defaulting to the 
   sum of branch lengths (see argument \code{method}).
   Proximities are not true similarity measures, since the proximity of a tip with
@@ -26,7 +25,6 @@
   symmetric form when M is symmetric (default):\cr
   \deqn{f(x,y) = x^{T}My}
 
-  ~\cr
   In general, M is not a metric because it is not positive-definite.
   Such a matrice can be used to measure phylogenetic autocorrelation
   (using Moran's index):
@@ -87,16 +85,16 @@ proxTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"),
   inverse of the sum of all terms in DDP.
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
-\seealso{\code{\link{proxTips}} which computes several phylogenetic
+\seealso{\code{\link{distTips}} which computes several phylogenetic
   distances between tips.
 }
 \references{
-  - For Moran's index with various proximities:\cr
+  == For Moran's index with various proximities == \cr
   Pavoine, S.; Ollier, S.; Pontier, D.; Chessel, D. (2008) Testing for
   phylogenetic signal in life history variable: Abouheif's test
   revisited. \emph{Theoretical Population Biology}: \bold{73}, 79-91.
 
-  - For regression on phylogenetic lag vector:\cr
+  == For regression on phylogenetic lag vector == \cr
   Cheverud, J. M.; Dow, M. M.; Leutenegger, W. (1985) The quantitative
   assessment of phylogentic constaints in comparative analyses: sexual
   dimorphism in body weights among primates. \emph{Evolution} \bold{39},
@@ -116,7 +114,12 @@ axisPhylo()
 proxTips(x, 1:5)
 proxTips(x, 1:5, "nNodes")
 proxTips(x, 1:5, "Abouheif")
-proxTips(x, 1:5, "sumDD")
+proxTips(x, , "sumDD")
+
+## see what one proximity looks like
+M <- proxTips(x)
+obj <- phylo4d(x,as.data.frame(M))
+s.phylo4d(obj,symbol="sq")
 }
 }
 \keyword{manip}
