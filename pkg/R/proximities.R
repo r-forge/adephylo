@@ -14,7 +14,6 @@ proxTips <- function(x, tips="all",
     N <- nTips(x)
     if(tips[1]=="all") { tips <- 1:N }
     tips <- getnodes(x, tips)
-    tips.names <- names(tips)
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
