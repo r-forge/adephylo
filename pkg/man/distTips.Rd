@@ -1,6 +1,6 @@
 \name{distTips}
 \alias{distTips}
-\title{Compute some phylogenetic distance between two nodes}
+\title{Compute some phylogenetic distance between tips}
 \description{
   The function \code{distTips} computes a given distance between a set
   of tips of a phylogeny. A vector of tips is supplied: distances
