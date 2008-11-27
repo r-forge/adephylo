@@ -50,10 +50,10 @@ o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
 - carni70.Rd -- done
 - lizards.Rd -- done
 - maples.Rd -- done
-- mjrochet.Rd
+- mjrochet.Rd -- done
 - palm.Rd
 - procella.Rd
-- tithonia.Rd
+- tithonia.Rd -- done
 * add a Moran's index and a test
 
 

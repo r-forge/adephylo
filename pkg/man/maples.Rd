@@ -45,6 +45,6 @@ s.phylo4d(temp) # correlation is strongly linked to phylogeny
 ## use ape's PIC (phylogenetic independent contrasts)
 pic.bif <- pic(bif, tre)
 pic.dom <- pic(dom, tre)
-cor.test(pic.bif, pic.dom)} # correlation no longer significant
+cor.test(pic.bif, pic.dom) # correlation no longer significant
 }
 \keyword{datasets}
