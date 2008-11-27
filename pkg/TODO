@@ -46,7 +46,7 @@ o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
 * orthogram and multivariate orthogram; use Stephane's version
 * ppca
 * migrate datasets from ade4 to adephylo:
-- carni19.Rd
+- carni19.Rd -- done
 - carni70.Rd
 - corvus.Rd
 - lizards.Rd
