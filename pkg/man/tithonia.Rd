@@ -51,7 +51,7 @@ if(require(ade4)){
 
 ## use branch length to define proximities
 prox1 <- proxTips(tre, method="patristic")
-gearymoran(prox, traits)
+gearymoran(prox1, traits)
 
 ## use Abouheif's proximity
 prox2 <- proxTips(tre, method="Abouheif")
