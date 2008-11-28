@@ -36,7 +36,7 @@
   where '...' is the non-autoregressive part of the model, and 'e' are residuals.
 }
 \usage{
-proxTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"),
+proxTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"),
          a=1, normalize=c("row","col","none"), symmetric=TRUE)
 }
 \arguments{
@@ -48,7 +48,7 @@ proxTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"),
   \item{method}{a character string (full or abbreviated without
     ambiguity) specifying the method used to compute proximities;
     possible values are:\cr
-    - \code{brlength}: (inversed sum of) branch length \cr
+    - \code{patristic}: (inversed sum of) branch length \cr
     - \code{nNodes}: (inversed) number of nodes on the path between the nodes \cr
     - \code{Abouheif}: Abouheif's proximity (see details) \cr
     - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path

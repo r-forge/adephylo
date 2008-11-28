@@ -6,7 +6,7 @@
   root. Several distances can be used, defaulting to the sum of branch lengths.
 }
 \usage{
-distRoot(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
+distRoot(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
 }
 \arguments{
   \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
@@ -16,7 +16,7 @@ distRoot(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
   \item{method}{a character string (full or abbreviated without
     ambiguity) specifying the method used to compute distances ;
     possible values are:\cr
-    - \code{brlength}: branch length \cr
+    - \code{patristic}: patristic distance, i.e. sum of branch lengths \cr
     - \code{nNodes}: number of nodes on the path between the nodes \cr
     - \code{Abouheif}: Abouheif's distance (see details) \cr
     - \code{sumDD}: sum of direct descendants of all nodes on the path
@@ -52,7 +52,7 @@ if(require(ape) & require(phylobase)){
 ## make a tree
 x <- as(rtree(50),"phylo4")
 ## compute 4 different distances
-met <- c("brlength","nNodes","Abouheif","sumDD")
+met <- c("patristic","nNodes","Abouheif","sumDD")
 D <- lapply(met, function(e) distRoot(x, method=e) )
 names(D) <- met
 D <- as.data.frame(D)

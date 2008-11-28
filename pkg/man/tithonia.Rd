@@ -50,7 +50,7 @@ s.phylo4d(x)
 if(require(ade4)){
 
 ## use branch length to define proximities
-prox1 <- proxTips(tre, method="brlength")
+prox1 <- proxTips(tre, method="patristic")
 gearymoran(prox, traits)
 
 ## use Abouheif's proximity

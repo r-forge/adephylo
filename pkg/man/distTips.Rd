@@ -10,7 +10,7 @@
   sum of branch lengths (see argument \code{method}).
 }
 \usage{
-distTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
+distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
 }
 \arguments{
   \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
@@ -21,7 +21,7 @@ distTips(x, tips, method=c("brlength","nNodes","Abouheif","sumDD"))
   \item{method}{a character string (full or abbreviated without
     ambiguity) specifying the method used to compute distances ;
     possible values are:\cr
-    - \code{brlength}: branch length \cr
+    - \code{patristic}: patristic distance, i.e. sum of branch lengths \cr
     - \code{nNodes}: number of nodes on the path between the nodes \cr
     - \code{Abouheif}: Abouheif's distance (see details) \cr
     - \code{sumDD}: sum of direct descendants of all nodes on the path

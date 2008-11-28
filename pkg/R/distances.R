@@ -2,7 +2,7 @@
 # distTips
 ###########
 distTips <- function(x, tips="all",
-                      method=c("brlength","nNodes","Abouheif","sumDD")){
+                      method=c("patristic","nNodes","Abouheif","sumDD")){
 
     if(!require(phylobase)) stop("phylobase package is not installed")
 
@@ -36,7 +36,7 @@ distTips <- function(x, tips="all",
     allPairs <- findAllPairs(tips) # this contains all possible pairs of tips
 
     ## get the shortest path between all pairs of tips
-    if(method != "brlength") {
+    if(method != "patristic") {
         allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE)
     } else {
         allPath <- sp.tips(x, allPairs$i, allPairs$j, useTipNames=TRUE, quiet=TRUE,
@@ -44,7 +44,7 @@ distTips <- function(x, tips="all",
     }
 
     ## compute distances
-    if(method=="brlength"){
+    if(method=="patristic"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         ## add tip1 and tip2 to the paths, so that these edges are counted
         allPath.names <- names(allPath)
@@ -55,7 +55,7 @@ distTips <- function(x, tips="all",
         edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
         res <- lapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
-    } # end brlength
+    } # end patristic
 
     if(method=="nNodes"){
         res <- lapply(allPath, length)
@@ -102,7 +102,7 @@ distTips <- function(x, tips="all",
 ###########
 # distRoot
 ###########
-distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sumDD") ){
+distRoot <- function(x, tips="all", method=c("patristic","nNodes","Abouheif","sumDD") ){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## handle arguments
@@ -126,7 +126,7 @@ distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sum
     allPath <- lapply(tips, function(tip) .tipToRoot(x, tip, root))
 
     ## compute distances
-    if(method=="brlength"){
+    if(method=="patristic"){
         if(!hasEdgeLength(x)) stop("x does not have branch length")
         ## add the concerned tips to the paths, so that these edges are counted
         allPath.names <- names(allPath)
@@ -136,7 +136,7 @@ distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sum
         edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
         res <- sapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
-    } # end brlength
+    } # end patristic
 
     if(method=="nNodes"){
         res <- sapply(allPath, length)

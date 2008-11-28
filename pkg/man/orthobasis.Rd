@@ -21,8 +21,8 @@
   \code{\link{proxTips}}.
 }
 \usage{
-me.phylo(x=NULL, prox=NULL, method=c("brlength","nNodes","Abouheif","sumDD"), a=1)
-orthobasis.phylo(x=NULL, prox=NULL, method=c("brlength","nNodes","Abouheif","sumDD"), a=1)
+me.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD"), a=1)
+orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD"), a=1)
 }
 \arguments{
   \item{x}{A tree of  class \code{\link[pkg:ape]{phylo}},
@@ -31,7 +31,7 @@ orthobasis.phylo(x=NULL, prox=NULL, method=c("brlength","nNodes","Abouheif","sum
   \item{method}{a character string (full or abbreviated without
     ambiguity) specifying the method used to compute proximities;
     possible values are:\cr
-    - \code{brlength}: (inversed sum of) branch length \cr
+    - \code{patristic}: (inversed sum of) branch lengths \cr
     - \code{nNodes}: (inversed) number of nodes on the path between the nodes \cr
     - \code{Abouheif}: Abouheif's proximity (see details) \cr
     - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path

@@ -45,14 +45,14 @@ o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ
 o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
 * orthogram and multivariate orthogram; use Stephane's version
 * ppca
-* migrate datasets from ade4 to adephylo:
+o migrate datasets from ade4 to adephylo: -- done (TJ)
 - carni19.Rd -- done
 - carni70.Rd -- done
 - lizards.Rd -- done
 - maples.Rd -- done
 - mjrochet.Rd -- done
 - palm.Rd -- done
-- procella.Rd
+- procella.Rd -- done
 - tithonia.Rd -- done
 * add a Moran's index and a test (is it needed, as we have morangeary ?)
 

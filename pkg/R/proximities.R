@@ -2,7 +2,7 @@
 # proxTips
 ###########
 proxTips <- function(x, tips="all",
-                      method=c("brlength","nNodes","Abouheif","sumDD"),
+                      method=c("patristic","nNodes","Abouheif","sumDD"),
                      a=1, normalize=c("row","col","none"), symmetric=TRUE){
 
     if(!require(phylobase)) stop("phylobase package is not installed")
