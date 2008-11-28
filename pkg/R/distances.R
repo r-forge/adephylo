@@ -113,7 +113,7 @@ distRoot <- function(x, tips="all", method=c("brlength","nNodes","Abouheif","sum
     tips <- getnodes(x, tips)
     tips.names <- names(tips)
     x <- as(x, "phylo4")
-    root <- getnodes(x,rootNode(x)) # so that we have a named node
+    root <- getnodes(x, N+1) # so that we have a named node
 
     ## some checks
     if(is.character(checkval <- check_phylo4(x))) stop(checkval)
