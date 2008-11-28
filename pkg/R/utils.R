@@ -68,8 +68,8 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 
 
     ## some global variables
-    root <- rootNode(x)
     N <- nTips(x)
+    root <- getnodes(x, N+1)
     E <- x@edge
     allTips <- unique(c(t1,t2))
 
