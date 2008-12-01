@@ -11,7 +11,7 @@ s.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles"
 
     ## preliminary stuff and checks
     if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
-    if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
+    # if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk) <- needed?
 
     if(!require(ape)) stop("the ape package is required")
     if(cex.label<0.1) {
@@ -83,8 +83,12 @@ s.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles"
     x.inset <- SYMBSCALE * cex.symbol * usr.width / par("pin")[1]
     y.inset <- SYMBSCALE * cex.symbol * usr.height / par("pin")[2]
     x.base <- plotres$x.lim[2] + x.inset # start plotting from x.base rightwards
-    temp <- x@tip.label[which.max(nchar(x@tip.label))] # longest tip label
-    lab.width <- strwidth(temp, units="user", cex=cex.label) # compute the width to keep for tip labels
+    if(show.tip.label){
+        temp <- x@tip.label[which.max(nchar(x@tip.label))] # longest tip label
+        lab.width <- strwidth(temp, units="user", cex=cex.label) # compute the width to keep for tip labels
+    } else{
+        lab.width <- 0
+    }
     xrange.data <- c(x.base , (par("usr")[1]+usr.width) - lab.width - 2*x.inset) # plot data within this range
 
     if(diff(xrange.data) < (x.inset*ncol(dat))) stop("No room left to plot data; please try reducing ratio.tree or cex.label.")

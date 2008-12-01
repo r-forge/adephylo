@@ -24,7 +24,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD"), a=1,
 
 \method{print}{ppca}(x, \dots)
 
-\method{plot}{ppca}(x, axis = 1, useLag=FALSE, \dots)
+\method{plot}{ppca}(x, axis = 1:ncol(x$li), useLag=FALSE, \dots)
 }
 \arguments{
   \item{x}{a \linkS4class{phylo4d} object (for \code{ppca}) or a ppca
@@ -32,6 +32,15 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD"), a=1,
   \item{prox}{a marix of phylogenetic proximities as returned by
     \code{\link{proxTips}}. If not provided, this matrix will be
     constructed using the arguments \code{method} and \code{a}.}
+  \item{method}{a character string (full or abbreviated without
+    ambiguity) specifying the method used to compute proximities;
+    possible values are:\cr
+    - \code{patristic}: (inversed sum of) branch lengths \cr
+    - \code{nNodes}: (inversed) number of nodes on the path between the nodes \cr
+    - \code{Abouheif}: Abouheif's proximity (see details) \cr
+    - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
+    (see details in \code{\link{proxTips}}).}
+  \item{a}{the exponent used to compute the proximity (see ?\code{\link{proxTips}}).}
   \item{center}{a logical indicating whether traits should be centred to
     mean zero (TRUE, default) or not (FALSE).}
   \item{scale}{a logical indicating whether traits should be scaled to
@@ -133,6 +142,7 @@ return(vec)
 ## compute a PCA
 dat <- apply(maples$tab,2,f1) # replace NAs
 x.noNA <- phylo4d(tre, as.data.frame(dat))
+if(require(ade4)){
 ppca1 <- ppca(x.noNA, scannf=FALSE, method="Abouheif")
 ppca1
 
@@ -148,13 +158,13 @@ highContrib <- a[a< quantile(a,0.1) | a>quantile(a,0.9)]
 
 plot(ppca1) # ppca plot
 
-datSel <- cbind.data.frame(ppca1$li, dat[, names(highContrib)])
-temp <- phylo4d(tre, datSel))
+datSel <- cbind.data.frame(dat[, names(highContrib)], ppca1$li)
+temp <- phylo4d(tre, datSel)
 s.phylo4d(temp) # plot of most structured traits
 
 ## phylogenetic autocorrelation tests for these traits
 prox <- proxTips(tre, method="Abouheif")
 gearymoran(prox, dat[, names(highContrib)]) # one test per trait
-
+}
 }
 \keyword{multivariate}
