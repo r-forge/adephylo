@@ -37,7 +37,7 @@ Rochet, M. J., Cornillon, P-A., Sabatier, R. and Pontier, D. (2000)
 Comparative analysis of phylogenic and fishing effects in life history patterns of teleos fishes.
 \emph{Oïkos}, \bold{91}, 255--270.
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{

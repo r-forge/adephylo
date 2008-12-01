@@ -18,7 +18,7 @@ This data set describes the phylogeny of 70 carnivora as reported by Diniz-Filho
 Diniz-Filho, J. A. F., and N. M. Tôrres. (2002) Phylogenetic comparative methods and the 
 geographic range size-body size relationship in new world terrestrial carnivora. \emph{Evolutionary Ecology}, \bold{16}, 351--367.
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{

@@ -28,7 +28,7 @@ Bauwens, D., and D\'iaz-Uriarte, R. (1997) Covariation of life-history traits in
 
 See a data description at \url{http://pbil.univ-lyon1.fr/R/pps/pps063.pdf} (in French).
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{

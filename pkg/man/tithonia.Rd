@@ -33,7 +33,7 @@ demo14: is a numeric vector that describes the adult height (m)\cr
 Data were obtained from Morales, E. (2000) Estimating phylogenetic inertia in Tithonia (Asteraceae) : 
 a comparative approach. \emph{Evolution}, \bold{54}, 2, 475--484.
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{

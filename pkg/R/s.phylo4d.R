@@ -10,8 +10,8 @@ s.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles"
 {
 
     ## preliminary stuff and checks
-    if (is.character(chk <- check_phylo4(x)))
-        stop("bad phylo4d object: ",chk)
+    if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
+    if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
 
     if(!require(ape)) stop("the ape package is required")
     if(cex.label<0.1) {

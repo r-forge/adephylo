@@ -27,7 +27,7 @@ Bried, J., Pontier, D. and Jouventin, P. (2002) Mate fidelity in monogamus birds
 
 See a data description at \url{http://pbil.univ-lyon1.fr/R/pps/pps037.pdf} (in French).
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{

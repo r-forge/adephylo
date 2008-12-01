@@ -11,14 +11,14 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
 
     ## handle arguments
     if(!require(ade4)) stop("The package ade4 is not installed.")
-    if (is.character(chk <- check_phylo4d(x))) stop("Invalid phylo4d object: \n",chk)
+    if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
+    if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
+
     tre <- as(x, "phylo4")
     method <- match.arg(method)
 
     ## proximity matrix
     if(is.null(prox)){ # have to compute prox
-        x <- as(x, "phylo4")
-        if (is.character(checkval <- check_phylo4(x))) stop(checkval)
         W <- proxTips(x, tips="all", method=method, a=a, normalize="row", symmetric=TRUE)
     } else { # prox is provided
         W <- as.matrix(prox)
@@ -62,18 +62,18 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
     ## main computation ##
 
     ## make a skeleton of dudi
-    res <- dudi.pca(X, center=FALSE, scale=FALSE, scannf=FALSE,nf=2)
+    res <- dudi.pca(X, center=center, scale=scale, scannf=FALSE,nf=2)
     Upca <- as.matrix(res$c1)
 
     ## computations of the ppca
     X <- as.matrix(X)
-    decomp <- eigen((t(X) %*% W %*% X)/n, sym=TRUE)
+    decomp <- eigen((t(X) %*% W %*% X)/N, sym=TRUE)
     U <- decomp$vectors # U: principal axes
     p <- ncol(U)
-    lambda <- U$values
+    lambda <- decomp$values
 
     if(scannf){ # interactive part
-        barplot(eig[1:rank])
+        barplot(lambda[1:res$rank])
         cat("Select the number of global axes: ")
         nfposi <- as.integer(readLines(n = 1))
         cat("Select the number of local axes: ")
@@ -81,7 +81,7 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
     }
 
     nfposi <- max(nfposi, 1)
-    nfnega <- max(nfposi, 0)
+    nfnega <- max(nfnega, 0)
     posi.idx <- 1:nfposi
     if(nfnega<1) {
         nega.idx <- NULL
@@ -100,6 +100,8 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
     axes.lab <- paste("PA",axes.idx, sep="")
     scores.lab <- paste("PC",axes.idx, sep="")
 
+    res$cent <- res$norm <- res$co <- NULL # cleaning
+
     res$eig <- lambda # eigenvalues
     res$nf <- NULL
     res$nfposi <- nfposi
@@ -115,16 +117,18 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
     row.names(res$li) <- X.rownames
 
     res$ls <-  as.data.frame(S) # lagged scores
-    names(res$li) <- scores.lab
-    row.names(res$li) <- X.rownames
+    names(res$ls) <- scores.lab
+    row.names(res$ls) <- X.rownames
 
     res$as <- as.data.frame(A) # PCA axes onto pPCA axes
-    names(res$li) <- axes.lab
-    row.names(res$li) <- paste("PCA axis", 1:nrow(A))
+    names(res$as) <- axes.lab
+    row.names(res$as) <- paste("PCA axis", 1:nrow(A))
 
     res$tre <- as(tre,"phylo4") # tree
 
-    res$prox <- prox # proximity matrix
+    res$prox <- W # proximity matrix
+
+    res$call <- match.call() # call
 
     class(res) <- "ppca"
 
@@ -133,15 +137,20 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
 
 
 
+
+
 #####################
 # Function plot.ppca
 #####################
-plot.ppca <- function(x,laged=FALSE, ...){
-    if(laged){
+plot.ppca <- function(x, axis=1:ncol(x$li), useLag=FALSE, ...){
+    if(useLag){
         df <- as.data.frame(x$ls)
     } else{
         df <- as.data.frame(x$li)
     }
+
+    if(any(axis < 1 | axis > ncol(x$li)) ) stop("Wrong axis specified.")
+    df <- df[, axis, drop=FALSE]
 
     obj <- phylo4d(x$tre,df)
     args <- list(...)
@@ -149,8 +158,67 @@ plot.ppca <- function(x,laged=FALSE, ...){
         args$ratio.tree <- 0.5
     }
     args <- c(obj,args)
-    do.call(plot, args)
+    do.call(s.phylo4d, args)
 }
+
+
+
+
+
+######################
+# Function print.ppca
+######################
+print.ppca <- function(x, ...){
+  cat("\t#############################################\n")
+  cat("\t# phylogenetic Principal Component Analysis #\n")
+  cat("\t#############################################\n")
+  cat("class: ")
+  cat(class(x))
+  cat("\n$call: ")
+  print(x$call)
+  cat("\n$nfposi:", x$nfposi, "axis-components saved")
+  cat("\n$nfnega:", x$nfnega, "axis-components saved")
+  cat("\n$kept.axes: index of kept axes")
+
+  cat("\nPositive eigenvalues: ")
+  l0 <- sum(x$eig >= 0)
+  cat(signif(x$eig, 4)[1:(min(5, l0))])
+  if (l0 > 5)
+    cat(" ...\n")
+  else cat("\n")
+  cat("Negative eigenvalues: ")
+  l0 <- sum(x$eig <= 0)
+  cat(sort(signif(x$eig, 4))[1:(min(5, l0))])
+  if (l0 > 5)
+    cat(" ...\n")
+  else cat("\n")
+  cat('\n')
+  sumry <- array("", c(1, 4), list(1, c("vector", "length",
+                                        "mode", "content")))
+  sumry[1, ] <- c('$eig', length(x$eig), mode(x$eig), 'eigenvalues')
+  class(sumry) <- "table"
+  print(sumry)
+  cat("\n")
+  sumry <- array("", c(4, 4), list(1:4, c("data.frame", "nrow", "ncol", "content")))
+  sumry[1, ] <- c("$c1", nrow(x$c1), ncol(x$c1), "principal axes: scaled vectors of traits loadings")
+  sumry[2, ] <- c("$li", nrow(x$li), ncol(x$li), "principal components: coordinates of taxa ('scores')")
+  sumry[3, ] <- c("$ls", nrow(x$ls), ncol(x$ls), 'lag vector of principal components')
+  sumry[4, ] <- c("$as", nrow(x$as), ncol(x$as), 'pca axes onto ppca axes')
+
+  class(sumry) <- "table"
+  print(sumry)
+
+  cat("\n$tre: a phylogeny (class phylo4)")
+  cat("\n$prox: a matrix of phylogenetic proximities")
+
+  cat("\n\nother elements: ")
+  if (length(names(x)) > 16)
+    cat(names(x)[17:(length(names(x)))], "\n")
+  else cat("NULL\n")
+} #end print.ppca
+
+
+
 
 
 ### testing

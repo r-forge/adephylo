@@ -27,7 +27,7 @@ Variables of \code{palm$traits} are the following ones: \cr
 This data set was obtained by Clémentine Gimaret-Carpentier\cr
  \email{gimaret@biomserv.univ-lyon1.fr}.
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{

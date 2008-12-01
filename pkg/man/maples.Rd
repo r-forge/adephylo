@@ -19,7 +19,7 @@ Data were obtained from the URL
 Ackerly, D. D. and Donoghue, M.J. (1998) Leaf size, sappling allometry, and Corner's rules: phylogeny and correlated evolution in Maples (Acer). 
 \emph{American Naturalist}, \bold{152}, 767--791.
 }
-\details{
+\note{
   This dataset replaces the former version in ade4.
 }
 \examples{
