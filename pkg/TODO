@@ -44,7 +44,7 @@ o distances between OTUs (like sum of branch lengths) -- done (TJ)
 o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ)
 o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
 * orthogram and multivariate orthogram; use Stephane's version
-* ppca
+o ppca -- done (TJ)
 o migrate datasets from ade4 to adephylo: -- done (TJ)
 - carni19.Rd -- done
 - carni70.Rd -- done
@@ -61,6 +61,7 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 # TESTING:
 ==========
 * test distTips a little more (see Abouheif with an outgroup, otherwise seems ok)
+* test ppca: are results identical to those with previous implementation?
 
 
 
@@ -76,5 +77,7 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 * re-implement all relevant phylogenetic methods from ade4 in adephylo
 o implement several phylogenetic proximities -- done (TJ)
 o implement an orthobasis for phylogenies -- done (TJ)
-* write a comprehensive tutorial, going through adephylo, ade4, ape, phylobase, etc. 
+* write a comprehensive tutorial, going through adephylo, ade4, ape, phylobase, etc.
+* new plotting / summary for ppca objects. Maybe move actual plot to a scatter method, and make a plot similar to other plots.
+* make a summary method for ppca.
 
