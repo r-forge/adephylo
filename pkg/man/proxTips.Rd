@@ -36,7 +36,7 @@
   where '...' is the non-autoregressive part of the model, and 'e' are residuals.
 }
 \usage{
-proxTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"),
+proxTips(x, tips, method=c("patristic","nNodes","Abouheif1","Abouheif2","sumDD"),
          a=1, normalize=c("row","col","none"), symmetric=TRUE)
 }
 \arguments{
@@ -50,8 +50,9 @@ proxTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"),
     possible values are:\cr
     - \code{patristic}: (inversed sum of) branch length \cr
     - \code{nNodes}: (inversed) number of nodes on the path between the nodes \cr
-    - \code{Abouheif}: Abouheif's proximity (see details) \cr
-    - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
+    - \code{Abouheif1}: Abouheif's proximity with diagonal (see details) \cr
+    - \code{Abouheif2}: Abouheif's proximity without diagonal (see details) \cr
+   - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
     (see details) \cr
   }
   \item{a}{the exponent used to compute the proximity}
@@ -77,24 +78,31 @@ proxTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"),
   underlying the test of Abouheif (see references). Let P be the set of
   all the nodes in the path going from \code{node1} to \code{node2}. Let
   DDP be the number of direct descendants from each node in P. Then, the
-  so-called 'Abouheif' distance is the inverse of the product of all terms in DDP.\cr
+  so-called 'Abouheif' distance is the inverse of the product of all
+  terms in DDP. \code{Abouheif1} returns a matrix with non-null diagonal
+  element, as formulated in Pavoine \emph{et al.} (2008). This matrix is
+  bistochastic (all marginal sums equal 1), but this bilinear
+  symmetric form does not give rise to a Moran's index, since it
+  requires a null diagonal. \code{Abouheif2} contains Abouheif's
+  proximity but has a null diagonal, giving rise to a Moran's index.\cr
 
    \code{sumDD} refers to a phylogenetic proximity quite similar to that
   of Abouheif. We consider the same sets P and DDP. But instead of
   taking the inverse of the product of all terms in DDP, this proximity computes the
-  inverse of the sum of all terms in DDP.
+  inverse of the sum of all terms in DDP. This matrix was denoted 'M' in
+  Pavoine \emph{et al.} (2008), who reported that it is related to May's index (May, 1990).
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
 \seealso{\code{\link{distTips}} which computes several phylogenetic
   distances between tips.
 }
 \references{
-  == For Moran's index with various proximities == \cr
+  == About Moran's index with various proximities == \cr
   Pavoine, S.; Ollier, S.; Pontier, D.; Chessel, D. (2008) Testing for
   phylogenetic signal in life history variable: Abouheif's test
-  revisited. \emph{Theoretical Population Biology}: \bold{73}, 79-91.
+  revisited. \emph{Theoretical Population Biology}: \bold{73}, 79-91.\cr
 
-  == For regression on phylogenetic lag vector == \cr
+  == About regression on phylogenetic lag vector == \cr
   Cheverud, J. M.; Dow, M. M.; Leutenegger, W. (1985) The quantitative
   assessment of phylogentic constaints in comparative analyses: sexual
   dimorphism in body weights among primates. \emph{Evolution} \bold{39},
@@ -102,7 +110,16 @@ proxTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"),
 
   Cheverud, J. M.; Dow, M. M. (1985) An autocorrelation analysis of genetic
   variation due to lineal fission in social groups of Rhesus macaques.
-  \emph{American Journal of Phyisical Anthropology} \bold{67}, 113-121.
+  \emph{American Journal of Phyisical Anthropology} \bold{67},
+  113-121.\cr
+
+  == Abouheif's original paper ==\cr
+  Abouheif, E. (1999) A method for testing the assumption of
+  phylogenetic independence in comparative data. \emph{Evolutionary Ecology
+    Research}, \bold{1}, 895-909.\cr
+
+  == May's index ==\cr
+  May, R.M. (1990) Taxonomy as destiny. \emph{Nature} \bold{347}, 129-130.
 }
 \examples{
 if(require(ape) & require(phylobase)){
