@@ -4,7 +4,7 @@
 \docType{data}
 \title{Phylogeny and quantitative traits of ungulates.}
 \description{
-This data set describes the phylogeny of 18 ungulates as reported by P\'elabon et al. (1995). It also gives 4 traits corresponding to these 18 species.
+This data set describes the phylogeny of 18 ungulates as reported by Pélabon et al. (1995). It also gives 4 traits corresponding to these 18 species.
 }
 \usage{data(ungulates)}
 \format{
@@ -22,7 +22,7 @@ This data set describes the phylogeny of 18 ungulates as reported by P\'elabon e
   - ls: is a numeric vector that describes the litter size \cr
 }
 \source{
-Data were obtained from P\'elabon, C., Gaillard, J.M., Loison, A. and Portier, A. (1995) 
+Data were obtained from Pélabon, C., Gaillard, J.M., Loison, A. and Portier, A. (1995) 
 Is sex-biased maternal care limited by total maternal expenditure in polygynous ungulates? 
 \emph{Behavioral Ecology and Sociobiology}, \bold{37}, 311--319.
 }

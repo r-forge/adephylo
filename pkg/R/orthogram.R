@@ -65,7 +65,7 @@ orthogram <- function (x, orthobas = NULL, prox = NULL,
             stop("missing value in 'x'")
     }
     if(type == "factor"){
-        dudi1 <- dudi.acm(data.frame(x), scannf = F, nf = min(nobs, nlevels(x)))
+        dudi1 <- dudi.acm(data.frame(x), scannf = FALSE, nf = min(nobs, nlevels(x)))
     }
     if(type == "dudi") {
         if (!all.equal(x$lw, rep(1/nobs, nobs)))

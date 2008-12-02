@@ -15,12 +15,10 @@ orthogram(x, orthobas = NULL, prox = NULL,
 \arguments{
   \item{x}{a numeric vector corresponding to the quantitative variable}
   \item{orthobas}{an object of class \code{'orthobasis'}}
-  \item{neig}{an object of class \code{'neig'}}
-  \item{phylog}{an object of class \code{'phylog'}}
+  \item{prox}{a matrix of phylogenetic proximities as returned by \code{\link{proxTips}}.}
   \item{nrepet}{an integer giving the number of permutations}
   \item{posinega}{a parameter for the ratio test. If posinega > 0, the function computes the ratio test.}
   \item{tol}{a tolerance threshold for orthonormality condition}
-  \item{na.action}{if 'fail' stops the execution of the current expression when \code{z} contains any missing value. If 'mean' replaces any missing values by mean(\code{z})}
   \item{cdot}{a character size for points on the cumulative decomposition display}
   \item{cfont.main}{a character size for titles}
   \item{lwd}{a character size for dash lines}
@@ -52,7 +50,7 @@ Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompo
 }
 \author{
   Original code: Sébastien Ollier and Daniel Chessel.\cr
-  Current maintainer: St\ephane Dray <dray@biomserv.univ-lyon1.fr>
+  Current maintainer: Stéphane Dray <dray@biomserv.univ-lyon1.fr>
 }
 \seealso{
   \code{\link{orthobasis.phylo}}
