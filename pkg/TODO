@@ -54,6 +54,7 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 - palm.Rd -- done
 - procella.Rd -- done
 - tithonia.Rd -- done
+- ungulates.Rd
 * add a Moran's index and a test (is it needed, as we have morangeary ?)
 
 
