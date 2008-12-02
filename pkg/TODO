@@ -43,7 +43,7 @@ o proximities between OTUs like Abouheif, etc. -- done (TJ)
 o distances between OTUs (like sum of branch lengths) -- done (TJ)
 o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ)
 o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
-* orthogram and multivariate orthogram; use Stephane's version
+o orthogram and multivariate orthogram; use Stephane's version -- done (SD, TJ)
 o ppca -- done (TJ)
 o migrate datasets from ade4 to adephylo: -- done (TJ)
 - carni19.Rd -- done
@@ -54,7 +54,7 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 - palm.Rd -- done
 - procella.Rd -- done
 - tithonia.Rd -- done
-- ungulates.Rd
+- ungulates.Rd -- done
 * add a Moran's index and a test (is it needed, as we have morangeary ?)
 
 
