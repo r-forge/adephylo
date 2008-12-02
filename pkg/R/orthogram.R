@@ -7,6 +7,7 @@ orthogram <- function (x, orthobas = NULL, prox = NULL,
     if(!require(ade4)) stop("The ade4 package is not installed.")
 
     nobs <- length(x)
+    alter <- match.arg(alter)
 
     if(is.numeric(x)&is.vector(x)){
         type <- "numeric"
