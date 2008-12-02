@@ -1,40 +1,49 @@
-"orthogram"<- function (x, orthobas = NULL, neig = NULL, phylog = NULL,
-    nrepet = 999, posinega = 0, tol = 1e-07, cdot = 1.5, cfont.main = 1.5, lwd = 2, nclass, high.scores = 0,alter=c("greater", "less", "two-sided")) 
+orthogram <- function (x, orthobas = NULL, prox = NULL,
+                        nrepet = 999, posinega = 0, tol = 1e-07, cdot = 1.5,
+                        cfont.main = 1.5, lwd = 2, nclass,
+                        high.scores = 0,alter=c("greater", "less", "two-sided"))
 {
   if(is.numeric(x)&is.vector(x)){
     type <- "numeric"
-  } else if(is.factor(x)){
-    type <- "factor"
-  } else if (inherits(x, "dudi")){
-    type <- "dudi"
-  } else { 
-    stop("x must be a numeric vector, a factor or a dudi object")
-  }
-  if(type == "dudi") {
-    nobs <- nrow(x$tab)
+    ##  } else if(is.factor(x)){
+    ##     type <- "factor"
+    ##   } else if (inherits(x, "dudi")){
+    ##     type <- "dudi"
   } else {
-    nobs <- length(x)
+    ## stop("x must be a numeric vector, a factor or a dudi object")
+      stop("x must be a numeric vector")
   }
-  if (!is.null(neig)) {
-    orthobas <- scores.neig(neig)
-  } else if (!is.null(phylog)) {
-    if (!inherits(phylog, "phylog")) stop ("'phylog' expected with class 'phylog'")
-    orthobas <- phylog$Bscores
+  ##  if(type == "dudi") {
+  ##     nobs <- nrow(x$tab)
+  ##   } else {
+  ##     nobs <- length(x)
+  ##   }
+  ##   if (!is.null(neig)) {
+  ##     orthobas <- scores.neig(neig)
+  ##   } else if (!is.null(phylog)) {
+  ##     if (!inherits(phylog, "phylog")) stop ("'phylog' expected with class 'phylog'")
+  ##     orthobas <- phylog$Bscores
+  ##   }
+
+  ## if (is.null(orthobas)){
+  ##  stop ("'orthobas','neig','phylog' all NULL")
+  ## }
+
+  ## retrieve the orthobasis from a proximity matrix
+  if(is.null(orthobas)){
+      if(is.null(prox)) stop("Neither orthobas or prox are provided.")
+      orthobas <- orthobasis.phylo(prox=prox)
   }
-  
-  if (is.null(orthobas)){
-    stop ("'orthobas','neig','phylog' all NULL")
-  }
-  
+
   if (!inherits(orthobas, "data.frame")) stop ("'orthobas' is not a data.frame")
   if (nrow(orthobas) != nobs) stop ("non convenient dimensions")
   if (ncol(orthobas) != (nobs-1)) stop (paste("'orthobas' has",ncol(orthobas),"columns, expected:",nobs-1))
   vecpro <- as.matrix(orthobas)
-  npro <- ncol(vecpro) 
-  
+  npro <- ncol(vecpro)
+
   w <- t(vecpro/nobs)%*%vecpro
   if (any(abs(diag(w)-1)>tol)) {
-    
+
     stop("'orthobas' is not orthonormal for uniform weighting")
   }
   diag(w) <- 0
@@ -46,7 +55,7 @@
     if (posinega <0) stop ("Non convenient value in 'posinega'")
   }
   if(type!="dudi"){
-    if (any(is.na(x))) 
+    if (any(is.na(x)))
       stop("missing value in 'x'")
   }
   if(type == "factor"){
@@ -74,9 +83,9 @@
             sig025 = double(npro),
             sig975 = double(npro),
             R2Max = double(nrepet+1),
-            SkR2k = double(nrepet+1), 
-            Dmax = double(nrepet+1), 
-            SCE = double(nrepet+1), 
+            SkR2k = double(nrepet+1),
+            Dmax = double(nrepet+1),
+            SCE = double(nrepet+1),
             ratio = double(nrepet+1),
             PACKAGE="ade4"
             )
@@ -92,9 +101,9 @@
             sig025 = double(npro),
             sig975 = double(npro),
             R2Max = double(nrepet+1),
-            SkR2k = double(nrepet+1), 
-            Dmax = double(nrepet+1), 
-            SCE = double(nrepet+1), 
+            SkR2k = double(nrepet+1),
+            Dmax = double(nrepet+1),
+            SCE = double(nrepet+1),
             ratio = double(nrepet+1),
             PACKAGE="adephylo"
             )
@@ -102,7 +111,7 @@
   ##return(w$phylogram)
   ## multiple graphical window (6 graphs)
   ## 1 pgram
-  ## 2 cumulated pgram 
+  ## 2 cumulated pgram
   ## 3-6 Randomization tests
 
   def.par <- par(no.readonly = TRUE)
@@ -110,8 +119,8 @@
   layout (matrix(c(1,1,2,2,1,1,2,2,3,4,5,6),4,3))
   par(mar = c(0.1, 0.1, 0.1, 0.1))
   par(usr = c(0,1,-0.05,1))
-   
-  
+
+
   ylim <- max(c(w$phylogram, w$phylo95))
   names(w$phylogram) <- as.character(1:npro)
   phylocum <- cumsum(w$phylogram)
@@ -156,7 +165,7 @@
   segments(mp[1], 1/npro, mp[npro], 1, lty = 1)
   fun(w$sig975)
   fun(w$sig025)
-  arrows(mp[x0], sig50[x0], mp[x0], phylocum[x0], ang = 15, le = 0.15, 
+  arrows(mp[x0], sig50[x0], mp[x0], phylocum[x0], ang = 15, le = 0.15,
          lwd = 2)
   box()
   if (missing(nclass)) {
@@ -171,7 +180,7 @@
   }
   plot.randtest (as.randtest (w$Dmax[-1],w$Dmax[1],call=match.call()),main = "DMax",nclass=nclass)
   plot.randtest (as.randtest (w$SCE[-1],w$SCE[1],call=match.call()),main = "SCE",nclass=nclass)
-  
+
   w$param <- w$observed <- w$vecpro <- NULL
   w$phylo95 <- w$sig025 <- w$sig975 <- NULL
   if (posinega==0) {
