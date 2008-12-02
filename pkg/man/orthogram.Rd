@@ -73,7 +73,7 @@ abline(lm(neonatw~afbw))
 x <- phylo4d(tre, cbind.data.frame(afbw, neonatw)) # traits on the phylogeny
 
 ## orthogram for trait afbw
-prox <- proxTips(tre, method="Abouheif") # compute Abouheif's proximities
-orthogram(afbw, )
+myOrthoBasis <- orthobasis.phylo(tre, method="oriAbouheif") # compute Abouheif's proximities
+orthogram(afbw, myOrthoBasis)
 
 }

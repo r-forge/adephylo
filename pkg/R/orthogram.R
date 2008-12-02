@@ -3,7 +3,10 @@ orthogram <- function (x, orthobas = NULL, prox = NULL,
                         cfont.main = 1.5, lwd = 2, nclass,
                         high.scores = 0,alter=c("greater", "less", "two-sided")){
 
+    ## some checks and preliminary assignements
     if(!require(ade4)) stop("The ade4 package is not installed.")
+
+    nbos <- length(x)
     if(is.numeric(x)&is.vector(x)){
         type <- "numeric"
         ##  } else if(is.factor(x)){
