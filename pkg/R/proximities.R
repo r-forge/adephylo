@@ -2,7 +2,7 @@
 # proxTips
 ###########
 proxTips <- function(x, tips="all",
-                      method=c("patristic","nNodes","Abouheif1","Abouheif2","sumDD"),
+                      method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"),
                      a=1, normalize=c("row","col","none"), symmetric=TRUE){
 
     if(!require(phylobase)) stop("phylobase package is not installed")
@@ -20,7 +20,11 @@ proxTips <- function(x, tips="all",
     if(any(is.na(tips))) stop("wrong tips specified")
 
     ## compute distances
-    D <- distTips(x, tips=tips, method=method)
+    distMethod <- method
+    if(length(grep("Abouheif", distMethod)>1)){
+        distMethod <- "Abouheif"
+    }
+    D <- distTips(x, tips=tips, method=distMethod)
     D <- as.matrix(D)
 
     ## compute proximities
@@ -28,9 +32,9 @@ proxTips <- function(x, tips="all",
     diag(res) <- 0
 
     ## handle Abouheif with diagonal (Abouheif1)
-    if(method=="Abouheif1"){
-        sumMarg <- apply(D,1,sum)
-        diag(res) <- sumMarg
+    if(method=="oriAbouheif"){
+        sumMarg <- apply(res,1,sum)
+        diag(res) <- (1-sumMarg)
         normalize <- "none" # not needed (already bistochastic)
         symmetric <- FALSE # not needed (aleady symmetric)
     }

@@ -36,7 +36,7 @@
   where '...' is the non-autoregressive part of the model, and 'e' are residuals.
 }
 \usage{
-proxTips(x, tips, method=c("patristic","nNodes","Abouheif1","Abouheif2","sumDD"),
+proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"),
          a=1, normalize=c("row","col","none"), symmetric=TRUE)
 }
 \arguments{
@@ -50,8 +50,8 @@ proxTips(x, tips, method=c("patristic","nNodes","Abouheif1","Abouheif2","sumDD")
     possible values are:\cr
     - \code{patristic}: (inversed sum of) branch length \cr
     - \code{nNodes}: (inversed) number of nodes on the path between the nodes \cr
-    - \code{Abouheif1}: Abouheif's proximity with diagonal (see details) \cr
-    - \code{Abouheif2}: Abouheif's proximity without diagonal (see details) \cr
+    - \code{oriAbouheif}: original Abouheif's proximity, with diagonal (see details) \cr
+    - \code{Abouheif}: Abouheif's proximity without diagonal (see details) \cr
    - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
     (see details) \cr
   }
@@ -79,12 +79,12 @@ proxTips(x, tips, method=c("patristic","nNodes","Abouheif1","Abouheif2","sumDD")
   all the nodes in the path going from \code{node1} to \code{node2}. Let
   DDP be the number of direct descendants from each node in P. Then, the
   so-called 'Abouheif' distance is the inverse of the product of all
-  terms in DDP. \code{Abouheif1} returns a matrix with non-null diagonal
-  element, as formulated in Pavoine \emph{et al.} (2008). This matrix is
+  terms in DDP. \code{oriAbouheif} returns a matrix with non-null diagonal
+  elements, as formulated in Pavoine \emph{et al.} (2008). This matrix is
   bistochastic (all marginal sums equal 1), but this bilinear
   symmetric form does not give rise to a Moran's index, since it
-  requires a null diagonal. \code{Abouheif2} contains Abouheif's
-  proximity but has a null diagonal, giving rise to a Moran's index.\cr
+  requires a null diagonal. \code{Abouheif} contains Abouheif's
+  proximities but has a null diagonal, giving rise to a Moran's index.\cr
 
    \code{sumDD} refers to a phylogenetic proximity quite similar to that
   of Abouheif. We consider the same sets P and DDP. But instead of
