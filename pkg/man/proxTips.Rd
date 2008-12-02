@@ -52,7 +52,7 @@ proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"
     - \code{nNodes}: (inversed) number of nodes on the path between the nodes \cr
     - \code{oriAbouheif}: original Abouheif's proximity, with diagonal (see details) \cr
     - \code{Abouheif}: Abouheif's proximity without diagonal (see details) \cr
-   - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
+    - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
     (see details) \cr
   }
   \item{a}{the exponent used to compute the proximity}

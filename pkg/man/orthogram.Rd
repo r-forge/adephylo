@@ -3,14 +3,14 @@
 \alias{orthogram}
 \title{Orthonormal decomposition of variance}
 \description{
-This function performs the orthonormal decomposition of variance of a quantitative variable on an orthonormal basis. It also returns the results of five non parametric tests associated to the variance decomposition. 
+This function performs the orthonormal decomposition of variance of a quantitative variable on an orthonormal basis. It also returns the results of five non parametric tests associated to the variance decomposition.
 It thus provides tools (graphical displays and test) for analysing phylogenetic, spatial and temporal pattern of one quantitative variable.
 }
 \usage{
-orthogram(x, orthobas = NULL, neig = NULL, phylog = NULL,
-     nrepet = 999, posinega = 0, tol = 1e-07, na.action = c("fail",
-     "mean"), cdot = 1.5, cfont.main = 1.5, lwd = 2, nclass,
-     high.scores = 0,alter=c("greater", "less", "two-sided"))
+orthogram(x, orthobas = NULL, prox = NULL,
+          nrepet = 999, posinega = 0, tol = 1e-07, cdot = 1.5,
+          cfont.main = 1.5, lwd = 2, nclass,
+          high.scores = 0,alter=c("greater", "less", "two-sided"))
 }
 \arguments{
   \item{x}{a numeric vector corresponding to the quantitative variable}
@@ -50,51 +50,30 @@ If (high.scores > 0), returns a list containg :
 \references{
 Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompose the Variance of a Life-History Trait across a Phylogenetic Tree. \emph{Biometrics}, \bold{62}, 471--477.
 }
-\author{Sébastien Ollier \email{ollier@biomserv.univ-lyon1.fr} \cr
-Daniel Chessel 
+\author{
+  Original code: Sébastien Ollier and Daniel Chessel.\cr
+  Current maintainer: St\ephane Dray <dray@biomserv.univ-lyon1.fr>
 }
-\seealso{\code{\link{gridrowcol}}, \code{\link{orthobasis}}, \code{\link{mld}}}
+\seealso{
+  \code{\link{orthobasis.phylo}}
+}
 \examples{
-# a phylogenetic example
+## a phylogenetic example
 data(ungulates)
-ung.phy <- newick2phylog(ungulates$tre)
-FemBodyMass <- log(ungulates$tab[,1])
-NeonatBodyMass <- log((ungulates$tab[,2]+ungulates$tab[,3])/2)
-plot(FemBodyMass,NeonatBodyMass, pch = 20, cex = 2)
-abline(lm(NeonatBodyMass~FemBodyMass))
-z <- residuals(lm(NeonatBodyMass~FemBodyMass))
-dotchart.phylog(ung.phy,val = z, clabel.n = 1,
-     labels.n = ung.phy$Blabels, cle = 1.5, cdot = 2)
-table.phylog(ung.phy$Bscores, ung.phy,clabel.n = 1,
-     labels.n = ung.phy$Blabels)
-orthogram(z, ung.phy$Bscores)
-orthogram(z, phyl=ung.phy) # the same thing
+tre <- read.tree(text=ungulates$tre)
+plot(tre)
 
-# a spatial example
-data(irishdata)
-neig1 <- neig(mat01 = 1*(irishdata$link > 0))
-sco1 <- scores.neig(neig1)
-z <- scalewt(irishdata$tab$cow)
-orthogram(z, sco1)
+## look at two traits
+afbw <- log(ungulates$tab[,1])
+neonatw <- log((ungulates$tab[,2]+ungulates$tab[,3])/2)
+names(afbw) <- tre$tip.label
+names(neonatw) <- tre$tip.label
+plot(afbw, neonatw) # relationship between traits
+abline(lm(neonatw~afbw))
+x <- phylo4d(tre, cbind.data.frame(afbw, neonatw)) # traits on the phylogeny
 
-# a temporal example
-data(arrival)
-w <- orthobasis.circ(24)
-orthogram(arrival$hours, w)
-par(mfrow = c(1,2))
-dotcircle(arrival$hours)
-dotcircle(w[,2])
-par(mfrow = c(1,1))
+## orthogram for trait afbw
+prox <- proxTips(tre, method="Abouheif") # compute Abouheif's proximities
+orthogram(afbw, )
 
-data(lynx)
-ortho <- orthobasis.line(114)
-orthogram(lynx,ortho)
-attributes(lynx)$tsp
-par(mfrow = c(2,1))
-par(mar = c(4,4,2,2))
-plot.ts(lynx)
-plot(ts(ortho[,23], start = 1821, end = 1934, freq = 1), ylab = "score 23")
-par(mfrow = c(1,1))
 }
-\keyword{spatial}
-\keyword{ts}

@@ -2,7 +2,7 @@
 # orthobasis.phylo
 ###################
 orthobasis.phylo <- function(x=NULL, prox=NULL,
-                             method=c("patristic","nNodes","Abouheif","sumDD"), a=1){
+                             method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1){
     if(!require(phylobase)) stop("phylobase package is not installed")
     if(!require(ade4)) stop("ade4 package is not installed")
 
