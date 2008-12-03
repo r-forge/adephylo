@@ -34,8 +34,9 @@ orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif",
     - \code{patristic}: (inversed sum of) branch lengths \cr
     - \code{nNodes}: (inversed) number of nodes on the path between the
     nodes \cr
-    - \code{oriAbouheif}: original Abouheif's proximity, with diagonal (see details) \cr
-    - \code{Abouheif}: Abouheif's proximity (see details) \cr
+    - \code{oriAbouheif}: original Abouheif's proximity, with diagonal
+  (see details in \code{\link{proxTips}}) \cr
+    - \code{Abouheif}: Abouheif's proximity (see details in \code{\link{proxTips}}) \cr
     - \code{sumDD}: (inversed) sum of direct descendants of all nodes on the path
     (see details in \code{\link{proxTips}}).}
   \item{a}{the exponent used to compute the proximity (see ?\code{\link{proxTips}}).}

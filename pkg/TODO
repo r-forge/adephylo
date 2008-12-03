@@ -55,13 +55,14 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 - procella.Rd -- done
 - tithonia.Rd -- done
 - ungulates.Rd -- done
+* build an orthobasis from treePart dummy variables
 * add a Moran's index and a test (is it needed, as we have morangeary ?)
 
 
 
 # TESTING:
 ==========
-* test distTips a little more (see Abouheif with an outgroup, otherwise seems ok)
+* test distTips a little more (see Abouheif with an outgroup, otherwise seems ok) -- done (TJ)
 * test ppca: are results identical to those with previous implementation?
 
 

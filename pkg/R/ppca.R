@@ -6,7 +6,7 @@
 ################
 # Function ppca
 ################
-ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD"), a=1,
+ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1,
                  center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0){
 
     ## handle arguments
@@ -16,6 +16,7 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
 
     tre <- as(x, "phylo4")
     method <- match.arg(method)
+    NEARZERO <- 1e-10
 
     ## proximity matrix
     if(is.null(prox)){ # have to compute prox
@@ -44,19 +45,17 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
 
     ## replace NAs
     f1 <- function(vec){
-        if(any(is.na(vec))) {
-            warning("Replacing missing values (NA) by mean values")
-            m <- mean(vec,na.rm=TRUE)
-            vec[is.na(vec)] <- m
-        }
-
+        m <- mean(vec,na.rm=TRUE)
+        vec[is.na(vec)] <- m
         return(vec)
     }
 
-    X <- as.data.frame(lapply(X, f1))
-    X <- scalewt(X, center=center, scale=scale) # centring/scaling of traits
+    if(any(is.na(X))) {
+        warning("Replacing missing values (NA) by mean values")
+        X <- as.data.frame(apply(X, 2, f1))
+    }
 
-    ##
+    X <- scalewt(X, center=center, scale=scale) # centring/scaling of traits
 
 
     ## main computation ##
@@ -67,13 +66,18 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD")
 
     ## computations of the ppca
     X <- as.matrix(X)
-    decomp <- eigen((t(X) %*% W %*% X)/N, sym=TRUE)
+    decomp <- eigen( ((t(X) %*% W %*% X)/N), sym=TRUE)
     U <- decomp$vectors # U: principal axes
-    p <- ncol(U)
     lambda <- decomp$values
 
+    ## remove null eigenvalues and corresponding vectors
+    toKeep <- (abs(lambda) > NEARZERO)
+    lambda <- lambda[toKeep]
+    U <- U[, toKeep]
+    p <- ncol(U)
+
     if(scannf){ # interactive part
-        barplot(lambda[1:res$rank])
+        barplot(lambda)
         cat("Select the number of global axes: ")
         nfposi <- as.integer(readLines(n = 1))
         cat("Select the number of local axes: ")
