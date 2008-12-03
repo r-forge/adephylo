@@ -19,7 +19,7 @@
 
 }
 \usage{
-ppca(x, prox=NULL, method=c("patristic","nNodes","Abouheif","sumDD"), a=1,
+ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1,
                  center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
 
 \method{print}{ppca}(x, \dots)

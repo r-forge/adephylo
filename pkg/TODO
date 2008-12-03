@@ -57,6 +57,7 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 - ungulates.Rd -- done
 * build an orthobasis from treePart dummy variables
 * add a Moran's index and a test (is it needed, as we have morangeary ?)
+* move gearymoran inside adephylo
 
 
 
