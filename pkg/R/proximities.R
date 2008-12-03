@@ -50,7 +50,7 @@ proxTips <- function(x, tips="all",
 
     ## re-symmetrize
     if(symmetric){
-        D <- 0.5 * (D + t(D))
+        res <- 0.5 * (res + t(res))
     }
 
     ## set the output

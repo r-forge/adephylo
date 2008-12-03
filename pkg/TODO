@@ -62,8 +62,8 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 
 # TESTING:
 ==========
-* test distTips a little more (see Abouheif with an outgroup, otherwise seems ok) -- done (TJ)
-* test ppca: are results identical to those with previous implementation?
+o test distTips a little more (see Abouheif with an outgroup, otherwise seems ok) -- done (TJ)
+o test ppca: are results identical to those with previous implementation? -- done (TJ)
 
 
 
