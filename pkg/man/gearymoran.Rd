@@ -1,26 +1,44 @@
 \encoding{latin1}
+\docType{methods}
 \name{gearymoran}
 \alias{gearymoran}
-\title{Moran's I and Geary'c randomization tests for spatial and phylogenetic autocorrelation}
+\alias{gearymoran-methods}
+\alias{gearymoran,ANY-method}
+\alias{gearymoran,phylo4d-method}
+\alias{gearymoran.phylo4d}
+\title{Moran's I / Geary'c randomization test for autocorrelation}
 \description{
-This function performs Moran's I test using phylogenetic and spatial link matrix (binary or general). It uses neighbouring weights so Moran's I and Geary's c randomization tests are equivalent.
+  \code{gearymoran} is a generic S4 function which computes
+  autocorrelation in a data object using a set of weights. Weights can
+  reflect phylogenetic, spatial, or temporal proximities between
+  observations, which allows \code{gearymoran} to measure
+  autocorrelation in all these cases.\cr
+
+  The name of the test reflects the fact that this test unifies both
+  Geary's \emph{c} and Moran's \emph{I}. This is achieved by using
+  non-uniform weights for observations: rather than weighting these by
+  1/n or 1/(n-1) (n being the number of observations), observations are
+  weighted according to their global proximity to all other
+  observations (like in Thioulouse et al. 1995). 'Central' observations
+  are thus given more weights than (phylogenetic, spatial, or temporal)
+  outliers.\cr
 }
 \usage{
-gearymoran(x, bilis, nrepet = 999, alter=c("greater", "less", "two-sided"))
+gearymoran(x, W, nrepet = 999, alter=c("greater", "less", "two-sided"))
 }
 \arguments{
   \item{x}{a data frame with continuous variables}
-  \item{bilis}{a \emph{n} by \emph{n} link matrix where \emph{n} is the row number of x}
+  \item{W}{a \emph{n} by \emph{n} link matrix where \emph{n} is the row number of x}
   \item{nrepet}{number of random vectors for the randomization test}
   \item{alter}{a character string specifying the alternative hypothesis,
   must be one of "greater" (default), "less" or "two-sided"}
 }
 \details{
-\code{bilis} is a squared symmetric matrix which terms are all positive or null. 
+\code{W} is a squared symmetric matrix which terms are all positive or null. 
 
-\code{bilis} is firstly transformed in frequency matrix A by dividing it by the total sum of data matrix :  
-\deqn{a_{ij} = \frac{bilis_{ij}}{\sum_{i=1}^{n}\sum_{j=1}^{n}bilis_{ij}}}{a_ij = bilis_ij / (sum_i sum_j bilis_ij)} 
-The neighbouring weights is defined by the matrix \eqn{D = diag(d_1,d_2, \ldots)} where \eqn{d_i = \sum_{j=1}^{n}bilis_{ij}}{d_i = sum_j bilis_ij}.
+\code{W} is firstly transformed in frequency matrix A by dividing it by the total sum of data matrix :  
+\deqn{a_{ij} = \frac{W_{ij}}{\sum_{i=1}^{n}\sum_{j=1}^{n}W_{ij}}}{a_ij = W_ij / (sum_i sum_j W_ij)} 
+The neighbouring weights is defined by the matrix \eqn{D = diag(d_1,d_2, \ldots)} where \eqn{d_i = \sum_{j=1}^{n}W_{ij}}{d_i = sum_j W_ij}.
 For each vector x of the data frame x, the test is based on the Moran statistic \eqn{x^{t}Ax}{t(x)Ax} where x is D-centred. 
 }
 \value{
@@ -40,8 +58,8 @@ Daniel Chessel
 # a spatial example
 data(mafragh)
 tab0 <- (as.data.frame(scalewt(mafragh$mil)))
-bilis0 <- neig2mat(mafragh$neig)
-gm0 <- gearymoran(bilis0, tab0, 999)
+W0 <- neig2mat(mafragh$neig)
+gm0 <- gearymoran(W0, tab0, 999)
 gm0
 plot(gm0, nclass = 20)
 
