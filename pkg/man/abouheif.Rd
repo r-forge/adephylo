@@ -1,0 +1,89 @@
+\encoding{latin1}
+\name{abouheif.moran}
+\alias{abouheif.moran}
+\title{Abouheif's test based on Moran's I}
+\description{
+  The test of Abouheif (1999) is designed to detect phylogenetic
+  autocorrelation in a quantitative trait. Pavoine \emph{et al.} (2008)
+  have shown that this tests is in fact a Moran's I test using a
+  particular phylogenetic proximity between tips (see details). The
+  function \code{abouheif.moran} performs basically Abouheif's test for
+  several traits at a time, but it can incorporate other phylogenetic
+  proximities as well.\cr
+
+  Note that the original Abouheif's proximity (Abouheif, 1999; Pavoine
+  \emph{et al.} 2008) unifies Moran's I and Geary'c tests (Thioulose \emph{et
+    al.} 1995).\cr
+
+  \code{abouheif.moran} can be used in two ways:\cr
+  - providing a data.frame of traits (\code{x}) and a matrix of
+  phylogenetic proximities (\code{W})\cr
+  - providing a \linkS4class{phylo4d} object (\code{x}) and specifying the type of proximity to be
+  used (\code{method}).
+  
+}
+\usage{
+abouheif.moran(x, W=NULL,
+  method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"),
+           a=1, nrepet = 999, alter=c("greater", "less", "two-sided"))
+}
+\arguments{
+  \item{x}{a data frame with continuous variables, or a
+    \linkS4class{phylo4d} object (i.e. containing both a tree, and tip
+    data. In the latter case, \code{method} argument is used to determine
+    which proximity should be used.}
+  \item{W}{a \emph{n} by \emph{n} matrix (\emph{n} being the number rows
+    in x) of phylogenetic proximities, as produced by
+    \code{\link{proxTips}}.}
+  \item{method}{a character string (full or unambiguously abbreviated)
+    specifying the type of proximity to be used. By default, the
+    proximity used is that of the original Abouheif's test. See details
+    in \code{\link{proxTips}} for information about other methods.}
+  \item{a}{the exponent used to compute the proximity (see \code{\link{proxTips}}).}
+  \item{nrepet}{number of random permutations of data for the randomization test}
+  \item{alter}{a character string specifying the alternative hypothesis,
+    must be one of "greater" (default), "less" or "two-sided"}
+}
+\details{
+\code{W} is a squared symmetric matrix whose terms are all positive or null.\cr
+
+\code{W} is firstly transformed in frequency matrix A by dividing it by the total sum of data matrix :  
+\deqn{a_{ij} = \frac{W_{ij}}{\sum_{i=1}^{n}\sum_{j=1}^{n}W_{ij}}}{a_ij = W_ij / (sum_i sum_j W_ij)} 
+The neighbouring weights is defined by the matrix \eqn{D = diag(d_1,d_2, \ldots)} where \eqn{d_i = \sum_{j=1}^{n}W_{ij}}{d_i = sum_j W_ij}.
+For each vector x of the data frame x, the test is based on the Moran statistic \eqn{x^{t}Ax}{t(x)Ax} where x is D-centred.
+}
+\value{
+Returns an object of class \code{krandtest} (randomization tests from
+ade4), containing one Monte Carlo test for each trait.
+}
+\references{
+
+Thioulouse, J., Chessel, D. and Champely, S. (1995) Multivariate analysis of spatial patterns: a unified approach to local and global structures.
+\emph{Environmental and Ecological Statistics}, \bold{2}, 1--14.
+}
+\author{Original code from ade4 (gearymoran function) by Sébastien Ollier\cr
+  Adapted and maintained by Thibaut Jombart <jombart@biomserv.univ-lyon1.fr>.
+}
+\seealso{
+  - \code{\link[pkg:ade4]{gearymoran}} from the ade4 package\cr
+  - \code{\link[pkg:ape]{Moran.I}} from the ape package for the
+  classical Moran's I test. \cr
+}
+\examples{
+if(require(ade4)){
+## load data
+data(ungulates)
+tre <- read.tree(text=ungulates$tre)
+x <- phylo4d(tre, ungulates$tab)
+
+## Abouheif's tests for each trait
+myTests <- abouheif.moran(x)
+myTests
+plot(myTests)
+
+## a variant using another proximity
+plot(abouheif.moran(x, method="nNodes") )
+}
+}
+\keyword{spatial}
+\keyword{ts}
