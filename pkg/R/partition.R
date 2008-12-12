@@ -67,7 +67,7 @@ treePart <- function(x, result=c("basis", "orthobasis")){
     res <- res[,-1]
 
     if(result=="basis"){
-        return(as.matrix(res)) # res is a matrix of dummy vectors
+        return(res) # res is a data.frame of dummy vectors
     }
 
 
@@ -138,7 +138,7 @@ treePart <- function(x, result=c("basis", "orthobasis")){
     rownames(res) <- x@tip.label
     colnames(res) <- paste("V",1:ncol(res))
 
-    return(res)
+    return(as.data.frame(res))
 
 } # end treePart
 
