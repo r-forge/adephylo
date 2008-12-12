@@ -67,7 +67,7 @@ treePart <- function(x, result=c("basis", "orthobasis")){
     res <- res[,-1]
 
     if(result=="basis"){
-        return(res) # res is a matrix of dummy vectors
+        return(as.matrix(res)) # res is a matrix of dummy vectors
     }
 
 
