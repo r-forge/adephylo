@@ -1,4 +1,4 @@
-orthogram <- function (x, orthobas = NULL, prox = NULL,
+orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
                         nrepet = 999, posinega = 0, tol = 1e-07, cdot = 1.5,
                         cfont.main = 1.5, lwd = 2, nclass,
                         high.scores = 0,alter=c("greater", "less", "two-sided")){
@@ -37,8 +37,15 @@ orthogram <- function (x, orthobas = NULL, prox = NULL,
 
     ## retrieve the orthobasis from a proximity matrix
     if(is.null(orthobas)){
-        if(is.null(prox)) stop("Neither orthobas or prox are provided.")
-        orthobas <- orthobasis.phylo(prox=prox)
+        if(is.null(prox)) { # both orthobas and prox are not given -> default orthobasis
+            ## check that tre is provided and right
+            if(is.null(tre)) stop("tre, orthobasis or prox must be provided")
+            tre <- as(tre, "phylo4")
+            if (is.character(checkval <- check_phylo4(tre))) stop(checkval)
+            orthobas <- treePart(tre, result="orthobasis")
+        } else { # else orthobasis from the proxi matrix.
+            orthobas <- orthobasis.phylo(prox=prox)
+        }
     }
 
     if (!inherits(orthobas, "data.frame")) stop ("'orthobas' is not a data.frame")
