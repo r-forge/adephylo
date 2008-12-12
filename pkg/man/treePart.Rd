@@ -47,5 +47,18 @@ partition
 temp <- phylo4d(x, partition)
 s.phylo4d(temp, cent=FALSE, scale=FALSE)
 }
+
+if(require(ade4)){
+## former orthobasis in ade4
+data(ungulates)
+ung.Bscores <- newick2phylog(ungulates$tre)$Bscores
+
+## version using treePart
+ung <- read.tree(text=ungulates$tre)
+ung.orthobas <- treePart(ung, res="orthobasis")
+
+## comparison of the first 3 vectors
+cbind(ung.Bscores[,1], ung.orthobas[,1],ung.Bscores[,2], ung.orthobas[,2], ung.Bscores[,3], ung.orthobas[,3])
+}
 }
 \keyword{manip}
