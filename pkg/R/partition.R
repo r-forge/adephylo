@@ -36,16 +36,22 @@ listTips <- function(x){
 ###########
 # treePart
 ###########
-treePart <- function(x, res=c("basis", "orthobasis")){
+treePart <- function(x, result=c("basis", "orthobasis")){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(x, "phylo4")
+    result <- match.arg(result)
 
     ## check phylo4 object
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
 
-    n <- nTips(x)
+    n <- nTips(x) # number of tips
+    HTU.idx <- (n+1):(n+nNodes(x)) # index of internal nodes (HTU)
+
+    if(!hasNodeLabels(x)) { # node labels will be used after
+        x@node.label <- HTU.idx
+    }
 
     ## function coding one dummy vector
     fDum <- function(vec){ # vec is a vector of tip numbers
@@ -60,8 +66,8 @@ treePart <- function(x, res=c("basis", "orthobasis")){
     row.names(res) <- x@tip.label
     res <- res[,-1]
 
-    if(res=="basis"){
-        return(res)
+    if(result=="basis"){
+        return(res) # res is a matrix of dummy vectors
     }
 
 
@@ -81,8 +87,9 @@ treePart <- function(x, res=c("basis", "orthobasis")){
     ## w(n) = sum_{e \in En} lgamma( ndd(e) + 1)
     ##
 
-    nbOfDD <- sapply(listDD(x), length) # nb of DD for each node
-    HTU.idx <- (n+1):(n+nNodes(x)) # index of internal nodes (HTU)
+    listDDx <- listDD(x)
+
+    nbOfDD <- sapply(listDDx, length) # nb of DD for each node
     names(nbOfDD) <- HTU.idx # used to match the results of Dn
 
     findAlldHTU <- function(node){ # find all HTU descending from a node
@@ -96,12 +103,50 @@ treePart <- function(x, res=c("basis", "orthobasis")){
     listAlldHTU <- lapply(HTU.idx, function(node) c(node,findAlldHTU(node))) # ='Dn': for each HTU, list all HTU descending from it
 
     w <- sapply(listAlldHTU, function(e) sum(lgamma(nbOfDD[as.character(e)]+1))) # w(n)
-    ## w stores the w(n) values.
+    ## from now on, 'w' stores the w(n) values.
 
+    ## add dummy vectors for tips
+    res <- cbind(diag(1, n), root=rep(1,n), res) # sorted from first tip to last node
+    colnames(res) <- 1:(nTips(x) + nNodes(x))
+    valDum <- c(rep(-1, n), w) # dummy vectors of tips are given a negative value
+    ## note: valDum is the w values for all nodes, sorted from first tip to last node
 
+    ## Discard dummy vectors with lowest valDum (value of dummy vectors, w).
+    ## -> for each node, a dummy vector associated to its DD is removed
+    ## this one is that with the lowest valDum.
 
-    ## sorting of dummy vectors according to val
+    discardOneDum <- function(node, DDnode){ # node is a node label, not a node number
+        if(length(DDnode)==1) return(NULL)
+        val <- valDum[DDnode]
+        toRemove <- which.min(val)
+        keptDD <- DDnode[-toRemove]
+        return(keptDD)
+    } # end discardOneDum
 
-    ## discard dummy vectors for each node with smallest value
+    dumToKeep <- lapply(1:length(listDDx), function(i) discardOneDum(i, listDDx[[i]]))
+    dumToKeep <- unlist(dumToKeep) # contains indices of kept dummy vectors
+
+    res <- res[dumToKeep] # retained dummy vectors
+    res <- res[,order(valDum[dumToKeep], decreasing=TRUE)] # reorder vectors by decreasing w
+
+    ## orthonormalization
+    res <- cbind(root=rep(1,n), res) # for centring: vectors will be orthogonal to 1_n
+    res <- qr.Q(qr(res)) # Gram-Schmidt orthogonalization
+    res <- res[,-1] # keep only centred vectors; orthogonal for identity
+    res <- res * sqrt(n) # render vectors orthogonal for 1/n
+
+    rownames(res) <- x@tip.label
+    colnames(res) <- paste("V",1:ncol(res))
+
+    return(res)
 
 } # end treePart
+
+
+
+## EXAMPLE
+##
+## plot(x <- read.tree(te=newick.eg[[2]]))
+## plot(y <- newick2phylog(newick.eg[[2]]), clabel.node=1)
+##
+##

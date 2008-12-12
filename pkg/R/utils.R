@@ -162,11 +162,12 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 ############
 # listDD
 ############
-listDD <- function(x){
+listDD <- function(x, nameBy=c("label","number")){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(x, "phylo4")
+    nameBy <- match.arg(nameBy)
 
     ## check phylo4 object
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
@@ -176,7 +177,11 @@ listDD <- function(x){
     nodIdx <- nodIdx:(nodIdx+nNodes(x)-1)
     res <- lapply(nodIdx, function(i) children(x, i))
 
-    if(hasNodeLabels(x)) {names(res) <- nodeLabels(x)}
+    if(hasNodeLabels(x) & nameBy=="label") {
+        names(res) <- nodeLabels(x)
+    } else {
+        names(res) <- nodIdx
+    }
 
     return(res)
 } # end listDD
