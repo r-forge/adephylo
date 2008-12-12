@@ -55,7 +55,7 @@ o migrate datasets from ade4 to adephylo: -- done (TJ)
 - procella.Rd -- done
 - tithonia.Rd -- done
 - ungulates.Rd -- done
-* build an orthobasis from treePart dummy variables
+o build an orthobasis from treePart dummy variables -- done (TJ)
 o move gearymoran inside adephylo -- done, is now abouheif.moran. (TJ)
 
 
