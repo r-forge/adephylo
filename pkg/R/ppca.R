@@ -233,97 +233,129 @@ summary.ppca <- function (object, ..., printres=TRUE) {
     ## some checks
     if (!inherits(object, "ppca"))stop("to be used with 'ppca' object")
     if(!require(ade4)) stop("The package ade4 is not installed.")
-    
-    
+
+
     norm.w <- function(X, w) {
         f2 <- function(v) sum(v * v * w)/sum(w)
         norm <- apply(X, 2, f2)
         return(norm)
     }
-    
+
     resfin <- list()
 
     if(printres) {
-        cat("\nphylogenetic Principal Component Analysis\n")
+        cat("\n### Phylogenetic Principal Component Analysis ###\n")
         cat("\nCall: ")
         print(object$call)
     }
 
     appel <- as.list(object$call)
     ## compute original pca
-    X <- obj$tab # transformed data
-    
- 
+    X <- object$tab # transformed data
+    W <- object$prox
+
     nfposi <- object$nfposi
     nfnega <- object$nfnega
 
-    dudi <- dudi.pca(X, center=TRUE, scale=FALSE, scannf=FALSE, nf=nfposi+nfnega)
+    dudi <- dudi.pca(X, center=FALSE, scale=FALSE, scannf=FALSE, nf=nfposi+nfnega)
     ## end of pca
 
-    lw <- object$lw
-
-                                        # I0, Imin, Imax
-    n <- nrow(X)
-    I0 <- -1/(n-1)
-    L <- listw2mat(lw)
-    eigL <- eigen(0.5*(L+t(L)))$values
-    Imin <- min(eigL)
-    Imax <- max(eigL)
-    Ival <- data.frame(I0=I0,Imin=Imin,Imax=Imax)
-    row.names(Ival) <- ""
-    if(printres) {
-        cat("\nConnection network statistics:\n")
-        print(Ival)
-    }
-
-    Istat <- c(I0,Imin,Imax)
-    names(Istat) <- c("I0","Imin","Imax")
+    Istat <-    data.frame(attributes(moran.idx(X[,1], W,TRUE)))
+    row.names(Istat) <- ""
     resfin$Istat <- Istat
 
+    if(printres) {
+        cat("\n== Moran's I statistics ==\n")
+        print(Istat)
+    }
 
-                                        # les scores de l'analyse de base
+    ## pca scores
     nf <- dudi$nf
     eig <- dudi$eig[1:nf]
     cum <- cumsum(dudi$eig)[1:nf]
     ratio <- cum/sum(dudi$eig)
-    w <- apply(dudi$l1,2,lag.listw,x=lw)
-    moran <- apply(w*as.matrix(dudi$l1)*dudi$lw,2,sum)
+    moran <- apply(as.matrix(dudi$l1),2,moran.idx, W)
     res <- data.frame(var=eig,cum=cum,ratio=ratio, moran=moran)
     row.names(res) <- paste("Axis",1:nf)
     if(printres) {
-        cat("\nScores from the centred PCA\n")
+        cat("\n== PCA scores ==\n")
         print(res)
     }
 
     resfin$pca <- res
 
 
-                                        # les scores de l'analyse spatiale
-                                        # on recalcule l'objet en gardant tous les axes
+    ## ppca scores
+    ## ppca is recomputed, keeping all axes
     eig <- object$eig
     nfposimax <- sum(eig > 0)
     nfnegamax <- sum(eig < 0)
 
-    ms <- multispati(dudi=dudi, listw=lw, scannf=FALSE,
-                     nfposi=nfposimax, nfnega=nfnegamax)
+    listArgs <- appel[-1]
+    listArgs$nfposi <- nfposimax
+    listArgs$nfnega <- nfnegamax
+
+    ppcaFull <- do.call(ppca, listArgs) # ppca with all axes
 
     ndim <- dudi$rank
     nf <- nfposi + nfnega
-    agarder <- c(1:nfposi,if (nfnega>0) (ndim-nfnega+1):ndim)
-    varspa <- norm.w(ms$li,dudi$lw)
-    moran <- apply(as.matrix(ms$li)*as.matrix(ms$ls)*dudi$lw,2,sum)
-    res <- data.frame(eig=eig,var=varspa,moran=moran/varspa)
+    toKeep <- c(1:nfposi,if (nfnega>0) (ndim-nfnega+1):ndim)
+    varspa <- norm.w(ppcaFull$li,dudi$lw)
+    moran <- apply(as.matrix(ppcaFull$li), 2, moran.idx, W)
+    res <- data.frame(eig=eig,var=varspa,moran=moran)
     row.names(res) <- paste("Axis",1:length(eig))
 
     if(printres) {
-        cat("\nppca eigenvalues decomposition:\n")
-        print(res[agarder,])
+        cat("\n== pPCA eigenvalues decomposition ==\n")
+        print(res[toKeep,])
     }
 
     resfin$ppca <- res
 
     return(invisible(resfin))
 } # end summary.ppca
+
+
+
+
+
+#################
+# screeplot.ppca
+#################
+screeplot.ppca <- function(x,...,main=NULL){
+
+  opar <- par("las")
+  on.exit(par(las=opar))
+
+  sumry <- summary(x,printres=FALSE)
+
+  labels <- lapply(1:length(x$eig),function(i) bquote(lambda[.(i)]))
+
+  par(las=1)
+
+  xmax <- sumry$pca[1,1]*1.1
+  I0 <- unlist(sumry$Istat[1])
+  Imin <- unlist(sumry$Istat[2])
+  Imax <- unlist(sumry$Istat[3])
+
+  plot(x=sumry$ppca[,2],y=sumry$ppca[,3],type='n',xlab='Variance',ylab="Phylogenetic autocorrelation (I)",xlim=c(0,xmax),ylim=c(Imin*1.1,Imax*1.1),yaxt='n',...)
+  text(x=sumry$ppca[,2],y=sumry$ppca[,3],do.call(expression,labels))
+
+  ytick <- c(I0,round(seq(Imin,Imax,le=5),1))
+  ytlab <- as.character(round(seq(Imin,Imax,le=5),1))
+  ytlab <- c(as.character(round(I0,1)),as.character(round(Imin,1)),ytlab[2:4],as.character(round(Imax,1)))
+  axis(side=2,at=ytick,labels=ytlab)
+
+  rect(0,Imin,xmax,Imax,lty=2)
+  segments(0,I0,xmax,I0,lty=2)
+  abline(v=0)
+
+  if(is.null(main)) main <- ("Decomposition of pPCA eigenvalues")
+  title(main)
+
+  return(invisible(match.call()))
+}
+
 
 
 
