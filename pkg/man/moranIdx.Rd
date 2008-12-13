@@ -6,18 +6,33 @@
   variable and a matrix of proximities among observations.
 }
 \usage{
-moran.idx(x, prox)
+moran.idx(x, prox, addInfo=FALSE)
 }
 \arguments{
   \item{x}{a numeric vector whose autocorrelation is computed.}
   \item{prox}{a matrix of proximities between observations, as computed
    by the \code{\link{proxTips}}. Off-diagonal terms must be positive or
    null, while diagonal terms must all equal zero.}
+ \item{addInfo}{a logical indicating whether supplementary info (null
+   value, minimum and maximum values) should be returned (TRUE) or not
+   (FALSE, default); if computed, these quantities are returned as
+   attributes.}
 }
 \value{
   The numeric value of Moran's index.
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\references{
+  Moran, P.A.P. (1948) The interpretation of statistical
+  maps. \emph{Journal of the Royal Statistical Society, B}
+  \bold{10}, 243--251.
+
+  Moran, P.A.P. (1950) Notes on continuous stochastic
+  phenomena. \emph{Biometrika}, \bold{37}, 17--23.
+
+  de Jong, P. and Sprenger, C. and van Veen, F. (1984) On extreme values
+  of Moran's I and Geary's c. \emph{Geographical Analysis}, \bold{16}, 17--24.
+}
 \seealso{\code{\link{proxTips}} which computes phylogenetic proximities
   between tips of a phylogeny.
 }

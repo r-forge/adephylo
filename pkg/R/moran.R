@@ -1,8 +1,7 @@
 ############
 # moran.idx
 ############
-moran.idx <- function(x, prox){
-
+moran.idx <- function(x, prox, addInfo=FALSE){
 
     ## handle arguments
     if(any(is.na(x))) stop("NA entries in x")
@@ -25,6 +24,15 @@ moran.idx <- function(x, prox){
     if(denom < 1e-14) stop("denominator equals zero")
 
     res <- num/denom
+
+    if(addInfo){
+        I0 <- -1/(n-1)
+        matToDiag <- .5 * (t(W) + W)
+        rangeI <- range(eigen(matToDiag)$values)
+        attr(res, "I0") <- I0
+        attr(res, "Imin") <- rangeI[1]
+        attr(res, "Imax") <- rangeI[2]
+    }
 
     return(res)
 

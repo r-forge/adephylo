@@ -225,6 +225,108 @@ print.ppca <- function(x, ...){
 
 
 
+###############
+# summary.ppca
+###############
+summary.ppca <- function (object, ..., printres=TRUE) {
+
+    ## some checks
+    if (!inherits(object, "ppca"))stop("to be used with 'ppca' object")
+    if(!require(ade4)) stop("The package ade4 is not installed.")
+    
+    
+    norm.w <- function(X, w) {
+        f2 <- function(v) sum(v * v * w)/sum(w)
+        norm <- apply(X, 2, f2)
+        return(norm)
+    }
+    
+    resfin <- list()
+
+    if(printres) {
+        cat("\nphylogenetic Principal Component Analysis\n")
+        cat("\nCall: ")
+        print(object$call)
+    }
+
+    appel <- as.list(object$call)
+    ## compute original pca
+    X <- obj$tab # transformed data
+    
+ 
+    nfposi <- object$nfposi
+    nfnega <- object$nfnega
+
+    dudi <- dudi.pca(X, center=TRUE, scale=FALSE, scannf=FALSE, nf=nfposi+nfnega)
+    ## end of pca
+
+    lw <- object$lw
+
+                                        # I0, Imin, Imax
+    n <- nrow(X)
+    I0 <- -1/(n-1)
+    L <- listw2mat(lw)
+    eigL <- eigen(0.5*(L+t(L)))$values
+    Imin <- min(eigL)
+    Imax <- max(eigL)
+    Ival <- data.frame(I0=I0,Imin=Imin,Imax=Imax)
+    row.names(Ival) <- ""
+    if(printres) {
+        cat("\nConnection network statistics:\n")
+        print(Ival)
+    }
+
+    Istat <- c(I0,Imin,Imax)
+    names(Istat) <- c("I0","Imin","Imax")
+    resfin$Istat <- Istat
+
+
+                                        # les scores de l'analyse de base
+    nf <- dudi$nf
+    eig <- dudi$eig[1:nf]
+    cum <- cumsum(dudi$eig)[1:nf]
+    ratio <- cum/sum(dudi$eig)
+    w <- apply(dudi$l1,2,lag.listw,x=lw)
+    moran <- apply(w*as.matrix(dudi$l1)*dudi$lw,2,sum)
+    res <- data.frame(var=eig,cum=cum,ratio=ratio, moran=moran)
+    row.names(res) <- paste("Axis",1:nf)
+    if(printres) {
+        cat("\nScores from the centred PCA\n")
+        print(res)
+    }
+
+    resfin$pca <- res
+
+
+                                        # les scores de l'analyse spatiale
+                                        # on recalcule l'objet en gardant tous les axes
+    eig <- object$eig
+    nfposimax <- sum(eig > 0)
+    nfnegamax <- sum(eig < 0)
+
+    ms <- multispati(dudi=dudi, listw=lw, scannf=FALSE,
+                     nfposi=nfposimax, nfnega=nfnegamax)
+
+    ndim <- dudi$rank
+    nf <- nfposi + nfnega
+    agarder <- c(1:nfposi,if (nfnega>0) (ndim-nfnega+1):ndim)
+    varspa <- norm.w(ms$li,dudi$lw)
+    moran <- apply(as.matrix(ms$li)*as.matrix(ms$ls)*dudi$lw,2,sum)
+    res <- data.frame(eig=eig,var=varspa,moran=moran/varspa)
+    row.names(res) <- paste("Axis",1:length(eig))
+
+    if(printres) {
+        cat("\nppca eigenvalues decomposition:\n")
+        print(res[agarder,])
+    }
+
+    resfin$ppca <- res
+
+    return(invisible(resfin))
+} # end summary.ppca
+
+
+
 ### testing
 ## obj <- phylo4d(read.tree(text=mjrochet$tre),mjrochet$tab)
 ## x@edge.length= rep(1,length(x@edge.label))
