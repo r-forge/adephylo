@@ -364,7 +364,7 @@ screeplot.ppca <- function(x,...,main=NULL){
 ############
 # plot.ppca
 ############
-plot.ppca <- function(x, axes = 1, useLag=FALSE, ...){
+plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
 
     ## some checks
     if (!inherits(x, "ppca")) stop("Use only with 'ppca' objects.")
@@ -386,7 +386,7 @@ plot.ppca <- function(x, axes = 1, useLag=FALSE, ...){
     r <- length(x$eig)
     col <- rep("white", r)
 
-    keptAxes <- c( (1:r)[x$nfposi], (r:1)[x$nfnega]) # kept axes
+    keptAxes <- c( (1:r)[1:x$nfposi], (r:1)[1:x$nfnega]) # kept axes
     col[keptAxes] <- "grey"
 
     repAxes <- gsub("PC","",colnames(x$li)[axes]) # represented axes
@@ -425,7 +425,7 @@ plot.ppca <- function(x, axes = 1, useLag=FALSE, ...){
     cexLabel <- 1
     cexSymbol <- 1
 
-    temp <- try(scatter(x, ratio.tree=ratioTree,
+    temp <- try(scatter(x, axis=axes, ratio.tree=ratioTree,
                         cex.lab=cexLabel, cex.sym=cexSymbol,
                         show.node=FALSE, useLag=useLag), silent=TRUE) # try default plot
     scatterOk <- !inherits(temp,"try-error")
@@ -444,7 +444,7 @@ plot.ppca <- function(x, axes = 1, useLag=FALSE, ...){
         }
         cexSymbol <- cexSymbol - .05
 
-        temp <- try(scatter(x, ratio.tree=ratioTree,
+        temp <- try(scatter(x, axis=axes, ratio.tree=ratioTree,
                         cex.lab=cexLabel, cex.sym=cexSymbol,
                         show.node=FALSE, useLag=useLag), silent=TRUE) # try default plot
         scatterOk <- !inherits(temp,"try-error")
