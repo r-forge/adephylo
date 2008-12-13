@@ -14,9 +14,16 @@
 
   - \code{print.ppca}: prints the ppca content\cr
 
+  - \code{summary.ppca}: provides useful information about a ppca
+    object, including the decomposition of eigenvalues of all axes\cr
+
   - \code{scatter.ppca}: plot principal components using
   \code{\link{s.phylo4d}}\cr
 
+  - \code{screeplot.ppca}: graphical display of the decomposition of
+  pPCA eigenvalues\cr
+
+  - \code{plot.ppca}: several graphics describing a ppca object\cr
 }
 \usage{
 ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1,
@@ -24,7 +31,13 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
 
 \method{print}{ppca}(x, \dots)
 
-\method{plot}{ppca}(x, axis = 1:ncol(x$li), useLag=FALSE, \dots)
+\method{summary}{ppca}(object, \dots, printres=TRUE)
+
+\method{scatter}{ppca}(x, axes = 1:ncol(x$li), useLag = FALSE,\dots)
+
+\method{screeplot}{ppca}(x, \dots, main=NULL)
+
+\method{plot}{ppca}(x, axes = 1:ncol(x$li), useLag=FALSE, \dots)
 }
 \arguments{
   \item{x}{a \linkS4class{phylo4d} object (for \code{ppca}) or a ppca
@@ -54,10 +67,15 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
   \item{nfnega}{an integer giving the number of negative eigenvalues retained
     ('local structures').}
   \item{\dots}{further arguments passed to other methods. Can be used to
-  provide arguments to \code{\link{s.phylo4d}} in \code{plot} method.}
-  \item{axis}{the index of the principal components to be represented.}
+    provide arguments to \code{\link{s.phylo4d}} in \code{plot} method.}
+  \item{printres}{a logical stating whether results should be printed on
+    the screen (TRUE, default) or not (FALSE).}
+  \item{axes}{the index of the principal components to be represented.}
   \item{useLag}{a logical stating whether the lagged components
-    (\code{x\$ls}) should be used instead of the components (\code{x\$li}).}
+    (\code{x\$ls}) should be used instead of the components
+    (\code{x\$li}).}
+   \item{main}{a title for the screeplot; if NULL, a default one is
+    used.}
 }
 \details{
   The phylogenetic Principal Component Analysis (pPCA, Jombart et al.,
@@ -147,17 +165,14 @@ ppca1 <- ppca(x.noNA, scannf=FALSE, method="Abouheif")
 ppca1
 
 ## some graphics
-par(mar=omar)
-barplot(ppca1$eig, main="Eigenvalues") # screeplot
+screeplot(ppca1)
+scatter(ppca1, useLag=TRUE)
+plot(ppca1, useLag=TRUE)
 
+## most structured traits
 a <- ppca1$c1[,1] # loadings on PC 1
 names(a) <- row.names(ppca1$c1)
-dotchart(a) # plot of loadings
-abline(v=median(a), lty=3)
 highContrib <- a[a< quantile(a,0.1) | a>quantile(a,0.9)]
-
-plot(ppca1) # ppca plot
-
 datSel <- cbind.data.frame(dat[, names(highContrib)], ppca1$li)
 temp <- phylo4d(tre, datSel)
 s.phylo4d(temp) # plot of most structured traits

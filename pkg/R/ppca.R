@@ -146,15 +146,15 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
 #####################
 # Function scatter.ppca
 #####################
-scatter.ppca <- function(x, axis=1:ncol(x$li), useLag=FALSE, ...){
+scatter.ppca <- function(x, axes=1:ncol(x$li), useLag=FALSE, ...){
     if(useLag){
         df <- as.data.frame(x$ls)
     } else{
         df <- as.data.frame(x$li)
     }
 
-    if(any(axis < 1 | axis > ncol(x$li)) ) stop("Wrong axis specified.")
-    df <- df[, axis, drop=FALSE]
+    if(any(axes < 1 | axes > ncol(x$li)) ) stop("Wrong axes specified.")
+    df <- df[, axes, drop=FALSE]
 
     obj <- phylo4d(x$tre,df)
     args <- list(...)
@@ -180,8 +180,8 @@ print.ppca <- function(x, ...){
   cat(class(x))
   cat("\n$call: ")
   print(x$call)
-  cat("\n$nfposi:", x$nfposi, "axis-components saved")
-  cat("\n$nfnega:", x$nfnega, "axis-components saved")
+  cat("\n$nfposi:", x$nfposi, "axes-components saved")
+  cat("\n$nfnega:", x$nfnega, "axes-components saved")
   cat("\n$kept.axes: index of kept axes")
 
   cat("\nPositive eigenvalues: ")
@@ -425,7 +425,7 @@ plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
     cexLabel <- 1
     cexSymbol <- 1
 
-    temp <- try(scatter(x, axis=axes, ratio.tree=ratioTree,
+    temp <- try(scatter(x, axes=axes, ratio.tree=ratioTree,
                         cex.lab=cexLabel, cex.sym=cexSymbol,
                         show.node=FALSE, useLag=useLag), silent=TRUE) # try default plot
     scatterOk <- !inherits(temp,"try-error")
@@ -444,7 +444,7 @@ plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
         }
         cexSymbol <- cexSymbol - .05
 
-        temp <- try(scatter(x, axis=axes, ratio.tree=ratioTree,
+        temp <- try(scatter(x, axes=axes, ratio.tree=ratioTree,
                         cex.lab=cexLabel, cex.sym=cexSymbol,
                         show.node=FALSE, useLag=useLag), silent=TRUE) # try default plot
         scatterOk <- !inherits(temp,"try-error")
