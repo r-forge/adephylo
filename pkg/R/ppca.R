@@ -120,7 +120,7 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
     names(res$li) <- scores.lab
     row.names(res$li) <- X.rownames
 
-    res$ls <-  as.data.frame(S) # lagged scores
+    res$ls <-  as.data.frame(LS) # lagged scores
     names(res$ls) <- scores.lab
     row.names(res$ls) <- X.rownames
 
@@ -294,6 +294,7 @@ summary.ppca <- function (object, ..., printres=TRUE) {
     listArgs <- appel[-1]
     listArgs$nfposi <- nfposimax
     listArgs$nfnega <- nfnegamax
+    listArgs$scannf <- FALSE
 
     ppcaFull <- do.call(ppca, listArgs) # ppca with all axes
 
@@ -354,9 +355,104 @@ screeplot.ppca <- function(x,...,main=NULL){
   title(main)
 
   return(invisible(match.call()))
-}
+} # end screeplot.ppca
 
 
+
+
+
+############
+# plot.ppca
+############
+plot.ppca <- function(x, axes = 1, useLag=FALSE, ...){
+
+    ## some checks
+    if (!inherits(x, "ppca")) stop("Use only with 'ppca' objects.")
+    if(axes>ncol(x$li) | axes<0) stop("wrong axes required.")
+
+    ## par / layout
+    opar <- par(no.readonly = TRUE)
+    on.exit(par(opar))
+    par(mar = rep(.1,4))
+    layout(matrix(c(1,2,3,4,4,4,4,4,4), ncol=3))
+
+    ## some variables
+    tre <- x$tre
+    n <- nrow(x$li)
+
+    ## 1) barplot of eigenvalues
+    omar <- par("mar")
+    par(mar = c(0.8, 2.8, 0.8, 0.8))
+    r <- length(x$eig)
+    col <- rep("white", r)
+
+    keptAxes <- c( (1:r)[x$nfposi], (r:1)[x$nfnega]) # kept axes
+    col[keptAxes] <- "grey"
+
+    repAxes <- gsub("PC","",colnames(x$li)[axes]) # represented axes
+    repAxes <- as.numeric(repAxes)
+    col[repAxes] <- "black"
+
+    barplot(x$eig, col=col)
+    title("Eigenvalues", line=-1)
+    par(mar=rep(.1,4))
+    box()
+
+
+    ## 2) decomposition of eigenvalues
+    par(mar=c(4,4,2,1))
+    screeplot(x,main="Eigenvalues decomposition")
+    par(mar=rep(.1,4))
+    box()
+
+
+    ## 3) loadings
+    if(length(axes)==1){ # one axis retained
+        par(mar=c(2.5,4,2,1))
+        dotchart(x$c1[,1], lab=row.names(x$c1), main="Loadings",
+                 cex=par("cex")*.66)
+        abline(v=median(x$c1[,1]), lty=2)
+        par(mar=rep(.1,4))
+        box()
+
+    } else{ # at least two axes retained
+        s.arrow(x$c1[,axes], sub="Loadings")
+    }
+
+
+    ## 4) scatter plot
+    ratioTree <- .6
+    cexLabel <- 1
+    cexSymbol <- 1
+
+    temp <- try(scatter(x, ratio.tree=ratioTree,
+                        cex.lab=cexLabel, cex.sym=cexSymbol,
+                        show.node=FALSE, useLag=useLag), silent=TRUE) # try default plot
+    scatterOk <- !inherits(temp,"try-error")
+
+    while(!scatterOk){
+        ## clear 4th screen
+        par(new=TRUE)
+        plot(1, type="n",axes=FALSE)
+        rect(-10,-10, 10,10,col="white")
+        par(new=TRUE)
+        if(ratioTree > .25 & cexSymbol <= .7) {
+            ratioTree <- ratioTree - .05
+        }
+        if(cexLabel > .65 & cexSymbol <= .5) {
+            cexLabel <- cexLabel - .05
+        }
+        cexSymbol <- cexSymbol - .05
+
+        temp <- try(scatter(x, ratio.tree=ratioTree,
+                        cex.lab=cexLabel, cex.sym=cexSymbol,
+                        show.node=FALSE, useLag=useLag), silent=TRUE) # try default plot
+        scatterOk <- !inherits(temp,"try-error")
+    }
+
+    return(match.call())
+
+} # end plot.phylo
 
 
 ### testing
