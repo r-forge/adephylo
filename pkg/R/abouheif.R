@@ -1,4 +1,5 @@
-abouheif.moran <- function (x, W=NULL, method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"),
+abouheif.moran <- function (x, W=NULL,
+                            method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"),
                             a=1, nrepet=999,alter=c("greater", "less", "two-sided")) {
 
     ## some checks
@@ -44,6 +45,7 @@ abouheif.moran <- function (x, W=NULL, method=c("oriAbouheif","patristic","nNode
         restot = double (nrepet),
         PACKAGE="adephylo"
     )
-    res <- as.krandtest(obs=res$obs,sim=matrix(res$result,ncol=nvar, byr=TRUE),names=test.names,alter=alter)
+    res <- as.krandtest(obs=res$obs,sim=matrix(res$result,ncol=nvar, byr=TRUE),
+                        names=test.names,alter=alter)
     return(res)
 } # end abouheif.moran

@@ -2,7 +2,10 @@
 \name{ppca}
 \alias{ppca}
 \alias{print.ppca}
+\alias{summary.ppca}
 \alias{scatter.ppca}
+\alias{screeplot.ppca}
+\alias{plot.ppca}
 \title{Phylogenetic principal component analysis}
 \description{These functions are designed to perform a phylogenetic principal
   component analysis (pPCA, Jombart et al. in prep) and to display the
@@ -41,7 +44,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
 }
 \arguments{
   \item{x}{a \linkS4class{phylo4d} object (for \code{ppca}) or a ppca
-    object (for \code{print} and \code{plot} methods).}
+    object (for other methods).}
   \item{prox}{a marix of phylogenetic proximities as returned by
     \code{\link{proxTips}}. If not provided, this matrix will be
     constructed using the arguments \code{method} and \code{a}.}
@@ -68,6 +71,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
     ('local structures').}
   \item{\dots}{further arguments passed to other methods. Can be used to
     provide arguments to \code{\link{s.phylo4d}} in \code{plot} method.}
+  \item{object}{a \code{ppca} object.}  
   \item{printres}{a logical stating whether results should be printed on
     the screen (TRUE, default) or not (FALSE).}
   \item{axes}{the index of the principal components to be represented.}

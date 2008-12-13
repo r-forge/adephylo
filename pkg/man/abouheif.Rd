@@ -23,9 +23,7 @@
   
 }
 \usage{
-abouheif.moran(x, W=NULL,
-  method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"),
-           a=1, nrepet = 999, alter=c("greater", "less", "two-sided"))
+abouheif.moran(x, W=NULL, method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"), a=1, nrepet = 999, alter=c("greater", "less", "two-sided"))
 }
 \arguments{
   \item{x}{a data frame with continuous variables, or a

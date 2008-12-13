@@ -37,9 +37,13 @@ moran.idx(x, prox, addInfo=FALSE)
   between tips of a phylogeny.
 }
 \examples{
+## use maples dataset
+example(maples)
 
-## example(maples)
+## get a proximity matrix between tips 
 W <- proxTips(tre, met="Abouheif")
+
+## compute Moran's I for two traits (dom and bif)
 moran.idx(dom, W)
 moran.idx(bif, W)
 moran.idx(rnorm(nTips(tre)), W)

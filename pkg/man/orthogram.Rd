@@ -81,18 +81,23 @@ neonatw <- log((ungulates$tab[,2]+ungulates$tab[,3])/2)
 names(afbw) <- tre$tip.label
 names(neonatw) <- tre$tip.label
 plot(afbw, neonatw) # relationship between traits
-abline(lm(neonatw~afbw))
-x <- phylo4d(tre, cbind.data.frame(afbw, neonatw)) # traits on the phylogeny
+lm1 <- lm(neonatw~afbw)
+resid <- residuals(lm1)
+abline(lm1)
 
-## default orthogram for trait afbw
-ung.phylog <- newick2phylog(ungulates$tre)
-orthogram(afbw, tre)
+## plot the two traits and the residuals of lm1
+x <- phylo4d(tre, cbind.data.frame(afbw, neonatw, residuals=resid))
+s.phylo4d(x) # residuals are surely not independant
 
-## using orthonormal basis derived from Abouheif's proximity
+## default orthogram for residuals of lm1
+orthogram(resid, tre)
+
+## using another orthonormal basis (derived from Abouheif's proximity)
 myOrthoBasis <- orthobasis.phylo(tre, method="oriAbouheif") # Abouheif's proximities
-orthogram(afbw, ortho=myOrthoBasis)
+orthogram(resid, ortho=myOrthoBasis) # significant phylog. signal
 
-## orthogram for trait neonatw
-orthogram(neonatw, tre)
+## Abouheif's test
+W <- proxTips(tre, method="oriAbouheif") # proximity matrix
+abouheif.moran(resid, W)
 
 }
