@@ -38,7 +38,7 @@ orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
     ## retrieve the orthobasis from a proximity matrix
     if(is.null(orthobas)){
         if(is.null(prox)) { # both orthobas and prox are not given -> default orthobasis
-            ## check that tre is provided and right
+            ## check that tre is provided and valid
             if(is.null(tre)) stop("tre, orthobasis or prox must be provided")
             tre <- as(tre, "phylo4")
             if (is.character(checkval <- check_phylo4(tre))) stop(checkval)

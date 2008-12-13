@@ -26,6 +26,10 @@ treePart(x, result=c("basis", "orthobasis"))
   tip (rows).
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\references{
+Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompose the Variance of a Life-History Trait across a Phylogenetic Tree. \emph{Biometrics}, \bold{62}, 471--477.
+}
+
 \seealso{
   - \code{\link{listDD}} which is called by \code{treePart}.\cr
   - \code{\link{orthogram}}, which uses by default the orthobasis

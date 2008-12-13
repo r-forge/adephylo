@@ -144,9 +144,9 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
 
 
 #####################
-# Function plot.ppca
+# Function scatter.ppca
 #####################
-plot.ppca <- function(x, axis=1:ncol(x$li), useLag=FALSE, ...){
+scatter.ppca <- function(x, axis=1:ncol(x$li), useLag=FALSE, ...){
     if(useLag){
         df <- as.data.frame(x$ls)
     } else{
@@ -163,7 +163,7 @@ plot.ppca <- function(x, axis=1:ncol(x$li), useLag=FALSE, ...){
     }
     args <- c(obj,args)
     do.call(s.phylo4d, args)
-}
+} # end scatter.ppca
 
 
 

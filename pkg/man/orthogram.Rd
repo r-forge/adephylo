@@ -4,16 +4,29 @@
 \title{Orthonormal decomposition of variance}
 \description{
 This function performs the orthonormal decomposition of variance of a quantitative variable on an orthonormal basis. It also returns the results of five non parametric tests associated to the variance decomposition.
-It thus provides tools (graphical displays and test) for analysing phylogenetic, spatial and temporal pattern of one quantitative variable.
+It thus provides tools (graphical displays and test) for analysing
+phylogenetic, pattern in one quantitative trait. This implementation
+replace the (deprecated) version from the \code{ade4} package.\cr
+
+Several orthonormal bases can be used. By default, basis is constructed
+from a partition of tips according to tree topology (as returned by
+\code{\link{treePart}}); for this, the argument \code{tre} must be
+provided. Alternatively, one can provide an orthonormal basis as
+returned by \code{\link{orthobasis.phylo}}/\code{\link{me.phylo}}
+(argument \code{orthobas}), or provide a proximity matrix from which an
+orthobasis based on Moran's eigenvectors will be constructed (argument
+\code{prox}).
 }
 \usage{
-orthogram(x, orthobas = NULL, prox = NULL,
+orthogram(x, tre=NULL, orthobas = NULL, prox = NULL,
           nrepet = 999, posinega = 0, tol = 1e-07, cdot = 1.5,
           cfont.main = 1.5, lwd = 2, nclass,
           high.scores = 0,alter=c("greater", "less", "two-sided"))
 }
 \arguments{
   \item{x}{a numeric vector corresponding to the quantitative variable}
+  \item{tre}{a tree of  class \code{\link[pkg:ape]{phylo}},
+    \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{orthobas}{an object of class \code{'orthobasis'}}
   \item{prox}{a matrix of phylogenetic proximities as returned by \code{\link{proxTips}}.}
   \item{nrepet}{an integer giving the number of permutations}
@@ -50,6 +63,7 @@ Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompo
 }
 \author{
   Original code: Sébastien Ollier and Daniel Chessel.\cr
+
   Current maintainer: Stéphane Dray <dray@biomserv.univ-lyon1.fr>
 }
 \seealso{
@@ -70,11 +84,15 @@ plot(afbw, neonatw) # relationship between traits
 abline(lm(neonatw~afbw))
 x <- phylo4d(tre, cbind.data.frame(afbw, neonatw)) # traits on the phylogeny
 
-## orthogram for trait afbw
-myOrthoBasis <- orthobasis.phylo(tre, method="oriAbouheif") # compute Abouheif's proximities
-orthogram(afbw, myOrthoBasis)
+## default orthogram for trait afbw
+ung.phylog <- newick2phylog(ungulates$tre)
+orthogram(afbw, tre)
+
+## using orthonormal basis derived from Abouheif's proximity
+myOrthoBasis <- orthobasis.phylo(tre, method="oriAbouheif") # Abouheif's proximities
+orthogram(afbw, ortho=myOrthoBasis)
 
 ## orthogram for trait neonatw
-orthogram(neonatw, myOrthoBasis)
+orthogram(neonatw, tre)
 
 }

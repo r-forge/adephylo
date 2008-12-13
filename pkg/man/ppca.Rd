@@ -2,7 +2,7 @@
 \name{ppca}
 \alias{ppca}
 \alias{print.ppca}
-\alias{plot.ppca}
+\alias{scatter.ppca}
 \title{Phylogenetic principal component analysis}
 \description{These functions are designed to perform a phylogenetic principal
   component analysis (pPCA, Jombart et al. in prep) and to display the
@@ -14,7 +14,7 @@
 
   - \code{print.ppca}: prints the ppca content\cr
 
-  - \code{plot.ppca}: plot principal components using
+  - \code{scatter.ppca}: plot principal components using
   \code{\link{s.phylo4d}}\cr
 
 }
@@ -91,9 +91,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
   
   Other functions have different outputs:\cr
 
-  - \code{plot.ppca} returns the matched call.\cr
-
-  - \code{screeplot.ppca} returns the matched call.  
+  - \code{scatter.ppca} returns the matched call.\cr
 }
 \references{
   Jombart, T.; Pavoine, S.; Dufour, A.-B. & Pontier, D. (in prep)
