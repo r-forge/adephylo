@@ -32,17 +32,15 @@ See a data description at \url{http://pbil.univ-lyon1.fr/R/pps/pps063.pdf} (in F
   This dataset replaces the former version in ade4.
 }
 \examples{
-data(lizards)
-
 ## see data
 data(lizards)
 liz.tr <- read.tree(tex=lizards$hprA) # make a tree
-liz <- phylo4d(liz.tr, traits) # make a phylo4d object
+liz <- phylo4d(liz.tr, lizards$traits) # make a phylo4d object
 s.phylo4d(liz)
 
 ## compute and plot principal components
 if(require(ade4)){
-liz.pca1 <- dudi.pca(traits, cent=TRUE, scale=TRUE, scannf=FALSE, nf=2) # PCA of traits
+liz.pca1 <- dudi.pca(lizards$traits, cent=TRUE, scale=TRUE, scannf=FALSE, nf=2) # PCA of traits
 myPC <- phylo4d(liz.tr, liz.pca1$li) # store PC in a phylo4d object
 varlab <- paste("Principal \ncomponent", 1:2) # make labels for PCs
 s.phylo4d(myPC, ratio=.8, var.lab=varlab) # plot the PCs

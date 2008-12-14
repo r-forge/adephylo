@@ -46,7 +46,7 @@ abline(lm1)
 x <- phylo4d(tre, cbind.data.frame(afbw, neonatw)) # traits on the phylogeny
 
 ## test phylogenetic inertia in residuals
+orthogram(residuals(lm1), x) 
 
-orthogram(residuals(lm1), x)
 }
 \keyword{datasets}

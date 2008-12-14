@@ -58,7 +58,7 @@ orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif",
 
 }
 \examples{
-if(require(ape) & require(ade4)){
+
 ## make a tree
 x <- rtree(50)
 
@@ -72,7 +72,8 @@ s.phylo4d(obj, cex.sym=.7, cex.lab=.7)
 
 
 ## removing phylogenetic autocorrelation in a model ##
-example(ungulates)
+example(ungulates, package="adephylo")
+
 lm1
 resid1 <- residuals(lm1)
 orthogram(resid1, tre) # residuals are autocorrelated
@@ -86,6 +87,5 @@ orthogram(resid2, tre) # there is no longer phylogenetic autocorrelation
 ## see the difference
 s.phylo4d(phylo4d(tre, cbind.data.frame(resid1, resid2)))
 
-}
 }
 \keyword{manip}

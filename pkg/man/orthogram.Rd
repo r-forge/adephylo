@@ -69,6 +69,13 @@ Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompo
 \seealso{
   \code{\link{orthobasis.phylo}}
 }
+\note{
+  This function replaces the former version from the ade4 package, which
+  is deprecated. Note that if ade4 is not loaded BEFORE adephylo, then
+  the version from ade4 will erase that of adephylo, which will still be
+  available from adephylo::orthogram. In practice, though, this should
+  never happen, since ade4 is loaded as a dependence by adephylo.
+}
 \examples{
 ## a phylogenetic example
 data(ungulates)
