@@ -83,5 +83,4 @@ plot(myTests)
 plot(abouheif.moran(x, method="nNodes") )
 }
 }
-\keyword{spatial}
-\keyword{ts}
+

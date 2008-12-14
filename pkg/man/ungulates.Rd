@@ -41,14 +41,12 @@ neonatw <- log((ungulates$tab[,2]+ungulates$tab[,3])/2)
 names(afbw) <- tre$tip.label
 names(neonatw) <- tre$tip.label
 plot(afbw, neonatw) # relationship between traits
-abline(lm(neonatw~afbw))
+lm1 <- lm(neonatw~afbw)
+abline(lm1)
 x <- phylo4d(tre, cbind.data.frame(afbw, neonatw)) # traits on the phylogeny
 
+## test phylogenetic inertia in residuals
 
-## orthogram(ung.x,ung.phy$Bscores,nrep=9999)
-## ung.z <- residuals(lm(ung.y~ung.x))
-## names(ung.z) <- names(ung.phy$leaves)
-## dotchart.phylog(ung.phy,ung.z,cle=1.5,cno=1.5,cdot=1,ceti=0.75)
-## orthogram(ung.z,ung.phy$Bscores,nrep=9999)
+orthogram(residuals(lm1), x)
 }
 \keyword{datasets}

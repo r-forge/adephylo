@@ -7,12 +7,12 @@ abouheif.moran <- function (x, W=NULL,
     alter <- match.arg(alter)
     method <- match.arg(method)
 
-    ## handles W
+    ## handle W
     if(!is.null(W)){ # W is provided
-        if (any(W<0)) stop ("term <0 found in 'W'")
+        if (any(W<0)) stop ("negative terms found in 'W'")
         if (nrow(W) != ncol(W)) stop ("'W' is not squared")
         W <- as.matrix(W)
-    } else { # otherwise computed from x, a phylo4d object
+    } else { # otherwise computed W from x, a phylo4d object
         if(!inherits(x, "phylo4d")) stop("if W is not provided, x has to be a phylo4d object")
         if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
         if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
@@ -31,8 +31,10 @@ abouheif.moran <- function (x, W=NULL,
     }
 
     ## main computations
+    x <- data.frame(x)
     test.names <- names(x)
-    x <- data.matrix(x)
+    x <- data.matrix(x) # convert all variables to numeric type
+
     if (nrow(x) != nobs) stop ("non convenient dimension")
     nvar <- ncol(x)
     res <- .C("gearymoran",

@@ -6,7 +6,7 @@
   functions. Regular users can use them as well, but no validity checks
   are performed for the arguments: speed is here favored over safety.
   Most of these functions handle trees inheriting \linkS4class{phylo4}
-  class .\cr
+  class.\cr
 
   \code{.tipToRoot} finds the set of nodes between a tip and the root of
   a tree.\cr
@@ -19,7 +19,7 @@
   \item{x}{A valid tree of  class \linkS4class{phylo4}.}
   \item{tip}{An integer identifying a tip by its numbers.}
   \item{root}{An integer identifying the root of the tree by its
-    numbers.}
+    number.}
   \item{include.root}{a logical stating whether the root must be
     included as a node of the path from tip to root (TRUE), or not
     (FALSE, default).}

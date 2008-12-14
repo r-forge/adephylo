@@ -49,8 +49,13 @@ orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif",
   only uniform weights
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
-\seealso{\code{\link{proxTips}} which computes phylogenetic proximities
-  between tips.
+\seealso{
+  - \code{\link{proxTips}} which computes phylogenetic proximities
+  between tips.\cr
+
+  - \code{\link{treePart}} which can compute an orthobasis based on
+    the topology of a phylogeny.\cr
+
 }
 \examples{
 if(require(ape) & require(ade4)){
@@ -64,6 +69,23 @@ ME
 ## plot the 10 first vectors
 obj <- phylo4d(x, as.data.frame(ME[,1:10]))
 s.phylo4d(obj, cex.sym=.7, cex.lab=.7)
+
+
+## removing phylogenetic autocorrelation in a model ##
+example(ungulates)
+lm1
+resid1 <- residuals(lm1)
+orthogram(resid1, tre) # residuals are autocorrelated
+
+## compute Moran's eigenvectors (ME)
+myME <- me.phylo(tre, method="Abou")
+lm2 <- lm(neonatw ~ myME[,1] + afbw) # use for ME as covariable
+resid2 <- residuals(lm2)
+orthogram(resid2, tre) # there is no longer phylogenetic autocorrelation 
+
+## see the difference
+s.phylo4d(phylo4d(tre, cbind.data.frame(resid1, resid2)))
+
 }
 }
 \keyword{manip}

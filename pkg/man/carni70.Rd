@@ -30,11 +30,14 @@ s.phylo4d(x)
 par(mar=rep(.1,4))
 s.phylo4d(x,cex.lab=.5, show.n=FALSE, ratio=.5)
 
-## transform size in log
+## transform size in log and test for a phylogenetic signal
 size <- log(carni70$tab)[,1]
 names(size) <- row.names(carni70$tab)
-tdata(x) <- cbind.data.frame(sizeLog=size, tdata(x))
-s.phylo4d(x,cex.lab=.5, show.n=FALSE, ratio=.5)
+orthogram(size, tre)
 
+## transform range and test for a phylogenetic signal
+yrange <- scalewt(carni70$tab)[,2]
+names(yrange) <- row.names(carni70$tab)
+orthogram(yrange, tre)
 }
 \keyword{datasets}

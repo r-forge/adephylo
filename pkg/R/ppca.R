@@ -163,6 +163,8 @@ scatter.ppca <- function(x, axes=1:ncol(x$li), useLag=FALSE, ...){
     }
     args <- c(obj,args)
     do.call(s.phylo4d, args)
+
+    return(invisible(match.call()))
 } # end scatter.ppca
 
 
@@ -368,7 +370,7 @@ plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
 
     ## some checks
     if (!inherits(x, "ppca")) stop("Use only with 'ppca' objects.")
-    if(axes>ncol(x$li) | axes<0) stop("wrong axes required.")
+    if(any(axes>ncol(x$li) | axes<0)) stop("wrong axes required.")
 
     ## par / layout
     opar <- par(no.readonly = TRUE)
@@ -387,6 +389,8 @@ plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
     col <- rep("white", r)
 
     keptAxes <- c( (1:r)[1:x$nfposi], (r:1)[1:x$nfnega]) # kept axes
+    if(x$nfposi==0) keptAxes <- keptAxes[-1]
+    if(x$nfnega==0) keptAxes <- keptAxes[-length(keptAxes)]
     col[keptAxes] <- "grey"
 
     repAxes <- gsub("PC","",colnames(x$li)[axes]) # represented axes
@@ -450,7 +454,7 @@ plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
         scatterOk <- !inherits(temp,"try-error")
     }
 
-    return(match.call())
+    return(invisible(match.call()))
 
 } # end plot.phylo
 
