@@ -1,13 +1,13 @@
-citHeader("To cite the adegenet package:")
+citHeader("To cite the adephylo package:")
 
 citEntry(
 entry="Article",
-title = "adegenet: a R package for the multivariate analysis of genetic markers",
-journal= "Bioinformatics",
+title = "adephylo: exploratory analyses for the phylogenetic comparative method.",
+journal= "",
 year = "2008",
-author = "T. Jombart",
-volume = "24",
-pages = "1403-1405",
-doi = "10.1093/bioinformatics/btn129",
-textVersion = "Jombart, T. (2008) adegenet: a R package for the multivariate analysis of genetic markers. Bioinformatics 24: 1403-1405. doi: 10.1093/bioinformatics/btn129"
+author = "T. Jombart, S. Dray",
+volume = "",
+pages = "",
+doi = "",
+textVersion = "Jombart T., Dray S. (2008) adephylo: exploratory analyses for the phylogenetic comparative method."
 )

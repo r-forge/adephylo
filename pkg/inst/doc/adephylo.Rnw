@@ -1,0 +1,36 @@
+\documentclass{article}
+%\VignettePackage{adephylo}
+% \VignetteIndexEntry{adephylo: exploratory analyses for the
+% phylogenetic comparative method}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{array}
+\usepackage{color}
+
+\usepackage[utf8]{inputenc} % for UTF-8/single quotes from sQuote()
+\newcommand{\code}[1]{{{\tt #1}}}
+\title{The \code{adephylo} package}
+\author{Thibaut Jombart}
+\date{\today}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+This document describes the \code{adephylo} package for the R software.
+\code{adephylo} aims at implementing exploratory methods for the
+analysis of phylogenetic comparative data, i.e. traits measured for
+taxa whose phylogeny is also provided.
+Procedures implemented in this package rely on exploratory data
+analysis.
+They include data visualization and manipulation, tests for phylogenetic
+autocorrelation, multivariate analysis, computation of phylogenetic
+proximities and distances, and modelling phylogenetic signal using
+orthonormal bases.
+
+These methods can be used to visualize, test, remove or investigate
+the phylogenetic signal in comparative data.
+The purpose of this document is to present the main functionalities of \code{adephylo}.
+
+\end{document}
