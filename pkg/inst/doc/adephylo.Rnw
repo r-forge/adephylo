@@ -450,17 +450,37 @@ temp <- phylo4d(x, treePart(x, result="orthobasis") )
 table.phylo4d(temp)
 @
 
-\noindent And here is the orthonormal basis for our dataset of ungulates:
+\noindent And here are the first 10 vectors of the orthonormal basis
+for the ungulate dataset:
 <<fig=TRUE>>=
 temp <- phylo4d(myTree, treePart(myTree, result="orthobasis") )
-table.phylo4d(temp, repVar=1:10)
+par(mar=rep(.1,4))
+table.phylo4d(temp, repVar=1:8)
 @
+
+The decomposition of variance achieved by projecting a trait onto this
+orthonormal basis gives rise to several test statistics, that are
+performed by the function \code{orthogram}.
+Like the \code{abouheif.moran} function, \code{orthogram} outputs a
+\code{krandtest} object:
+<<orthogram, plot=TRUE>>=
+afbw.ortgTest <- orthogram(afbw, myTree)
+afbw.ortgTest
+@
+
+\noindent Here again, \code{afbw} does not seem to be phylogenetically structured.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Modelling phylogenetic signal}
 %%%%%%%%%%%%%%%%%%%%%
 
+~\\
+In fact, it is possible to extend the principle of the 'orthogram' to
+any orthonormal basis modelling phylogenetic topology.
+Another example of such bases is offered by Moran's eigenvectors,
+which model different observable phylogenetic structures.
 
 
 %%%%%%%%%%%%%%%%%%%%%
