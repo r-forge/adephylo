@@ -36,7 +36,7 @@ listTips <- function(x){
 ###########
 # treePart
 ###########
-treePart <- function(x, result=c("basis", "orthobasis")){
+treePart <- function(x, result=c("dummy", "orthobasis")){
     if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
@@ -66,7 +66,7 @@ treePart <- function(x, result=c("basis", "orthobasis")){
     row.names(res) <- x@tip.label
     res <- res[,-1]
 
-    if(result=="basis"){
+    if(result=="dummy"){
         return(res) # res is a data.frame of dummy vectors
     }
 

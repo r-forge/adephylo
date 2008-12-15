@@ -403,6 +403,60 @@ under study for this set of taxa.
 
 
 
+
+% % % % % % % % % % %
+\subsubsection{Phylogenetic decomposition of trait variation}
+% % % % % % % % % % %
+The phylogenetic decomposition of the variation of a trait proposed by Ollier
+et al. (2005, see references in \code{?orthogram}) is implemented by
+the function \code{orthogram}.
+This function replaces the former, deprecated version from \code{ade4}.
+\\
+
+The idea behind the method is to model different levels of variation
+on a phylogeny.
+Basically, these levels can be obtained from dummy vectors indicating
+which tip descends from a given node.
+A partition of tips can then be obtained for each node.
+This job is achieved by the function \code{treePart}.
+Here is an example using a small simulated tree:
+<<treePart,fig=TRUE>>=
+x <- rcoal(5)
+plot(x, show.node=TRUE)
+nodelabels(paste("N",1:4,sep=""))
+treePart(x)
+@
+
+\noindent The obtained partition can also be plotted:
+<<fig=TRUE>>=
+temp <- phylo4d(x, treePart(x))
+table.phylo4d(temp, cent=FALSE, scale=FALSE)
+@
+
+\noindent What we would like to do is assess where the variation of a trait is localized on
+the phylogeny; to do so, be could use these dummy vectors as
+regressors and see how variation is distributed among these vectors.
+However, these dummy vectors cannot be used as regressors because they
+are linearly dependent.
+The orthogram circumvents this issue by transforming and selecting
+dummy vectors into a new set of variables that are orthonormal.
+The obtained orthonormal basis can be used to decompose variation of
+the trait.
+Even if not necessary to get an orthogram, this basis can be obtained
+from \code{treePart}:
+<<>>=
+args(treePart)
+temp <- phylo4d(x, treePart(x, result="orthobasis") )
+table.phylo4d(temp)
+@
+
+\noindent And here is the orthonormal basis for our dataset of ungulates:
+<<fig=TRUE>>=
+temp <- phylo4d(myTree, treePart(myTree, result="orthobasis") )
+table.phylo4d(temp, repVar=1:10)
+@
+
+
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Modelling phylogenetic signal}
 %%%%%%%%%%%%%%%%%%%%%

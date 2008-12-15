@@ -13,16 +13,16 @@
   the orthogram (Ollier \emph{et al.} 2006).
 }
 \usage{
-treePart(x, result=c("basis", "orthobasis"))
+treePart(x, result=c("dummy", "orthobasis"))
 }
 \arguments{
   \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{result}{a character string specifying the type of result: either
-  a basis of dummy vectors (\code{basis}), or an orthobasis derived from these dummy vectors (\code{orthobasis}).}
+  a basis of dummy vectors (\code{dummy}), or an orthobasis derived from these dummy vectors (\code{orthobasis}).}
 }
 \value{
-  A matrix of dummy vectors (in columns) having one value for each
+  A matrix of numeric vectors (in columns) having one value for each
   tip (rows).
 }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }

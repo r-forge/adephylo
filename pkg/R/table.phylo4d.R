@@ -2,7 +2,7 @@
 ## table.phylo4d
 #############
 table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
-                      center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
+                      repVar=1:ncol(x$tip.data), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
                       show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
                       ratio.tree=1/3, font=3,
                       tip.label=x@tip.label, var.label=colnames(x@tip.data),
@@ -40,6 +40,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
 #### data handling
     ## retrieve data
     dat <- tdata(x, which="tip")
+    dat <- dat[, repVar]
     clas <- lapply(dat,class)
     isNum <- sapply(clas, function(e) e %in% c("integer","numeric"))
     ## keep only numeric data
