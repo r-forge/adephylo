@@ -20,7 +20,7 @@
 
 This document describes the \code{adephylo} package for the R software.
 \code{adephylo} aims at implementing exploratory methods for the
-analysis of phylogenetic comparative data, i.e. traits measured for
+analysis of phylogenetic comparative data, i.e. biological traits measured for
 taxa whose phylogeny is also provided.
 Procedures implemented in this package rely on exploratory data
 analysis.

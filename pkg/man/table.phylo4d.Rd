@@ -1,8 +1,8 @@
 \name{table.phylo4d}
 \alias{table.phylo4d}
-\title{scatterplot for a phylogeny and traits}
+\title{Graphical display of phylogeny and traits}
 \description{
-  This function displays scatterplots of traits provided for the tips of
+  This function represents traits onto the tips of
   a phylogeny. Plotted objects must be valid \linkS4class{phylo4d}
   objects (implemented by the \code{phylobase} package). Current version
   allows plotting of a tree and one or more quantitative traits
