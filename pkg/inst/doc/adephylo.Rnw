@@ -16,8 +16,9 @@
 \maketitle
 \tableofcontents
 
-\section{Introduction}
 
+
+\section{Introduction}
 This document describes the \code{adephylo} package for the R software.
 \code{adephylo} aims at implementing exploratory methods for the
 analysis of phylogenetic comparative data, i.e. biological traits measured for
@@ -28,9 +29,127 @@ They include data visualization and manipulation, tests for phylogenetic
 autocorrelation, multivariate analysis, computation of phylogenetic
 proximities and distances, and modelling phylogenetic signal using
 orthonormal bases.
+\\
 
 These methods can be used to visualize, test, remove or investigate
 the phylogenetic signal in comparative data.
-The purpose of this document is to present the main functionalities of \code{adephylo}.
+The purpose of this document is to provide a general view a the main
+functionalities of \code{adephylo}, and to show how this package can be
+used along with \code{ape}, \code{phylobase} and \code{ade4} to
+analyse comparative data.
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{First steps into \code{adephylo}}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Data representation: why we are not reinventing the weel}
+%%%%%%%%%%%%%%%%%%%%%
+Data representation can be defined as the way data are stored in a
+software (R, in our case).
+Technically, they are classes of objects containing the information.
+In the case of phylogeny, and comparative data, very efficient data
+representation are already defined in other packages.
+Hence, it made much more sense using directly objects from these classes.
+\\
+
+
+Phylogenies are best represented in Emmanuel Paradis's \code{ape}
+package (\url{http://ape.mpl.ird.fr/}),
+as the class \code{phylo}. Note that as \code{ape} is by far the
+largest package dedicated to phylogeny, using the \code{phylo} class
+assures a good interoperability of data. This class is defined in an
+online document: \url{http://ape.mpl.ird.fr/misc/FormatTreeR_28July2008.pdf}.
+\\
+
+However, data that are to be analyzed in \code{adephylo} do not only
+contain trees, but also traits associated to the tips of a tree.
+The package \code{phylobase}
+(\url{http://r-forge.r-project.org/projects/phylobase/}) is a
+collaborative effort designed to the handling of such data.
+Its representation of phylogenies is very similar to that of
+\code{ape}: the class \code{phylo4} basically is an extension of
+\code{phylo} class into formal (S4) class.
+More interestingly, the S4 class \code{phylo4d} can be used to store a
+tree and data associated to tips, internal nodes, or even edges of a tree.
+Classes of \code{phylobase} are described in a vignette of the
+package, accessible by typing:
+<<eval=FALSE>>=
+vignette("phylobase", package="phylobase")
+@
+
+~\\
+As trees and comparative data are already handled by \code{ape} and
+\code{phylobase}, no particular data format shall be defined in
+\code{adephylo}.
+In particular, we are no longer using \code{phylog} objects, which
+were used to represent phylogenies in \code{ade4}.
+This class is now deprecated, but all previous functionalities
+available for \code{phylog} objects have been re-implemented and
+-- in some cases -- improved in \code{adephylo}.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Installing the package}
+%%%%%%%%%%%%%%%%%%%%%
+What is tricky here is that a vignette is basically available once the
+package is installed.
+Assuming you got this document before installing the package, here are
+some clues about installing \code{adephylo}.
+\\
+
+First of all, \code{adephylo} depends on other packages, being
+\code{methods}, \code{ape}, \code{phylobase}, and \code{ade4}.
+These dependencies are mandatory, that is, you actually need to have
+these packages installed (with or without their dependencies) before
+using \code{adephylo}.
+Also, it is better to make sure you are using the latest versions of
+these packages. This can be achieved by typing
+\texttt{update.packages}, or (better for \code{ade4} and \code{phylobase}) by installing devel versions
+from R-Forge (\url{http://r-forge.r-project.org/}).
+In all cases, the latest version of \code{adephylo} can be found from
+\url{http://r-forge.r-project.org/R/?group_id=303}.
+\\
+
+When loading the package, dependencies are also loaded:
+<<load>>=
+library(adephylo)
+@
+
+Note that possibly conflicting, deprecated functions or datasets from \code{ade4} are
+masked by \code{adephylo}.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Getting started}
+%%%%%%%%%%%%%%%%%%%%%
+All the material of the package is summarized in a manpage accessible
+by typing:
+<<eval=FALSE>>=
+?adephylo
+@
+
+Note that a html version may be preferred to browse easily the content
+of \code{adephylo}; this is accessible by typing:
+<<eval=FALSE>>=
+help("adephylo", package="adephylo", html=TRUE)
+@
+
+To revert help back to text mode, simply type:
+<<eval=FALSE>>=
+options(htmlhelp = FALSE)
+@
+
+
 
 \end{document}
