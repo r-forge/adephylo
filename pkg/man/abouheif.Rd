@@ -12,7 +12,7 @@
   proximities as well.\cr
 
   Note that the original Abouheif's proximity (Abouheif, 1999; Pavoine
-  \emph{et al.} 2008) unifies Moran's I and Geary'c tests (Thioulose \emph{et
+  \emph{et al.} 2008) unifies Moran's I and Geary'c tests (Thioulouse \emph{et
     al.} 1995).\cr
 
   \code{abouheif.moran} can be used in two ways:\cr

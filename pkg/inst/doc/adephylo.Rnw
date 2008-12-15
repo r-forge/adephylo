@@ -12,7 +12,19 @@
 \title{The \code{adephylo} package}
 \author{Thibaut Jombart}
 \date{\today}
+
+\definecolor{Soutput}{rgb}{0,0,0.56}
+\definecolor{Sinput}{rgb}{0.56,0,0}
+\DefineVerbatimEnvironment{Sinput}{Verbatim}
+{formatcom={\color{Sinput}},fontsize=\footnotesize, baselinestretch=0.75}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}
+{formatcom={\color{Soutput}},fontsize=\footnotesize, baselinestretch=0.75}
+
+
+
 \begin{document}
+\color{black}
+
 \maketitle
 \tableofcontents
 
@@ -144,10 +156,10 @@ without space.
 Hence, it is possibly to coerce the version of a masked function,
 using a kludge like:
 <<kludge>>=
-cat("\\n=== Old - deprecated- version ===\\n")
+cat("\n=== Old - deprecated- version ===\n")
 orthogram <- ade4::orthogram
 args(orthogram)
-cat("\\n=== New version === \\n")
+cat("\n=== New version === \n")
 orthogram <- adephylo::orthogram
 args(orthogram)
 @
@@ -256,7 +268,15 @@ However, this can be tricky: often, mismatches between names can
 indicate that data are not sorted adequately; moreover, object created
 with such mismatches will often be invalid objects, and may issue
 errors in further analyses.
+\\
 
+Data are stored inside the slot \code{@tip.data} of the object.
+They can be accessed either via this slot (in our example,
+\code{ung@tip.data}), or using the function \code{tdata}:
+<<>>=
+x <- tdata(ung)
+head(x)
+@
 
 
 
@@ -270,10 +290,116 @@ errors in further analyses.
 %%%%%%%%%%%%%%%%%%%%%
 
 
+
+
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Quantifying and testing phylogenetic signal}
 %%%%%%%%%%%%%%%%%%%%%
+In this document, the terms 'phylogenetic signal' and 'phylogenetic
+autocorrelation' are used interchangeably.
+They refer to the fact that observations of traits are not independent
+in closely related taxa.
+Several procedures are implemented by \code{adephylo} to measure and
+test phylogenetic autocorrelation.
 
+
+% % % % % % % % % % %
+\subsubsection{Moran's $I$}
+% % % % % % % % % % %
+The function \code{moran.idx} computes Moran's $I$, the most
+widely-used autocorrelation measure.
+It can also provide additionnal information (argument \code{addInfo}),
+being the null value of $I$ (i.e., the expected value in absence of
+phylogenetic autocorrelation), and the range of variation of $I$.
+It requires the degree of relatedness of tips on the phylogeny to be
+modelled by a matrix of phylogenetic proximities.
+Such a matrix can be obtained using different methods implemented by
+the function \code{proxTips}.
+
+<<moranI>>=
+W <- proxTips(myTree, met="Abouheif")
+moran.idx(tdata(ung)$afbw, W)
+moran.idx(ung$tip.data[,1], W, addInfo=TRUE)
+@
+
+From here, it is quite straightforward to build a non-parametric test
+based on Moran's $I$.
+For instance (taken from \code{?moran.idx}):
+<<fig=TRUE>>=
+afbw <- tdata(ung)$afbw
+sim <- replicate(499, moran.idx(sample(afbw), W)) # permutations
+sim <- c(moran.idx(afbw, W), sim)
+
+cat("\n=== p-value (right-tail) === \n")
+pval <- mean(sim>=sim[1])
+pval
+
+plot(density(sim), main="Moran's I Monte Carlo test for 'bif'") # plot
+mtext("Density of permutations, and observation (in red)")
+abline(v=sim[1], col="red", lwd=3)
+
+@
+
+\noindent Here, \code{afbw} is likely not phylogenetically autocorrelated.
+
+
+
+
+
+% % % % % % % % % % %
+\subsubsection{Abouheif's test}
+% % % % % % % % % % %
+
+The test of Abouheif (see reference in \code{?abouheif.moran}) is
+designed to test the existence of phylogenetic signal.
+In fact, it has been shown that this test amounts to a Moran's $I$
+test with a particular proximity matrix (again, see references in the manpage).
+The implementation in \code{abouheif.moran} proposes different phylogenetic proximities,
+using by default the original one.
+
+The function can be used on different objects; in particular, it can
+be used with a \code{phylo4d} object.
+In such case, all traits inside the object are tested.
+The returned object is a \code{krandtest}, a class of object defined
+by \code{ade4} to store multiple Monte Carlo tests.
+Here is an example using the ungulates dataset:
+<<abouheif, plot=TRUE>>=
+ung.abTests <- abouheif.moran(ung)
+ung.abTests
+plot(ung.abTests)
+@
+
+\noindent In this case, it seems that all variables but \code{afbm} are
+phylogenetically structured.
+\\
+
+Note that other proximities than those proposed in
+\code{abouheif.moran} can be used: on has just to pass the appropriate
+proximity matrix to the function (argument \code{W}).
+For instance, we would like to use the correlation corresponding to a
+Brownian motion as a measure of phylogenetic proximity.
+
+First, we must estimate branch lengths, as the tree we possess does
+not have any:
+<<>>=
+hasEdgeLength(ung)
+myTree.withBrLe <- compute.brlen(myTree)
+@
+
+\noindent Now, we can use ape's function \code{vcv.phylo} to compute
+the matrix of phylogenetic proximities, and use this matrix in
+Abouheif's test:
+<<>>=
+myProx <- vcv.phylo(myTree.withBrLe)
+abouheif.moran(ung, W=myProx)
+@
+
+\noindent In the present case, traits no longer appear as
+phylogenetically autocorrelated.
+Several explanation can be proposed: the procedure for estimating
+branch length might not have been appropriate, or the Brownian motion
+may simply not be appropriate to describe the evolution of the traits
+under study for this set of taxa.
 
 
 

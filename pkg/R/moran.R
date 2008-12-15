@@ -17,6 +17,7 @@ moran.idx <- function(x, prox, addInfo=FALSE){
 
 
     ## main computations
+    x <- x - mean(x)
     sumW <- sum(W)
     num <- n * sum(x * (W %*% x) )
     denom <- sumW * sum(x*x)

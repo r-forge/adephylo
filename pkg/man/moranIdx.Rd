@@ -49,8 +49,8 @@ moran.idx(bif, W)
 moran.idx(rnorm(nTips(tre)), W)
 
 ## build a simple permutation test for 'bif'
-sim <- replicate(499, moran.idx(rnorm(nTips(tre)), W)) # permutations
-sim <- c(sim, moran.idx(bif, W))
+sim <- replicate(499, moran.idx(sample(bif), W)) # permutations
+sim <- c(moran.idx(bif, W), sim)
 
 pval <- mean(sim>=sim[1]) # right-tail p-value
 pval
