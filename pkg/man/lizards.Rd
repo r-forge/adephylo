@@ -36,14 +36,14 @@ See a data description at \url{http://pbil.univ-lyon1.fr/R/pps/pps063.pdf} (in F
 data(lizards)
 liz.tr <- read.tree(tex=lizards$hprA) # make a tree
 liz <- phylo4d(liz.tr, lizards$traits) # make a phylo4d object
-s.phylo4d(liz)
+table.phylo4d(liz)
 
 ## compute and plot principal components
 if(require(ade4)){
 liz.pca1 <- dudi.pca(lizards$traits, cent=TRUE, scale=TRUE, scannf=FALSE, nf=2) # PCA of traits
 myPC <- phylo4d(liz.tr, liz.pca1$li) # store PC in a phylo4d object
 varlab <- paste("Principal \ncomponent", 1:2) # make labels for PCs
-s.phylo4d(myPC, ratio=.8, var.lab=varlab) # plot the PCs
+table.phylo4d(myPC, ratio=.8, var.lab=varlab) # plot the PCs
 add.scatter.eig(liz.pca1$eig,2,1,2,posi="topleft", inset=c(0,.15))
 title("Phylogeny and the principal components")
 

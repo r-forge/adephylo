@@ -23,6 +23,6 @@ An eigenvector method for estimating phylogenetic inertia. \emph{Evolution}, \bo
 data(carni19)
 tre <- read.tree(text=carni19$tre)
 x <- phylo4d(tre, data.frame(carni19$bm))
-s.phylo4d(x, ratio=.5, center=FALSE)
+table.phylo4d(x, ratio=.5, center=FALSE)
 }
 \keyword{datasets}

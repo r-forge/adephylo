@@ -94,7 +94,7 @@ abline(lm1)
 
 ## plot the two traits and the residuals of lm1
 x <- phylo4d(tre, cbind.data.frame(afbw, neonatw, residuals=resid))
-s.phylo4d(x) # residuals are surely not independant
+table.phylo4d(x) # residuals are surely not independant
 
 ## default orthogram for residuals of lm1
 orthogram(resid, tre)

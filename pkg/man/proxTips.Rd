@@ -136,7 +136,7 @@ proxTips(x, , "sumDD")
 ## see what one proximity looks like
 M <- proxTips(x)
 obj <- phylo4d(x,as.data.frame(M))
-s.phylo4d(obj,symbol="sq")
+table.phylo4d(obj,symbol="sq")
 }
 }
 \keyword{manip}

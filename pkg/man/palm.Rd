@@ -40,7 +40,7 @@ x <- phylo4d(tre, traits)
 
 ## plot data
 par(mar=rep(.1,4))
-s.phylo4d(x, cex.lab=.6)
+table.phylo4d(x, cex.lab=.6)
 
 ## test phylogenetic autocorrelation
 if(require(ade4)){

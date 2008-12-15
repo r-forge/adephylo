@@ -49,7 +49,7 @@ partition
 
 ## plot the dummy vectors with the tree
 temp <- phylo4d(x, partition)
-s.phylo4d(temp, cent=FALSE, scale=FALSE)
+table.phylo4d(temp, cent=FALSE, scale=FALSE)
 }
 
 if(require(ade4)){

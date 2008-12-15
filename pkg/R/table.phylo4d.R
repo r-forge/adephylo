@@ -1,7 +1,7 @@
 #############
-## s.phylo4d
+## table.phylo4d
 #############
-s.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
+table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
                       center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
                       show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
                       ratio.tree=1/3, font=3,
@@ -250,4 +250,4 @@ s.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles"
     } ## end legend
 
     return(invisible())
-} # end s.phylo4d
+} # end table.phylo4d

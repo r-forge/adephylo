@@ -59,7 +59,7 @@ D <- as.data.frame(D)
 
 ## plot these distances along with the tree
 temp <- phylo4d(x, D)
-s.phylo4d(temp, show.node=FALSE, cex.lab=.6)
+table.phylo4d(temp, show.node=FALSE, cex.lab=.6)
 }
 }
 \keyword{manip}

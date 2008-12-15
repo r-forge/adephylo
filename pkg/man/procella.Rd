@@ -36,7 +36,7 @@ data(procella)
 tre <- read.tree(text=procella$tre)
 x <- phylo4d(tre, procella$traits)
 par(mar=rep(.1,4))
-s.phylo4d(x,cex.lab=.7)
+table.phylo4d(x,cex.lab=.7)
 
 ## test phylogenetic autocorrelation in traits
 if(require(ade4)){

@@ -44,7 +44,7 @@ traits <- log(tithonia$tab + 1)
 ## build a phylo4d object
 x <- phylo4d(tre, traits)
 par(mar=rep(.1,4))
-s.phylo4d(x)
+table.phylo4d(x)
 
 ## perform a Geary/Moran test to detect phylogenetic signal in variables
 if(require(ade4)){

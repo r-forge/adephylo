@@ -1,5 +1,5 @@
-\name{s.phylo4d}
-\alias{s.phylo4d}
+\name{table.phylo4d}
+\alias{table.phylo4d}
 \title{scatterplot for a phylogeny and traits}
 \description{
   This function displays scatterplots of traits provided for the tips of
@@ -10,11 +10,11 @@
   
   The plot of phylogenies is performed by a call to \code{\link[pkg:ape]{plot.phylo}}
   from the \code{ape} package. Hence, many of the arguments of
-  \code{\link[pkg:ape]{plot.phylo}} can be passed to \code{s.phylo4d},
+  \code{\link[pkg:ape]{plot.phylo}} can be passed to \code{table.phylo4d},
   through the \dots argument, but their names must be complete.
 }
 \usage{
-s.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
+table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
           center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
           show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
           ratio.tree=1/3, font=3,
@@ -63,7 +63,7 @@ s.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares")
   \code{\link[pkg:ade4]{dotchart.phylog}}.
 }
 \details{
-  The function \code{s.phylo4d} is based on former plot method for
+  The function \code{table.phylo4d} is based on former plot method for
   \linkS4class{phylo4d} objects from the \code{phylobase} package.
   It replaces the deprecated \code{ade4} functions
   \code{\link[pkg:ade4]{symbols.phylog}} and
@@ -78,9 +78,9 @@ tr <- rtree(20)
 dat <- data.frame(a = rnorm(20), b = scale(1:20), c=runif(20,-2,2) )
 dat[3:6, 2] <- NA # introduce some NAs
 obj <- phylo4d(tr, dat, use.tip=FALSE) # build a phylo4d object
-s.phylo4d(obj) # default scatterplot
-s.phylo4d(obj,cex.leg=.6, use.edge.length=FALSE) # customized
-s.phylo4d(obj,treetype="clad", show.node=FALSE, cex.leg=.6,
+table.phylo4d(obj) # default scatterplot
+table.phylo4d(obj,cex.leg=.6, use.edge.length=FALSE) # customized
+table.phylo4d(obj,treetype="clad", show.node=FALSE, cex.leg=.6,
 use.edge.length=FALSE, edge.color="blue", edge.width=3) # more customized
 
 
@@ -88,21 +88,21 @@ use.edge.length=FALSE, edge.color="blue", edge.width=3) # more customized
 data(mjrochet)
 temp <- read.tree(text=mjrochet$tre) # make a tree
 mjr <- phylo4d(x=temp,tip.data=mjrochet$tab) # male a phylo4d object
-s.phylo4d(mjr,cex.lab=.5,show.node=FALSE,symb="square")
+table.phylo4d(mjr,cex.lab=.5,show.node=FALSE,symb="square")
 
 
 ## lizards data
 data(lizards)
 liz.tr <- read.tree(tex=lizards$hprA) # make a tree
 liz <- phylo4d(liz.tr, lizards$traits) # make a phylo4d object
-s.phylo4d(liz)
+table.phylo4d(liz)
 
 
 ## plotting principal components
 liz.pca1 <- dudi.pca(lizards$traits, scannf=FALSE, nf=2) # PCA of traits
 myPC <- phylo4d(liz.tr, liz.pca1$li) # store PC in a phylo4d object
 varlab <- paste("Principal \ncomponent", 1:2) # make labels for PCs
-s.phylo4d(myPC, ratio=.8, var.lab=varlab) # plot the PCs
+table.phylo4d(myPC, ratio=.8, var.lab=varlab) # plot the PCs
 add.scatter.eig(liz.pca1$eig,2,1,2,posi="topleft", inset=c(0,.15))
 title("Phylogeny and the principal components")
 }

@@ -162,7 +162,7 @@ scatter.ppca <- function(x, axes=1:ncol(x$li), useLag=FALSE, ...){
         args$ratio.tree <- 0.5
     }
     args <- c(obj,args)
-    do.call(s.phylo4d, args)
+    do.call(table.phylo4d, args)
 
     return(invisible(match.call()))
 } # end scatter.ppca

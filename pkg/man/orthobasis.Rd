@@ -68,7 +68,7 @@ ME
 
 ## plot the 10 first vectors
 obj <- phylo4d(x, as.data.frame(ME[,1:10]))
-s.phylo4d(obj, cex.sym=.7, cex.lab=.7)
+table.phylo4d(obj, cex.sym=.7, cex.lab=.7)
 
 
 ## removing phylogenetic autocorrelation in a model ##
@@ -85,7 +85,7 @@ resid2 <- residuals(lm2)
 orthogram(resid2, tre) # there is no longer phylogenetic autocorrelation 
 
 ## see the difference
-s.phylo4d(phylo4d(tre, cbind.data.frame(resid1, resid2)))
+table.phylo4d(phylo4d(tre, cbind.data.frame(resid1, resid2)))
 
 }
 \keyword{manip}

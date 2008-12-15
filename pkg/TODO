@@ -70,7 +70,7 @@ o test ppca: are results identical to those with previous implementation? -- don
 # LOW PRIORITY / MINOR ISSUES
 ===========================
 ===========================
-* draw a rectangle around legend in s.phylo4d
+* draw a rectangle around legend in table.phylo4d
 
 
 # LONG TERM

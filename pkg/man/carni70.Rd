@@ -25,10 +25,10 @@ geographic range size-body size relationship in new world terrestrial carnivora.
 data(carni70)
 tre <- read.tree(text=carni70$tre)
 x <- phylo4d(tre, carni70$tab)
-s.phylo4d(x)
+table.phylo4d(x)
 
 par(mar=rep(.1,4))
-s.phylo4d(x,cex.lab=.5, show.n=FALSE, ratio=.5)
+table.phylo4d(x,cex.lab=.5, show.n=FALSE, ratio=.5)
 
 
 ## transform size in log and test for a phylogenetic signal

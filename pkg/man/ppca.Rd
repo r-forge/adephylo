@@ -21,7 +21,7 @@
     object, including the decomposition of eigenvalues of all axes\cr
 
   - \code{scatter.ppca}: plot principal components using
-  \code{\link{s.phylo4d}}\cr
+  \code{\link{table.phylo4d}}\cr
 
   - \code{screeplot.ppca}: graphical display of the decomposition of
   pPCA eigenvalues\cr
@@ -70,7 +70,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
   \item{nfnega}{an integer giving the number of negative eigenvalues retained
     ('local structures').}
   \item{\dots}{further arguments passed to other methods. Can be used to
-    provide arguments to \code{\link{s.phylo4d}} in \code{plot} method.}
+    provide arguments to \code{\link{table.phylo4d}} in \code{plot} method.}
   \item{object}{a \code{ppca} object.}  
   \item{printres}{a logical stating whether results should be printed on
     the screen (TRUE, default) or not (FALSE).}
@@ -150,7 +150,7 @@ tre <- read.tree(text=maples$tre)
 x <- phylo4d(tre, maples$tab)
 omar <- par("mar")
 par(mar=rep(.1,4))
-s.phylo4d(x, cex.lab=.5, cex.sym=.6, ratio=.1) # note NAs in last trait ('x')
+table.phylo4d(x, cex.lab=.5, cex.sym=.6, ratio=.1) # note NAs in last trait ('x')
 
 ## function to replace NA
 f1 <- function(vec){
@@ -179,7 +179,7 @@ names(a) <- row.names(ppca1$c1)
 highContrib <- a[a< quantile(a,0.1) | a>quantile(a,0.9)]
 datSel <- cbind.data.frame(dat[, names(highContrib)], ppca1$li)
 temp <- phylo4d(tre, datSel)
-s.phylo4d(temp) # plot of most structured traits
+table.phylo4d(temp) # plot of most structured traits
 
 ## phylogenetic autocorrelation tests for these traits
 prox <- proxTips(tre, method="Abouheif")

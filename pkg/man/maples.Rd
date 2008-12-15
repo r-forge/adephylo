@@ -40,7 +40,7 @@ cor.test(bif,dom)
 
 ## look at the two variables onto the phylogeny
 temp <- phylo4d(tre, data.frame(dom,bif, row.names=tre$tip.label))
-s.phylo4d(temp) # correlation is strongly linked to phylogeny
+table.phylo4d(temp) # correlation is strongly linked to phylogeny
 
 ## use ape's PIC (phylogenetic independent contrasts)
 pic.bif <- pic(bif, tre)

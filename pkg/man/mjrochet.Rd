@@ -49,7 +49,7 @@ traits <- log((mjrochet$tab))
 mjr <- phylo4d(tre, traits)
 
 ## see data
-s.phylo4d(mjr,cex.lab=.5,show.node=FALSE,symb="square")
+table.phylo4d(mjr,cex.lab=.5,show.node=FALSE,symb="square")
 
 ## perform Abouheif's test for each trait
 mjr.tests <- abouheif.moran(mjr, nrep=499)
