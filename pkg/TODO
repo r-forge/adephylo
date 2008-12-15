@@ -80,6 +80,6 @@ o re-implement all relevant phylogenetic methods from ade4 in adephylo -- done (
 o implement several phylogenetic proximities -- done (TJ)
 o implement an orthobasis for phylogenies -- done (TJ)
 * write a comprehensive tutorial, going through adephylo, ade4, ape, phylobase, etc.
-* new plotting / summary for ppca objects. Maybe move actual plot to a scatter method, and make a plot similar to other plots.
-* make a summary method for ppca.
+o new plotting / summary for ppca objects. Maybe move actual plot to a scatter method, and make a plot similar to other plots. -- done (TJ)
+o make a summary method for ppca. -- done (TJ)
 

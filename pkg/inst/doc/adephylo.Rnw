@@ -18,7 +18,14 @@
 
 
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+
+\SweaveOpts{prefix.string = figs/adephylo, fig = FALSE, eps = FALSE, pdf = TRUE, width = 6, height = 6}
+
 This document describes the \code{adephylo} package for the R software.
 \code{adephylo} aims at implementing exploratory methods for the
 analysis of phylogenetic comparative data, i.e. biological traits measured for
@@ -37,6 +44,10 @@ The purpose of this document is to provide a general view a the main
 functionalities of \code{adephylo}, and to show how this package can be
 used along with \code{ape}, \code{phylobase} and \code{ade4} to
 analyse comparative data.
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -126,8 +137,23 @@ library(adephylo)
 
 Note that possibly conflicting, deprecated functions or datasets from \code{ade4} are
 masked by \code{adephylo}.
+In case the converse would occur (i.e. deprecated function masking a
+function of \code{adephylo}), one can refer to the 'good' version of a
+function by adding the prefix \code{adephylo::} to the function,
+without space.
+Hence, it is possibly to coerce the version of a masked function,
+using a kludge like:
+<<kludge>>=
+cat("\\n=== Old - deprecated- version ===\\n")
+orthogram <- ade4::orthogram
+args(orthogram)
+cat("\\n=== New version === \\n")
+orthogram <- adephylo::orthogram
+args(orthogram)
+@
 
-
+Luckily, this should not be required as long as one is not playing
+with loading and unloading \code{ade4} once \code{adephylo} is loaded.
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -149,6 +175,124 @@ To revert help back to text mode, simply type:
 <<eval=FALSE>>=
 options(htmlhelp = FALSE)
 @
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Putting data into shape}
+%%%%%%%%%%%%%%%%%%%%%
+While this is not the purpose of this document to go through the
+details of \code{phylo}, \code{phylo4} and \code{phylo4d} objects, we
+shall show briefly how these objects can be obtained.
+
+
+% % % % % % % % % % %
+\subsubsection{Making a \code{phylo} object}
+% % % % % % % % % % %
+The simplest way of turning a tree into a \code{phylo} object is using
+ape's function \code{read.tree}.
+This function reads a tree with the Newick (or 'parentetic') format,
+from a file (default, argument \code{file}) of from a character string
+(argument \code{text}).
+<<readTree, plot=TRUE>>=
+data(ungulates)
+ungulates$tre
+myTree <- read.tree(text=ungulates$tre)
+myTree
+plot(myTree, main="ape's plotting of a tree")
+@
+
+
+It is easy to convert \code{ade4}'s \code{phylog} objects to a
+\code{phylo}, as \code{phylog} objects store the Newick format of the
+tree in the \code{\$tre} component.
+\\
+
+Note that \code{phylo} trees can also be constructed from alignements
+(see \code{read.GenBankdist.dna}, \code{read.dna},
+\code{dist.dna}, \code{nj}, \code{bionj}, and \code{mlphylo}, all in
+\code{ape}), or even simulated (for instance, see \code{rtree}).
+\\
+
+Also note that, if needed, conversion can be done back and forward
+with \code{phylo4} trees:
+<<>>=
+temp <- as(myTree, "phylo4")
+class(temp)
+temp <- as(temp, "phylo")
+class(temp)
+all.equal(temp, myTree)
+@
+
+
+
+
+
+% % % % % % % % % % %
+\subsubsection{Making a \code{phylo4d} object}
+% % % % % % % % % % %
+\code{phylo4d} objects are S4 objects, and are thus created in a
+particular way.
+The most immediate way of creating a \code{phylo4d} object is to call
+to the constructor, also named \code{phylo4d}.
+This is a function that takes two arguments: a tree (\code{phylo} or
+\code{phylo4} format) and a data.frame containing data, for tips by
+default (see \code{?phylo4d} for more information).
+Here is an example:
+<<phylo4d, fig=TRUE>>=
+ung <- phylo4d(myTree, ungulates$tab)
+class(ung)
+table.phylo4d(ung)
+@
+
+\noindent Note that the constructor checks the consistency of the
+names used for the tips of the tree and for the rows of the data.frame.
+Inconsistencies issue an error.
+To override this behaviour, one can specify
+\code{use.tip.names=FALSE}.
+However, this can be tricky: often, mismatches between names can
+indicate that data are not sorted adequately; moreover, object created
+with such mismatches will often be invalid objects, and may issue
+errors in further analyses.
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Exploratory data analysis}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Quantifying and testing phylogenetic signal}
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Modelling phylogenetic signal}
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Using multivariate analyses}
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Performing a phylogenetic Principal Component Analysis}
+%%%%%%%%%%%%%%%%%%%%%
+
 
 
 
