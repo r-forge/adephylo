@@ -22,6 +22,10 @@
 
 
 
+\sloppy
+\hyphenpenalty 10000
+
+
 \begin{document}
 \color{black}
 
@@ -472,15 +476,58 @@ afbw.ortgTest
 
 
 
+
+
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Modelling phylogenetic signal}
 %%%%%%%%%%%%%%%%%%%%%
 
-~\\
+% % % % % % % % % % %
+\subsubsection{Using orthonormal bases}
+% % % % % % % % % % %
+
+In fact, the previous section describing the 'orthogram' has already
+shown that testing phylogenetic signal can (often) underlie modelling
+phylogenetic signal.
+In the case of the orthogram, several tests are linked to the
+decomposition of the variance of a trait onto a particular basis describing tree topology.
 In fact, it is possible to extend the principle of the 'orthogram' to
 any orthonormal basis modelling phylogenetic topology.
 Another example of such bases is offered by Moran's eigenvectors,
-which model different observable phylogenetic structures.
+which can be used to model different observable phylogenetic
+structures (see references in \code{me.phylo}).
+
+Moran's phylogenetic eigenvectors are implemented by the function
+\code{me.phylo} (also nicknamed \code{orthobasis.phylo}).
+The returned object is a data.frame with the class \code{orthobasis}
+defined in \code{ade4}; columns of this object are Moran's eigenvectors.
+An \code{orthobasis} be coerced to a regular data.frame or to a matrix
+using \code{as.data.frame} and \code{as.matrix}.
+<<>>=
+me.phylo(myTree.withBrLe)
+@
+
+\noindent Moran's eigenvectors are constructed from a matrix of
+phylogenetic proximities between tips.
+While any proximity can be used (argument \code{prox}), 5 proximities
+implemented by the \code{proxTips} function can be used, giving rise
+to different orthobases:
+<<fig=TRUE>>=
+ung.listBas <- list()
+ung.listBas[[1]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree.withBrLe, method="patristic")))
+ung.listBas[[2]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="nNodes")))
+ung.listBas[[3]]<- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="Abouheif")))
+ung.listBas[[4]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="sumDD")))
+par(mar=rep(.1,4), mfrow=c(2,2))
+lapply(ung.listBas, table.phylo4d, repVar=1:5, cex.sym=.7,
+show.tip.label=FALSE, show.node=FALSE)
+@
+
+\noindent In this case, the first Moran's eigenvectors are all very
+similar.
+In other cases, the orthobases built from different proximities can be
+quite different.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%

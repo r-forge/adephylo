@@ -40,7 +40,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
 #### data handling
     ## retrieve data
     dat <- tdata(x, which="tip")
-    dat <- dat[, repVar]
+    dat <- dat[, repVar, drop=FALSE]
     clas <- lapply(dat,class)
     isNum <- sapply(clas, function(e) e %in% c("integer","numeric"))
     ## keep only numeric data
