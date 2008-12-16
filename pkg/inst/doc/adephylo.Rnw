@@ -44,7 +44,8 @@
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 
-\SweaveOpts{prefix.string = figs/adephylo, fig = FALSE, eps = FALSE, pdf = TRUE, width = 6, height = 6}
+\SweaveOpts{prefix.string = figs/adephylo, fig = FALSE, eps = TRUE, pdf = TRUE, width = 6, height = 6}
+
 
 This document describes the \code{adephylo} package for the R software.
 \code{adephylo} aims at implementing exploratory methods for the
@@ -428,16 +429,18 @@ which tip descends from a given node.
 A partition of tips can then be obtained for each node.
 This job is achieved by the function \code{treePart}.
 Here is an example using a small simulated tree:
-<<treePart,fig=TRUE>>=
-x <- rcoal(5)
-plot(x, show.node=TRUE)
-nodelabels(paste("N",1:4,sep=""))
-treePart(x)
+<<fig=TRUE>>=
+youpla <- as(rcoal(5), "phylo4")
+plot(youpla, show.node=TRUE)
+partX <- treePart(youpla)
+partX
+x <- youpla
 @
 
 \noindent The obtained partition can also be plotted:
 <<fig=TRUE>>=
-temp <- phylo4d(x, treePart(x))
+partX
+temp <- phylo4d(x, partX)
 table.phylo4d(temp, cent=FALSE, scale=FALSE)
 @
 
@@ -460,7 +463,7 @@ table.phylo4d(temp)
 
 \noindent And here are the first 10 vectors of the orthonormal basis
 for the ungulate dataset:
-<<fig=TRUE>>=
+<<orthobas1, fig=TRUE>>=
 temp <- phylo4d(myTree, treePart(myTree, result="orthobasis") )
 par(mar=rep(.1,4))
 table.phylo4d(temp, repVar=1:8)
@@ -523,7 +526,7 @@ ung.listBas[[2]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="nNode
 ung.listBas[[3]]<- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="Abouheif")))
 ung.listBas[[4]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="sumDD")))
 par(mar=rep(.1,4), mfrow=c(2,2))
-lapply(ung.listBas, table.phylo4d, repVar=1:5, cex.sym=.7, show.tip.label=FALSE, show.node=FALSE)
+invisible(lapply(ung.listBas, table.phylo4d, repVar=1:5, cex.sym=.7, show.tip.label=FALSE, show.node=FALSE))
 @
 
 \includegraphics[width=.8\textwidth]{figs/adephylo-figFourBas}
@@ -534,6 +537,82 @@ In other cases, however, the orthobases built from different proximities can be
 quite different.
 \\
 
+One of the interests of Moran's eigenvectors in phylogeny is to remove
+phylogenetic autocorrelation in a linear model.
+This can be achieved using the appropriate eigenvector as covariate.
+Here is an example when studying the link of two traits in ungulate dataset.
+<<lm1, fig=TRUE>>=
+afbw <- log(ungulates$tab[,1])
+neonatw <- log((ungulates$tab[,2]+ungulates$tab[,3])/2)
+names(afbw) <- myTree$tip.label
+names(neonatw) <- myTree$tip.label
+plot(afbw, neonatw, main="Relationship between afbw and neonatw")
+lm1 <- lm(neonatw~afbw)
+abline(lm1, col="blue")
+anova(lm1)
+@
+
+\noindent Is this model valid, that is, are its residuals independent?
+<<resid, fig=TRUE>>=
+resid <- residuals(lm1)
+names(resid) <- myTree$tip.label
+temp <- phylo4d(myTree,data.frame(resid))
+abouheif.moran(temp)
+table.phylo4d(temp)
+@
+
+\noindent No, residuals are clearly not independent, and exhibit
+phylogenetic autocorrelation.
+In this case, autocorrelation can be removed by using the first
+Moran's eigenvector as a covariate.
+In general, the appropriate eigenvector(s) can be chosen by usual
+variable-selection approaches, like the forward selection, or using a
+selection based on the existence of autocorrelation in the residuals.
+<<>>=
+myBasis <- me.phylo(myTree, method="Abouheif")
+lm2 <- lm(neonatw~myBasis[,1] + afbw)
+resid <- residuals(lm2)
+names(resid) <- myTree$tip.label
+temp <- phylo4d(myTree,data.frame(resid))
+abouheif.moran(temp)
+anova(lm2)
+@
+
+The link between the two variables is still very statistically
+significant, but this time the model is not invalid because of
+non-independence of residuals.
+
+
+
+
+% % % % % % % % % % %
+\subsubsection{Autoregressive models}
+% % % % % % % % % % %
+Autoregressive models can also be used to remove phylogenetic
+autocorrelation from residuals.
+This approach implies the use of a phylogenetically lagged vector, for
+some or all of the variates of a model (see references in \code{?proxTips}).
+The lag vector of a trait $x$, denoted $\tilde{x}$, is computed as:
+$$
+\tilde{x} = Wx
+$$
+\noindent where $W$ is a matrix of phylogenetic proximities, as
+returned by \code{proxTips}.
+Hence, one can use an autoregressive approach to remove phylogenetic
+autocorrelation quite simply.
+We here re-use the example from the previous section:
+<<>>=
+W <- proxTips(myTree, method="Abouheif", sym=FALSE)
+lagNeonatw <- W %*% neonatw
+lm3 <- lm(neonatw ~ lagNeonatw + afbw)
+resid <- residuals(lm3)
+abouheif.moran(resid,W)
+@
+
+\noindent Here, this most simple autoregressive model may not be
+sufficient to account for all phylogenetic signal; yet, phylogenetic
+autocorrelation is no longer detected at the usual threshold
+$\alpha=0.05$.
 
 
 
@@ -543,11 +622,79 @@ quite different.
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Using multivariate analyses}
 %%%%%%%%%%%%%%%%%%%%%
+Multivariate analyses can of course be used to identify the main
+biodemographic strategies in a large set of traits.
+This could be (and likely is) the topic of an entire book.
+Such application is not particular to \code{adephylo}, but some
+practices are made easier by the package.
+We here provide a simple example, using the \code{maples} dataset.
+This dataset contains a tree and a set of 31 quantitative traits (see \code{?maples}).
+
+First of all, we seek a summary of the variability in traits using a
+principal component analysis.
+Missing data are replaced by mean values, so they are placed at the origin of the axes (the 'non-informative' point).
+<<pca1, fig=TRUE>>=
+f1 <- function(x){
+    m <- mean(x,na.rm=TRUE)
+    x[is.na(x)] <- m
+    return(x)
+}
+
+data(maples)
+traits <- apply(maples$tab, 2, f1)
+pca1 <- dudi.pca(traits, scannf=FALSE, nf=1)
+barplot(map.pca1$eig, main="PCA eigenvalues")
+@
+
+\noindent One axis shall be retained.
+Does this axis reflect a phylogenetic structure?
+We can, as previously, plot it onto the phylogeny.
+In some cases, positive autocorrelation can be better perceived by
+examining the lag vector (see previous section on autoregressive
+models) instead of the original vector.
+Here, we shall plot both the retained principal component, and its lag vector:
+<<pca2, fig=TRUE>>=
+tre <- read.tree(text=maples$tre)
+W <- proxTips(tre)
+myComp <- data.frame(PC1=pca1$li[,1], lagPC1=W %*% pca1$li[,1])
+myComp.4d <- phylo4d(tre, myComp)
+table.phylo4d(myComp.4d)
+@
+
+\noindent It is quite clear that the main component of diversity among
+taxa separates descendants from 'N02' from descendants of 'N07'.
+Phylogenetic autocorrelation can be checked in 'PC1' (note that
+testing it in the lag vector would be circulary, as the lag vector
+already otimizes positive autocorrelation), for instance using
+Abouheif's test:
+<<aboutest, fig=TRUE>>=
+myTest <- abouheif.moran(myComp[,1], W=W)
+plot(myTest, main="Abouheif's test using patristic proximity")
+mtext("First principal component - maples data", col="blue", line=1)
+@
+
+\noindent To dig further into the interpretation of this structure,
+one can have a look at the loadings of the traits, to see to which
+biological traits these opposed strategy correspond:
+<<loadings, fig=TRUE>>=
+ldgs <- pca1$c1[,1]
+plot(ldgs, type="h", xlab="Variable", xaxt="n", ylab="Loadings")
+s.label(cbind(1:31, ldgs), lab=colnames(traits), add.p=TRUE, clab=.8)
+temp <- abs(ldgs)
+thres <- quantile(temp, .75)
+abline(h=thres * c(-1,1), lty=2, col="blue3", lwd=3)
+title("Loadings for PC1")
+mtext("Quarter of most contributing variables indicated in blue", col="blue")
+@
+
+\noindent As a reminder, species with a large black symbol would be on
+the top of this graph, while species with a large white symbol would
+lie on the bottom.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Performing a phylogenetic Principal Component Analysis}
+%\subsection{Performing a phylogenetic Principal Component Analysis}
 %%%%%%%%%%%%%%%%%%%%%
 
 

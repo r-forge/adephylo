@@ -28,7 +28,7 @@ abouheif.moran(x, W=NULL, method=c("oriAbouheif","patristic","nNodes","Abouheif"
 \arguments{
   \item{x}{a data frame with continuous variables, or a
     \linkS4class{phylo4d} object (i.e. containing both a tree, and tip
-    data. In the latter case, \code{method} argument is used to determine
+    data). In the latter case, \code{method} argument is used to determine
     which proximity should be used.}
   \item{W}{a \emph{n} by \emph{n} matrix (\emph{n} being the number rows
     in x) of phylogenetic proximities, as produced by
