@@ -13,12 +13,6 @@
 \author{Thibaut Jombart}
 \date{\today}
 
-\definecolor{Soutput}{rgb}{0,0,0.56}
-\definecolor{Sinput}{rgb}{0.56,0,0}
-\DefineVerbatimEnvironment{Sinput}{Verbatim}
-{formatcom={\color{Sinput}},fontsize=\footnotesize, baselinestretch=0.75}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}
-{formatcom={\color{Soutput}},fontsize=\footnotesize, baselinestretch=0.75}
 
 
 
@@ -27,6 +21,16 @@
 
 
 \begin{document}
+
+
+
+\definecolor{Soutput}{rgb}{0,0,0.56}
+\definecolor{Sinput}{rgb}{0.56,0,0}
+\DefineVerbatimEnvironment{Sinput}{Verbatim}
+{formatcom={\color{Sinput}},fontsize=\footnotesize, baselinestretch=0.75}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}
+{formatcom={\color{Soutput}},fontsize=\footnotesize, baselinestretch=0.75}
+
 \color{black}
 
 \maketitle
@@ -512,21 +516,27 @@ phylogenetic proximities between tips.
 While any proximity can be used (argument \code{prox}), 5 proximities
 implemented by the \code{proxTips} function can be used, giving rise
 to different orthobases:
-<<fig=TRUE>>=
+<<figFourBas, fig=TRUE,include=FALSE, print=FALSE>>=
 ung.listBas <- list()
 ung.listBas[[1]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree.withBrLe, method="patristic")))
 ung.listBas[[2]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="nNodes")))
 ung.listBas[[3]]<- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="Abouheif")))
 ung.listBas[[4]] <- phylo4d(myTree, as.data.frame(me.phylo(myTree, method="sumDD")))
 par(mar=rep(.1,4), mfrow=c(2,2))
-lapply(ung.listBas, table.phylo4d, repVar=1:5, cex.sym=.7,
-show.tip.label=FALSE, show.node=FALSE)
+lapply(ung.listBas, table.phylo4d, repVar=1:5, cex.sym=.7, show.tip.label=FALSE, show.node=FALSE)
 @
+
+\includegraphics[width=.8\textwidth]{figs/adephylo-figFourBas}
 
 \noindent In this case, the first Moran's eigenvectors are all very
 similar.
-In other cases, the orthobases built from different proximities can be
+In other cases, however, the orthobases built from different proximities can be
 quite different.
+\\
+
+
+
+
 
 
 
