@@ -430,17 +430,17 @@ A partition of tips can then be obtained for each node.
 This job is achieved by the function \code{treePart}.
 Here is an example using a small simulated tree:
 <<fig=TRUE>>=
-youpla <- as(rcoal(5), "phylo4")
-plot(youpla, show.node=TRUE)
-partX <- treePart(youpla)
-partX
-x <- youpla
+x <- as(rtree(5),"phylo4")
+plot(x,show.n=TRUE)
 @
 
+<<>>=
+x.part <- treePart(x)
+x.part
+@
 \noindent The obtained partition can also be plotted:
 <<fig=TRUE>>=
-partX
-temp <- phylo4d(x, partX)
+temp <- phylo4d(x, x.part)
 table.phylo4d(temp, cent=FALSE, scale=FALSE)
 @
 
@@ -643,7 +643,7 @@ f1 <- function(x){
 data(maples)
 traits <- apply(maples$tab, 2, f1)
 pca1 <- dudi.pca(traits, scannf=FALSE, nf=1)
-barplot(map.pca1$eig, main="PCA eigenvalues")
+barplot(pca1$eig, main="PCA eigenvalues")
 @
 
 \noindent One axis shall be retained.
