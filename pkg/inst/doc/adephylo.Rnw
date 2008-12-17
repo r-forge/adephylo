@@ -1,7 +1,7 @@
 \documentclass{article}
-%\VignettePackage{adephylo}
-% \VignetteIndexEntry{adephylo: exploratory analyses for the
-% phylogenetic comparative method}
+% \VignettePackage{adephylo}
+% \VignetteIndexEntry{adephylo: exploratory analyses for the phylogenetic comparative method}
+
 \usepackage{graphicx}
 \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
 \usepackage{array}
