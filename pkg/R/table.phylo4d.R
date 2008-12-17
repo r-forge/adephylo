@@ -44,7 +44,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     clas <- lapply(dat,class)
     isNum <- sapply(clas, function(e) e %in% c("integer","numeric"))
     ## keep only numeric data
-    dat <- dat[isNum]
+    dat <- dat[, isNum, drop=FALSE]
     var.label <- var.label[repVar]
     var.label <- var.label[isNum]
     ## order data like tips
