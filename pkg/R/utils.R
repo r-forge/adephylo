@@ -19,7 +19,7 @@
 ## but will often be computed outside, once and for all.
 ##
 .tipToRoot <- function(x, tip, root, include.root=FALSE){
-    E <- x$edge
+    E <- x@edge
     path <- NULL
     curNode <- tip
     while(curNode != root){
@@ -31,7 +31,7 @@
         path <- path[-length(path)] # exclude the root
     }
 
-    return(getnodes(x, path))
+    return(getNode(x, path))
 } # end tipToRoot
 
 
@@ -49,8 +49,8 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)
-    t1 <- getnodes(x, tip1)
-    t2 <- getnodes(x, tip2)
+    t1 <- getNode(x, tip1)
+    t2 <- getNode(x, tip2)
     if(any(is.na(c(t1,t2)))) stop("wrong tip specified")
     if(any(c(t1,t2) > nTips(x))) stop("specified nodes are internal nodes")
     if(length(t1) != length(t2)) { # recycle tip1 and tip2
@@ -69,7 +69,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 
     ## some global variables
     N <- nTips(x)
-    root <- getnodes(x, N+1)
+    root <- getNode(x, N+1)
     E <- x@edge
     allTips <- unique(c(t1,t2))
 
@@ -83,7 +83,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
     ##             path <- c(path, curNode)
     ##         } # end while
 
-    ##         path <- getnodes(x, path)
+    ##         path <- getNode(x, path)
     ##         return(path)
     ##     } # end tipToRoot
 
@@ -124,7 +124,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
         res <- lapply(1:length(allPath1), function(i) pathTwoTips.no.mrca(allPath1[[i]], allPath2[[i]]) )
         temp.names <- names(res)
         temp <- sapply(res, function(vec) length(vec)>0)
-        res[temp] <- lapply(res[temp], function(vec) getnodes(x, vec) ) # name the nodes
+        res[temp] <- lapply(res[temp], function(vec) getNode(x, vec) ) # name the nodes
         names(res) <- temp.names
     }
 

@@ -2,7 +2,7 @@
 ## table.phylo4d
 #############
 table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
-                      repVar=1:ncol(x$tip.data), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
+                      repVar=1:ncol(x@tip.data), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
                       show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
                       ratio.tree=1/3, font=3,
                       tip.label=x@tip.label, var.label=colnames(x@tip.data),
@@ -28,7 +28,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
 
     ## convert the tree into phylo
     tre <- suppressWarnings(as(x,"phylo"))
-    tre$node.label <- x@node.label # this should be done by the as(x,"phylo")
+    ##tre$node.label <- x@node.label # this should be done by the as(x,"phylo")
     ## plot only tree if no tip data
     if(ncol(tdata(x,which="tip")) == 0) {
         plot.phylo(tre, type=treetype, direction="rightwards", show.tip.label=show.tip.label,

@@ -13,7 +13,7 @@ proxTips <- function(x, tips="all",
     normalize <- match.arg(normalize)
     N <- nTips(x)
     if(tips[1]=="all") { tips <- 1:N }
-    tips <- getnodes(x, tips)
+    tips <- getNode(x, tips)
 
     ## some checks
     if (is.character(checkval <- check_phylo4(x))) stop(checkval)

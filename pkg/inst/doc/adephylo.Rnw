@@ -328,7 +328,7 @@ the function \code{proxTips}.
 <<moranI>>=
 W <- proxTips(myTree, met="Abouheif")
 moran.idx(tdata(ung)$afbw, W)
-moran.idx(ung$tip.data[,1], W, addInfo=TRUE)
+moran.idx(ung@tip.data[,1], W, addInfo=TRUE)
 @
 
 From here, it is quite straightforward to build a non-parametric test

@@ -11,7 +11,7 @@ distTips <- function(x, tips="all",
     method <- match.arg(method)
     N <- nTips(x)
     if(tips[1]=="all") { tips <- 1:N }
-    tips <- getnodes(x, tips)
+    tips <- getNode(x, tips)
     tips.names <- names(tips)
 
     ## some checks
@@ -110,10 +110,10 @@ distRoot <- function(x, tips="all", method=c("patristic","nNodes","Abouheif","su
     method <- match.arg(method)
     N <- nTips(x)
     if(tips[1]=="all") { tips <- 1:N }
-    tips <- getnodes(x, tips)
+    tips <- getNode(x, tips)
     tips.names <- names(tips)
     x <- as(x, "phylo4")
-    root <- getnodes(x, N+1) # so that we have a named node
+    root <- getNode(x, N+1) # so that we have a named node
 
     ## some checks
     if(is.character(checkval <- check_phylo4(x))) stop(checkval)
