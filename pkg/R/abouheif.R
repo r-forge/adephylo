@@ -14,8 +14,8 @@ abouheif.moran <- function (x, W=NULL,
         W <- as.matrix(W)
     } else { # otherwise computed W from x, a phylo4d object
         if(!inherits(x, "phylo4d")) stop("if W is not provided, x has to be a phylo4d object")
-        if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
-        if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
+        if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
+        if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk)
         W <- proxTips(x, method=method, a=a, normalize="row", symmetric=TRUE)
     }
 
@@ -25,8 +25,8 @@ abouheif.moran <- function (x, W=NULL,
 
     ## take data from x if it is a phylo4d
     if(inherits(x, "phylo4d")){
-        if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
-        if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
+        if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
+        if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk)
         x <- tdata(x)
     }
 

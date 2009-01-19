@@ -41,7 +41,7 @@ orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
             ## check that tre is provided and valid
             if(is.null(tre)) stop("tre, orthobasis or prox must be provided")
             tre <- as(tre, "phylo4")
-            if (is.character(checkval <- check_phylo4(tre))) stop(checkval)
+            if (is.character(checkval <- checkPhylo4(tre))) stop(checkval)
             orthobas <- treePart(tre, result="orthobasis")
         } else { # else orthobasis from the proxi matrix.
             orthobas <- orthobasis.phylo(prox=prox)

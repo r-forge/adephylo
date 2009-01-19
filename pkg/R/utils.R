@@ -48,7 +48,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
     x <- as(x, "phylo4")
 
     ## some checks
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
     t1 <- getNode(x, tip1)
     t2 <- getNode(x, tip2)
     if(any(is.na(c(t1,t2)))) stop("wrong tip specified")
@@ -170,7 +170,7 @@ listDD <- function(x, nameBy=c("label","number")){
     nameBy <- match.arg(nameBy)
 
     ## check phylo4 object
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
 
     ## computations
     nodIdx <- nTips(x)+1

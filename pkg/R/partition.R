@@ -17,7 +17,7 @@ listTips <- function(x){
     x <- as(x, "phylo4")
 
     ## check phylo4 object
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
 
     ## computations
     nodIdx <- nTips(x)+1
@@ -44,7 +44,7 @@ treePart <- function(x, result=c("dummy", "orthobasis")){
     result <- match.arg(result)
 
     ## check phylo4 object
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
 
     n <- nTips(x) # number of tips
     HTU.idx <- (n+1):(n+nNodes(x)) # index of internal nodes (HTU)

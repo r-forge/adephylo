@@ -15,7 +15,7 @@ distTips <- function(x, tips="all",
     tips.names <- names(tips)
 
     ## some checks
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
     if(any(is.na(tips))) stop("wrong tips specified")
 
     ## create all couples of observations
@@ -52,7 +52,7 @@ distTips <- function(x, tips="all",
                           c(allPath[[i]], allPairs[i,1], allPairs[i,2]) )
         names(allPath) <- allPath.names
 
-        edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
+        edge.idx <- lapply(allPath, function(e) getEdge(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
         res <- lapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
     } # end patristic
@@ -116,7 +116,7 @@ distRoot <- function(x, tips="all", method=c("patristic","nNodes","Abouheif","su
     root <- getNode(x, N+1) # so that we have a named node
 
     ## some checks
-    if(is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if(is.character(checkval <- checkPhylo4(x))) stop(checkval)
     if(any(is.na(tips))) stop("wrong tips specified")
 
 
@@ -133,7 +133,7 @@ distRoot <- function(x, tips="all", method=c("patristic","nNodes","Abouheif","su
         allPath <- lapply(1:length(allPath), function(i) c(allPath[[i]], tips[i]) )
         names(allPath) <- allPath.names
 
-        edge.idx <- lapply(allPath, function(e) getedges(x, e) ) # list of indices of edges
+        edge.idx <- lapply(allPath, function(e) getEdge(x, e) ) # list of indices of edges
         allEdgeLength <- edgeLength(x)
         res <- sapply(edge.idx, function(idx) sum(allEdgeLength[idx], na.rm=TRUE) )
     } # end patristic

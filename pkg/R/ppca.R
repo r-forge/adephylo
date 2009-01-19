@@ -11,8 +11,8 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
 
     ## handle arguments
     if(!require(ade4)) stop("The package ade4 is not installed.")
-    if (is.character(chk <- check_phylo4(x))) stop("bad phylo4d object: ",chk)
-    if (is.character(chk <- check_data(x))) stop("bad phylo4d object: ",chk)
+    if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
+    if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk)
 
     tre <- as(x, "phylo4")
     method <- match.arg(method)

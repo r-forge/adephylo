@@ -16,7 +16,7 @@ proxTips <- function(x, tips="all",
     tips <- getNode(x, tips)
 
     ## some checks
-    if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+    if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
     if(any(is.na(tips))) stop("wrong tips specified")
 
     ## compute distances

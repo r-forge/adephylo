@@ -11,7 +11,7 @@ orthobasis.phylo <- function(x=NULL, prox=NULL,
 
     if(is.null(prox)){ # have to compute prox
         x <- as(x, "phylo4")
-        if (is.character(checkval <- check_phylo4(x))) stop(checkval)
+        if (is.character(checkval <- checkPhylo4(x))) stop(checkval)
         W <- proxTips(x, tips="all", method=method, a=a, normalize="row", symmetric=TRUE)
     } else { # prox is provided
         W <- as.matrix(prox)
