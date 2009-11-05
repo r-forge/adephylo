@@ -63,7 +63,7 @@ treePart <- function(x, result=c("dummy", "orthobasis")){
     ## main computations
     temp <- listTips(x)
     res <- data.frame(lapply(temp,fDum))
-    row.names(res) <- x@tip.label
+    row.names(res) <- tipLabels(x)
     res <- res[,-1]
 
     if(result=="dummy"){
@@ -135,7 +135,7 @@ treePart <- function(x, result=c("dummy", "orthobasis")){
     res <- res[,-1] # keep only centred vectors; orthogonal for identity
     res <- res * sqrt(n) # render vectors orthogonal for 1/n
 
-    rownames(res) <- x@tip.label
+    rownames(res) <- tipLabels(x)
     colnames(res) <- paste("V",1:ncol(res))
 
     return(as.data.frame(res))
