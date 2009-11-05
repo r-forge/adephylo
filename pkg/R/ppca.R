@@ -32,7 +32,7 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
     N <- nTips(x)
 
     ## data matrix X
-    X <- tdata(x, which="tip")
+    X <- tdata(x, type="tip")
     X.colnames <- names(X)
     X.rownames <- row.names(X)
     temp <- sapply(X, is.numeric)

@@ -27,7 +27,7 @@ abouheif.moran <- function (x, W=NULL,
     if(inherits(x, "phylo4d")){
         if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
         ## if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk) : no longer needed
-        x <- tdata(x)
+        x <- tdata(x, type="tip")
     }
 
     ## main computations

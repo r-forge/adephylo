@@ -30,7 +30,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     tre <- suppressWarnings(as(x,"phylo"))
     ##tre$node.label <- x@node.label # this should be done by the as(x,"phylo")
     ## plot only tree if no tip data
-    if(ncol(tdata(x,which="tip")) == 0) {
+    if(ncol(tdata(x,type="tip")) == 0) {
         plot.phylo(tre, type=treetype, direction="rightwards", show.tip.label=show.tip.label,
                    show.node.label=show.node.label, cex=cex.label,
                    no.margin=FALSE, x.lim=NULL, y.lim=NULL, ...)
@@ -39,7 +39,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
 
 #### data handling
     ## retrieve data
-    dat <- tdata(x, which="tip")
+    dat <- tdata(x, type="tip")
     dat <- dat[, repVar, drop=FALSE]
     clas <- lapply(dat,class)
     isNum <- sapply(clas, function(e) e %in% c("integer","numeric"))
