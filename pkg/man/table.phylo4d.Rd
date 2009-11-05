@@ -79,7 +79,7 @@ if(require(ape) & require(phylobase) & require(ade4)){
 tr <- rtree(20)
 dat <- data.frame(a = rnorm(20), b = scale(1:20), c=runif(20,-2,2) )
 dat[3:6, 2] <- NA # introduce some NAs
-obj <- phylo4d(tr, dat, use.tip=FALSE) # build a phylo4d object
+obj <- phylo4d(tr, dat) # build a phylo4d object
 table.phylo4d(obj) # default scatterplot
 table.phylo4d(obj,cex.leg=.6, use.edge.length=FALSE) # customized
 table.phylo4d(obj,treetype="clad", show.node=FALSE, cex.leg=.6,

@@ -268,22 +268,21 @@ class(ung)
 table.phylo4d(ung)
 @
 
-\noindent Note that the constructor checks the consistency of the
-names used for the tips of the tree and for the rows of the data.frame.
-Inconsistencies issue an error.
-To override this behaviour, one can specify
-\code{use.tip.names=FALSE}.
-However, this can be tricky: often, mismatches between names can
-indicate that data are not sorted adequately; moreover, object created
-with such mismatches will often be invalid objects, and may issue
-errors in further analyses.
-\\
+%% \noindent Note that the constructor checks the consistency of the
+%% names used for the tips of the tree and for the rows of the data.frame.
+%% Inconsistencies issue an error.
+%% To override this behaviour, one can specify
+%% \code{use.tip.names=FALSE}.
+%% However, this can be tricky: often, mismatches between names can
+%% indicate that data are not sorted adequately; moreover, object created
+%% with such mismatches will often be invalid objects, and may issue
+%% errors in further analyses.
+%% \\
 
 Data are stored inside the slot \code{@tip.data} of the object.
-They can be accessed either via this slot (in our example,
-\code{ung@tip.data}), or using the function \code{tdata}:
+They can be accessed using the function \code{tdata}:
 <<>>=
-x <- tdata(ung)
+x <- tdata(ung, type="tip")
 head(x)
 @
 
