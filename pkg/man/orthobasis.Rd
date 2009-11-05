@@ -25,7 +25,7 @@ me.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouhei
 orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1)
 }
 \arguments{
-  \item{x}{A tree of  class \code{\link[pkg:ape]{phylo}},
+  \item{x}{A tree of  class \code{\link[ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{prox}{a matrix of phylogenetic proximities as returned by \code{\link{proxTips}}.}
   \item{method}{a character string (full or abbreviated without
@@ -48,7 +48,7 @@ orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif",
   - attr(...,"weights"): weights of tips; current implementation uses
   only uniform weights
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \references{
 Peres-Neto, P. (2006) A unified strategy for estimating and controlling
 spatial, temporal and phylogenetic autocorrelation in ecological models

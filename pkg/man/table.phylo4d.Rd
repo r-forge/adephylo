@@ -8,9 +8,9 @@
   allows plotting of a tree and one or more quantitative traits
   (possibly containing missing data, represented by an 'x').\cr
   
-  The plot of phylogenies is performed by a call to \code{\link[pkg:ape]{plot.phylo}}
+  The plot of phylogenies is performed by a call to \code{\link[ape]{plot.phylo}}
   from the \code{ape} package. Hence, many of the arguments of
-  \code{\link[pkg:ape]{plot.phylo}} can be passed to \code{table.phylo4d},
+  \code{\link[ape]{plot.phylo}} can be passed to \code{table.phylo4d},
   through the \dots argument, but their names must be complete.
 }
 \usage{
@@ -55,23 +55,23 @@ table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squar
    indicating the lower-left position of the legend. Can be set to
    \code{locator(1) to position the legend interactively.}}
  \item{\dots}{further arguments to be passed to plot methods from
-  \code{ape}. See \code{\link[pkg:ape]{plot.phylo}}.}
+  \code{ape}. See \code{\link[ape]{plot.phylo}}.}
 }
 \seealso{The \linkS4class{phylo4d} class for storing \code{phylogeny+data}.\cr
 
-  \code{\link[pkg:ape]{plot.phylo}} from the \code{ape} package.\cr
+  \code{\link[ape]{plot.phylo}} from the \code{ape} package.\cr
 
   An alternative (deprecated) representation is available from
-  \code{\link[pkg:ade4]{dotchart.phylog}}.
+  \code{\link[ade4]{dotchart.phylog}}.
 }
 \details{
   The function \code{table.phylo4d} is based on former plot method for
   \linkS4class{phylo4d} objects from the \code{phylobase} package.
   It replaces the deprecated \code{ade4} functions
-  \code{\link[pkg:ade4]{symbols.phylog}} and
-  \code{\link[pkg:ade4]{table.phylog}}.
+  \code{\link[ade4]{symbols.phylog}} and
+  \code{\link[ade4]{table.phylog}}.
 }
-\author{Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr}}
+\author{Thibaut Jombart \email{tjombart@imperial.ac.uk}}
 \examples{
 if(require(ape) & require(phylobase) & require(ade4)){
 

@@ -40,7 +40,7 @@ proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"
          a=1, normalize=c("row","col","none"), symmetric=TRUE)
 }
 \arguments{
-  \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
+  \item{x}{a tree of  class \code{\link[ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{tips}{A vector of integers identifying tips by their numbers, or
     a vector of characters identifying tips by their names. Distances
@@ -92,7 +92,7 @@ proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"
   inverse of the sum of all terms in DDP. This matrix was denoted 'M' in
   Pavoine \emph{et al.} (2008), who reported that it is related to May's index (May, 1990).
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \seealso{\code{\link{distTips}} which computes several phylogenetic
   distances between tips.
 }

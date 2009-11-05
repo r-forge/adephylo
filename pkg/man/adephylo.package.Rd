@@ -12,7 +12,7 @@
 
   Comparative data (phylogeny+traits) are handled as
   \linkS4class{phylo4d} objects, a canonical class implemented by the
-  \code{phylobase} package. Trees are handled as \code{\link[pkg:ape]{phylo}}
+  \code{phylobase} package. Trees are handled as \code{\link[ape]{phylo}}
   objects (from the \code{ape} package) or as \linkS4class{phylo4}
   objects (\code{phylobase}'s extension of \code{phylo} objects).\cr
 
@@ -136,7 +136,7 @@
   }  
 }
 \author{
-  Thibaut Jombart <jombart@biomserv.univ-lyon1.fr>\cr
+  Thibaut Jombart <tjombart@imperial.ac.uk>\cr
   with contributions Stéphane Dray <dray@biomserv.univ-lyon1.fr>. \cr
   Parts of former code from \code{ade4} by Daniel Chessel and Sébastien Ollier.
 }

@@ -9,7 +9,7 @@
 distRoot(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
 }
 \arguments{
-  \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
+  \item{x}{a tree of  class \code{\link[ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{tips}{A vector of integers identifying tips by their numbers, or
     a vector of characters identifying tips by their names.}
@@ -38,7 +38,7 @@ distRoot(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
   computing the product of all terms in DDP, this distance computes the
   sum of all terms in DDP.
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \references{
   Pavoine, S.; Ollier, S.; Pontier, D. & Chessel, D. (2008) Testing for
   phylogenetic signal in life history variable: Abouheif's test

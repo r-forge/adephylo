@@ -16,7 +16,7 @@
 treePart(x, result=c("dummy", "orthobasis"))
 }
 \arguments{
-  \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
+  \item{x}{a tree of  class \code{\link[ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{result}{a character string specifying the type of result: either
   a basis of dummy vectors (\code{dummy}), or an orthobasis derived from these dummy vectors (\code{orthobasis}).}
@@ -25,7 +25,7 @@ treePart(x, result=c("dummy", "orthobasis"))
   A matrix of numeric vectors (in columns) having one value for each
   tip (rows).
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \references{
 Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompose the Variance of a Life-History Trait across a Phylogenetic Tree. \emph{Biometrics}, \bold{62}, 471--477.
 }
@@ -37,7 +37,7 @@ Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompo
 }
 \details{
   Orthobasis produced by this function are identical to those stored in
-  the \$Bscores component of deprecated \link[pkg:ade4]{phylog} objects,
+  the \$Bscores component of deprecated \link[ade4]{phylog} objects,
   from the ade4 package.
 }
 \examples{

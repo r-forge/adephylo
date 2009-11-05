@@ -13,7 +13,7 @@
 distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
 }
 \arguments{
-  \item{x}{a tree of  class \code{\link[pkg:ape]{phylo}},
+  \item{x}{a tree of  class \code{\link[ape]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{tips}{A vector of integers identifying tips by their numbers, or
     a vector of characters identifying tips by their names. Distances
@@ -43,7 +43,7 @@ distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
   computing the product of all terms in DDP, this distance computes the
   sum of all terms in DDP.
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \seealso{\code{\link{distTips}} which computes several phylogenetic
   distances between tips.
 }

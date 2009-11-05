@@ -60,11 +60,11 @@ Thioulouse, J., Chessel, D. and Champely, S. (1995) Multivariate analysis of spa
 \emph{Environmental and Ecological Statistics}, \bold{2}, 1--14.
 }
 \author{Original code from ade4 (gearymoran function) by Sébastien Ollier\cr
-  Adapted and maintained by Thibaut Jombart <jombart@biomserv.univ-lyon1.fr>.
+  Adapted and maintained by Thibaut Jombart <tjombart@imperial.ac.uk>.
 }
 \seealso{
-  - \code{\link[pkg:ade4]{gearymoran}} from the ade4 package\cr
-  - \code{\link[pkg:ape]{Moran.I}} from the ape package for the
+  - \code{\link[ade4]{gearymoran}} from the ade4 package\cr
+  - \code{\link[ape]{Moran.I}} from the ape package for the
   classical Moran's I test. \cr
 }
 \examples{

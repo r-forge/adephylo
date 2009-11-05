@@ -27,7 +27,7 @@
 \value{
   \code{.tipToRoot}: a vector of named integers identifying nodes.\cr
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
 if(require(ape) & require(phylobase)){
 ## make a tree

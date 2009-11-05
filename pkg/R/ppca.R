@@ -1,7 +1,7 @@
 ####
 #### Phylogenetic ordination tools
 ####
-#### Thibaut Jombart 2008 (jombart@biomserv.univ-lyon1.fr)
+#### Thibaut Jombart 2008 (tjombart@imperial.ac.uk)
 
 ################
 # Function ppca

@@ -85,7 +85,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
   The phylogenetic Principal Component Analysis (pPCA, Jombart et al.,
   in prep) is derived from the spatial Principal Component Analysis
   (spca, Jombart et al. 2008), implemented in the adegenet package (see
-  \code{\link[pkg:adegenet]{spca}}).\cr
+  \code{\link[adegenet]{spca}}).\cr
 
   pPCA is designed to investigate phylogenetic patterns in the variability of a set of
   traits. The analysis returns principal components maximizing the
@@ -139,10 +139,10 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
   of Moran's I and Geary's c. \emph{Geographical Analysis}, \bold{16}, 17--24.
 
 }
-\seealso{The implementation of \code{\link[pkg:adegenet]{spca}} in the
-  adegenet package (\code{\link[pkg:adegenet]{adegenet}}) \cr
+\seealso{The implementation of \code{\link[adegenet]{spca}} in the
+  adegenet package (\code{\link[adegenet]{adegenet}}) \cr
  }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
 ## build an look at data
 data(maples)

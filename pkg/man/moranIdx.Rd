@@ -21,7 +21,7 @@ moran.idx(x, prox, addInfo=FALSE)
 \value{
   The numeric value of Moran's index.
 }
-\author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
+\author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \references{
   Moran, P.A.P. (1948) The interpretation of statistical
   maps. \emph{Journal of the Royal Statistical Society, B}
