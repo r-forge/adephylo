@@ -9,8 +9,8 @@
 
 \usepackage[utf8]{inputenc} % for UTF-8/single quotes from sQuote()
 \newcommand{\code}[1]{{{\tt #1}}}
-\title{The \code{adephylo} package}
-\author{Thibaut Jombart}
+\title{\code{adephylo}: exploratory analyses for the phylogenetic comparative method}
+\author{Thibaut Jombart and St\'ephane Dray}
 \date{\today}
 
 
@@ -44,27 +44,25 @@
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 
-\SweaveOpts{prefix.string = figs/adephylo, fig = FALSE, eps = TRUE, pdf = TRUE, width = 6, height = 6}
+\SweaveOpts{prefix.string = figs/adephylo, fig = FALSE, eps = FALSE, pdf = TRUE, width = 6, height = 6}
 
 
 This document describes the \code{adephylo} package for the R software.
 \code{adephylo} aims at implementing exploratory methods for the
 analysis of phylogenetic comparative data, i.e. biological traits measured for
 taxa whose phylogeny is also provided.
-Procedures implemented in this package rely on exploratory data
-analysis.
-They include data visualization and manipulation, tests for phylogenetic
-autocorrelation, multivariate analysis, computation of phylogenetic
-proximities and distances, and modelling phylogenetic signal using
-orthonormal bases.
-\\
+This package extends and replaces implementation of phylogeny-related
+methods in the ade4 package \url{http://pbil.univ-lyon1.fr/ADE-4/home.php?lang=eng}.
 
-These methods can be used to visualize, test, remove or investigate
-the phylogenetic signal in comparative data.
-The purpose of this document is to provide a general view a the main
-functionalities of \code{adephylo}, and to show how this package can be
-used along with \code{ape}, \code{phylobase} and \code{ade4} to
-analyse comparative data.
+Procedures implemented in \code{adephylo} rely on exploratory data analysis.  They include data
+visualization and manipulation, tests for phylogenetic autocorrelation, multivariate analysis,
+computation of phylogenetic proximities and distances, and modelling phylogenetic signal using
+orthonormal bases.  \\
+
+These methods can be used to visualize, test, remove or investigate the phylogenetic signal in
+comparative data.  The purpose of this document is to provide a general view of the main
+functionalities of \code{adephylo}, and to show how this package can be used along with \code{ape},
+\code{phylobase} and \code{ade4} to analyse comparative data.
 
 
 
@@ -73,7 +71,7 @@ analyse comparative data.
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{First steps into \code{adephylo}}
+\section{First steps}
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 
@@ -82,48 +80,38 @@ analyse comparative data.
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Data representation: why we are not reinventing the weel}
 %%%%%%%%%%%%%%%%%%%%%
-Data representation can be defined as the way data are stored in a
-software (R, in our case).
-Technically, they are classes of objects containing the information.
-In the case of phylogeny, and comparative data, very efficient data
-representation are already defined in other packages.
-Hence, it made much more sense using directly objects from these classes.
-\\
+
+Data representation can be defined as the way data are stored in a software
+(R, in our case).  Technically, data representation is defined by classes of objects that contain
+the information.  In the case of phylogeny and comparative data, very efficient data representation
+are already defined in other packages.  Hence, it makes much more sense to use directly objects from
+these classes.  \\
 
 
-Phylogenies are best represented in Emmanuel Paradis's \code{ape}
-package (\url{http://ape.mpl.ird.fr/}),
-as the class \code{phylo}. Note that as \code{ape} is by far the
-largest package dedicated to phylogeny, using the \code{phylo} class
-assures a good interoperability of data. This class is defined in an
-online document: \url{http://ape.mpl.ird.fr/misc/FormatTreeR_28July2008.pdf}.
-\\
+Phylogenies are best represented in Emmanuel Paradis's \code{ape} package
+(\url{http://ape.mpl.ird.fr/}), as the class \code{phylo}.  As \code{ape} is by far the largest
+package dedicated to phylogeny, using the \code{phylo} class assures a good interoperability of
+data. This class is defined in an online document:
+\url{http://ape.mpl.ird.fr/misc/FormatTreeR_28July2008.pdf}.  \\
 
-However, data that are to be analyzed in \code{adephylo} do not only
-contain trees, but also traits associated to the tips of a tree.
-The package \code{phylobase}
-(\url{http://r-forge.r-project.org/projects/phylobase/}) is a
-collaborative effort designed to the handling of such data.
-Its representation of phylogenies is very similar to that of
-\code{ape}: the class \code{phylo4} basically is an extension of
-\code{phylo} class into formal (S4) class.
-More interestingly, the S4 class \code{phylo4d} can be used to store a
-tree and data associated to tips, internal nodes, or even edges of a tree.
-Classes of \code{phylobase} are described in a vignette of the
-package, accessible by typing:
+However, data that are to be analyzed in \code{adephylo} do not only contain trees, but also traits
+associated to the tips of a tree.  The package \code{phylobase}
+(\url{http://r-forge.r-project.org/projects/phylobase/}) is a collaborative effort designed to
+handling such data.  Its representation of phylogenies slightly differs from that of \code{ape}; the
+class \code{phylo4} was originally an extension of the \code{phylo} class into formal (S4) class, but it
+has now evolved into something more original. The S4 class \code{phylo4d} (`d' for `data') can be used to store a
+tree and data associated to tips, internal nodes, or even edges of a tree.  Classes of
+\code{phylobase} are described in a vignette of the package, accessible by typing:
 <<eval=FALSE>>=
-vignette("phylobase", package="phylobase")
+vignette("phylobase")
 @
 
-~\\
-As trees and comparative data are already handled by \code{ape} and
-\code{phylobase}, no particular data format shall be defined in
-\code{adephylo}.
-In particular, we are no longer using \code{phylog} objects, which
-were used to represent phylogenies in \code{ade4}.
-This class is now deprecated, but all previous functionalities
-available for \code{phylog} objects have been re-implemented and
--- in some cases -- improved in \code{adephylo}.
+~\\ As trees and comparative data are already handled by \code{ape} and \code{phylobase}, no
+particular data format shall be defined in \code{adephylo}.  In particular, we are no longer using
+\code{phylog} objects, which were used to represent phylogenies in \code{ade4} in a very \textit{ad
+  hoc} way, without much compatibility with other packages.  This class is now deprecated, but all
+previous functionalities available for \code{phylog} objects have been re-implemented and -- in some
+cases -- improved in \code{adephylo}.
 
 
 
@@ -132,38 +120,30 @@ available for \code{phylog} objects have been re-implemented and
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Installing the package}
 %%%%%%%%%%%%%%%%%%%%%
-What is tricky here is that a vignette is basically available once the
-package is installed.
-Assuming you got this document before installing the package, here are
-some clues about installing \code{adephylo}.
-\\
 
-First of all, \code{adephylo} depends on other packages, being
-\code{methods}, \code{ape}, \code{phylobase}, and \code{ade4}.
-These dependencies are mandatory, that is, you actually need to have
-these packages installed (with or without their dependencies) before
-using \code{adephylo}.
-Also, it is better to make sure you are using the latest versions of
-these packages. This can be achieved by typing
-\texttt{update.packages}, or (better for \code{ade4} and \code{phylobase}) by installing devel versions
-from R-Forge (\url{http://r-forge.r-project.org/}).
-In all cases, the latest version of \code{adephylo} can be found from
-\url{http://r-forge.r-project.org/R/?group_id=303}.
-\\
+What is tricky here is that a vignette is basically available once the package
+is installed.  Assuming you got this document before installing the package, here are some clues
+about installing \code{adephylo}.  \\
+
+First of all, \code{adephylo} depends on other packages, being \code{methods}, \code{ape},
+\code{phylobase}, and \code{ade4}.  These dependencies are mandatory, that is, you actually need to
+have these packages installed before using \code{adephylo}.  Also, it is better to make sure you are
+using the latest versions of these packages. This can be achieved using
+the \texttt{update.packages} command, or by installing devel versions from R-Forge
+(\url{http://r-forge.r-project.org/}).  In all cases, the latest version of \code{adephylo} can be
+found from \url{http://r-forge.r-project.org/R/?group_id=303}.  \\
 
 When loading the package, dependencies are also loaded:
 <<load>>=
 library(adephylo)
+search()
 @
 
-Note that possibly conflicting, deprecated functions or datasets from \code{ade4} are
-masked by \code{adephylo}.
-In case the converse would occur (i.e. deprecated function masking a
-function of \code{adephylo}), one can refer to the 'good' version of a
-function by adding the prefix \code{adephylo::} to the function,
-without space.
-Hence, it is possibly to coerce the version of a masked function,
-using a kludge like:
+Note that possibly conflicting, deprecated functions or datasets from \code{ade4} are masked by
+\code{adephylo}.  In case the converse would occur (i.e. deprecated function masking a function of
+\code{adephylo}), one can refer to the `good' version of a function by adding the prefix
+\code{adephylo::} to the function.  Hence, it is possible to coerce the version of a masked
+function, using a kludge like:
 <<kludge>>=
 cat("\n=== Old - deprecated- version ===\n")
 orthogram <- ade4::orthogram
@@ -186,7 +166,7 @@ by typing:
 ?adephylo
 @
 
-Note that a html version may be preferred to browse easily the content
+The html version of this manpage may be preferred to browse easily the content
 of \code{adephylo}; this is accessible by typing:
 <<eval=FALSE>>=
 help("adephylo", package="adephylo", html=TRUE)
@@ -204,9 +184,10 @@ options(htmlhelp = FALSE)
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Putting data into shape}
 %%%%%%%%%%%%%%%%%%%%%
-While this is not the purpose of this document to go through the
-details of \code{phylo}, \code{phylo4} and \code{phylo4d} objects, we
-shall show briefly how these objects can be obtained.
+
+While this is not the purpose of this document to go through the details of
+\code{phylo}, \code{phylo4} and \code{phylo4d} objects, we shall show briefly how these objects can
+be obtained.
 
 
 % % % % % % % % % % %
@@ -214,7 +195,7 @@ shall show briefly how these objects can be obtained.
 % % % % % % % % % % %
 The simplest way of turning a tree into a \code{phylo} object is using
 ape's function \code{read.tree}.
-This function reads a tree with the Newick (or 'parentetic') format,
+This function reads a tree with the Newick (or `parentetic') format,
 from a file (default, argument \code{file}) of from a character string
 (argument \code{text}).
 <<readTree, plot=TRUE>>=
@@ -232,7 +213,7 @@ tree in the \code{\$tre} component.
 \\
 
 Note that \code{phylo} trees can also be constructed from alignements
-(see \code{read.GenBankdist.dna}, \code{read.dna},
+(see \code{read.GenBank}, \code{read.dna},
 \code{dist.dna}, \code{nj}, \code{bionj}, and \code{mlphylo}, all in
 \code{ape}), or even simulated (for instance, see \code{rtree}).
 \\
@@ -254,14 +235,17 @@ all.equal(temp, myTree)
 % % % % % % % % % % %
 \subsubsection{Making a \code{phylo4d} object}
 % % % % % % % % % % %
-\code{phylo4d} objects are S4 objects, and are thus created in a
-particular way.
-The most immediate way of creating a \code{phylo4d} object is to call
-to the constructor, also named \code{phylo4d}.
-This is a function that takes two arguments: a tree (\code{phylo} or
-\code{phylo4} format) and a data.frame containing data, for tips by
-default (see \code{?phylo4d} for more information).
-Here is an example:
+
+\code{phylo4d} objects are S4 objects, and are thus created in a particular
+way.  These objects can be obtained in two ways, by reading a Nexus file containing tree and data
+information, or by `assembling' a tree and data provided for tips, nodes, or edges.
+
+Nexus files containing both tree and data can be read by \code{phylobase}'s function
+\code{readNexus} (see corresponding manpage for more information).
+The other way of creating a \code{phylo4d} object is using the
+constructor, also named \code{phylo4d}.  This is a function that takes two arguments: a tree
+(\code{phylo} or \code{phylo4} format) and a \code{data.frame} containing data, for tips by default (see
+\code{?phylo4d} for more information).  Here is an example:
 <<phylo4d, fig=TRUE>>=
 ung <- phylo4d(myTree, ungulates$tab)
 class(ung)
@@ -279,7 +263,7 @@ table.phylo4d(ung)
 %% errors in further analyses.
 %% \\
 
-Data are stored inside the slot \code{@tip.data} of the object.
+Data are stored inside the \code{@data} slot of the object.
 They can be accessed using the function \code{tdata}:
 <<>>=
 x <- tdata(ung, type="tip")
@@ -303,26 +287,23 @@ head(x)
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Quantifying and testing phylogenetic signal}
 %%%%%%%%%%%%%%%%%%%%%
-In this document, the terms 'phylogenetic signal' and 'phylogenetic
-autocorrelation' are used interchangeably.
-They refer to the fact that observations of traits are not independent
-in closely related taxa.
-Several procedures are implemented by \code{adephylo} to measure and
-test phylogenetic autocorrelation.
+
+In this document, the terms `phylogenetic signal' and `phylogenetic autocorrelation' are used
+interchangeably.  They refer to the fact that values of life-history traits or ecological features
+are not independent in closely related taxa.  Several procedures are implemented by \code{adephylo}
+to measure and test phylogenetic autocorrelation.
 
 
 % % % % % % % % % % %
 \subsubsection{Moran's $I$}
 % % % % % % % % % % %
-The function \code{moran.idx} computes Moran's $I$, the most
-widely-used autocorrelation measure.
-It can also provide additionnal information (argument \code{addInfo}),
-being the null value of $I$ (i.e., the expected value in absence of
-phylogenetic autocorrelation), and the range of variation of $I$.
-It requires the degree of relatedness of tips on the phylogeny to be
-modelled by a matrix of phylogenetic proximities.
-Such a matrix can be obtained using different methods implemented by
-the function \code{proxTips}.
+
+The function \code{moran.idx} computes Moran's $I$, the most widely-used autocorrelation measure.
+It can also provide additionnal information (argument \code{addInfo}), being the null value of $I$
+(i.e., the expected value in absence of phylogenetic autocorrelation), and the range of variation of
+$I$.  It requires the degree of relatedness of tips on the phylogeny to be modelled by a matrix of
+phylogenetic proximities.  Such a matrix can be obtained using different methods implemented by the
+function \code{proxTips}.
 
 <<moranI>>=
 W <- proxTips(myTree, met="Abouheif")
@@ -387,8 +368,8 @@ proximity matrix to the function (argument \code{W}).
 For instance, we would like to use the correlation corresponding to a
 Brownian motion as a measure of phylogenetic proximity.
 
-First, we must estimate branch lengths, as the tree we possess does
-not have any:
+First, we must estimate branch lengths, as our tree does
+not have any (ideally, we would already have a tree with meaningful branch lengths):
 <<>>=
 hasEdgeLength(ung)
 myTree.withBrLe <- compute.brlen(myTree)
@@ -402,12 +383,10 @@ myProx <- vcv.phylo(myTree.withBrLe)
 abouheif.moran(ung, W=myProx)
 @
 
-\noindent In the present case, traits no longer appear as
-phylogenetically autocorrelated.
-Several explanation can be proposed: the procedure for estimating
-branch length might not have been appropriate, or the Brownian motion
-may simply not be appropriate to describe the evolution of the traits
-under study for this set of taxa.
+\noindent In the present case, traits no longer appear as phylogenetically autocorrelated.  Several
+explanation can be proposed: the procedure for estimating branch length may not be appropriate in
+this case, or the Brownian motion may fail to describe the evolution of the traits under study for
+this set of taxa.
 
 
 
@@ -443,29 +422,24 @@ temp <- phylo4d(x, x.part)
 table.phylo4d(temp, cent=FALSE, scale=FALSE)
 @
 
-\noindent What we would like to do is assess where the variation of a trait is localized on
-the phylogeny; to do so, be could use these dummy vectors as
-regressors and see how variation is distributed among these vectors.
-However, these dummy vectors cannot be used as regressors because they
-are linearly dependent.
-The orthogram circumvents this issue by transforming and selecting
-dummy vectors into a new set of variables that are orthonormal.
-The obtained orthonormal basis can be used to decompose variation of
-the trait.
-Even if not necessary to get an orthogram, this basis can be obtained
-from \code{treePart}:
+\noindent What we would like to do is assess where the variation of a trait is structured on the
+phylogeny; to do so, we could use these dummy vectors as regressors and see how variation is
+distributed among these vectors.  However, these dummy vectors cannot be used as regressors because
+they are linearly dependent.  The orthogram circumvents this issue by transforming and selecting
+dummy vectors into a new set of variables that are orthonormal.  The obtained orthonormal basis can
+be used to decompose the variation of the trait.  Even if not necessary to get an orthogram, this basis
+can be obtained from \code{treePart}:
 <<>>=
 args(treePart)
 temp <- phylo4d(x, treePart(x, result="orthobasis") )
-table.phylo4d(temp)
 @
 
-\noindent And here are the first 10 vectors of the orthonormal basis
+\noindent And here are the first 8 vectors of the orthonormal basis
 for the ungulate dataset:
 <<orthobas1, fig=TRUE>>=
 temp <- phylo4d(myTree, treePart(myTree, result="orthobasis") )
 par(mar=rep(.1,4))
-table.phylo4d(temp, repVar=1:8)
+table.phylo4d(temp, repVar=1:8, ratio.tree=.3)
 @
 
 The decomposition of variance achieved by projecting a trait onto this
@@ -492,31 +466,25 @@ afbw.ortgTest
 \subsubsection{Using orthonormal bases}
 % % % % % % % % % % %
 
-In fact, the previous section describing the 'orthogram' has already
-shown that testing phylogenetic signal can (often) underlie modelling
-phylogenetic signal.
-In the case of the orthogram, several tests are linked to the
-decomposition of the variance of a trait onto a particular basis describing tree topology.
-In fact, it is possible to extend the principle of the 'orthogram' to
-any orthonormal basis modelling phylogenetic topology.
-Another example of such bases is offered by Moran's eigenvectors,
-which can be used to model different observable phylogenetic
-structures (see references in \code{me.phylo}).
+The previous section describing the orthogram has shown that testing phylogenetic signal underlies a
+model of phylogenetic structure. In the case of the orthogram, several tests are based on the
+decomposition of the variance of a trait onto an orthonormal basis describing tree topology.  In
+fact, it is possible to extend this principle to any orthonormal basis modelling phylogenetic
+topology.  Another example of such bases is offered by Moran's eigenvectors, which can be used to
+model different observable phylogenetic structures (see references in \code{me.phylo}).
 
-Moran's phylogenetic eigenvectors are implemented by the function
-\code{me.phylo} (also nicknamed \code{orthobasis.phylo}).
-The returned object is a data.frame with the class \code{orthobasis}
-defined in \code{ade4}; columns of this object are Moran's eigenvectors.
-An \code{orthobasis} be coerced to a regular data.frame or to a matrix
-using \code{as.data.frame} and \code{as.matrix}.
+Moran's phylogenetic eigenvectors are implemented by the function \code{me.phylo} (also nicknamed
+\code{orthobasis.phylo}).  The returned object is a data.frame with the class \code{orthobasis}
+defined in \code{ade4}; columns of this object are Moran's eigenvectors.  An \code{orthobasis} can
+be coerced to a regular \code{data.frame} or to a matrix using \code{as.data.frame} and \code{as.matrix}.
 <<>>=
 me.phylo(myTree.withBrLe)
 @
 
 \noindent Moran's eigenvectors are constructed from a matrix of
 phylogenetic proximities between tips.
-While any proximity can be used (argument \code{prox}), 5 proximities
-implemented by the \code{proxTips} function can be used, giving rise
+Any proximity can be used (argument \code{prox}); the 5 proximities
+implemented by the \code{proxTips} function are available by default, giving rise
 to different orthobases:
 <<figFourBas, fig=TRUE,include=FALSE, print=FALSE>>=
 ung.listBas <- list()
@@ -530,16 +498,12 @@ invisible(lapply(ung.listBas, table.phylo4d, repVar=1:5, cex.sym=.7, show.tip.la
 
 \includegraphics[width=.8\textwidth]{figs/adephylo-figFourBas}
 
-\noindent In this case, the first Moran's eigenvectors are all very
-similar.
-In other cases, however, the orthobases built from different proximities can be
-quite different.
-\\
+\noindent In this case, the first Moran's eigenvectors are essentially similar.  In other cases,
+however, the orthobases built from different proximities can be quite different. \\
 
-One of the interests of Moran's eigenvectors in phylogeny is to remove
-phylogenetic autocorrelation in a linear model.
-This can be achieved using the appropriate eigenvector as covariate.
-Here is an example when studying the link of two traits in ungulate dataset.
+One of the interests of Moran's eigenvectors in phylogeny is to account for phylogenetic
+autocorrelation in a linear model.  This can be achieved using the appropriate eigenvector as
+covariate.  Here is an example when studying the link of two traits in ungulate dataset.
 <<lm1, fig=TRUE>>=
 afbw <- log(ungulates$tab[,1])
 neonatw <- log((ungulates$tab[,2]+ungulates$tab[,3])/2)
@@ -551,7 +515,7 @@ abline(lm1, col="blue")
 anova(lm1)
 @
 
-\noindent Is this model valid, that is, are its residuals independent?
+\noindent Are the residuals of this model independent?
 <<resid, fig=TRUE>>=
 resid <- residuals(lm1)
 names(resid) <- myTree$tip.label
@@ -560,8 +524,8 @@ abouheif.moran(temp)
 table.phylo4d(temp)
 @
 
-\noindent No, residuals are clearly not independent, and exhibit
-phylogenetic autocorrelation.
+\noindent No, residuals are clearly not independent, as they exhibit
+strong phylogenetic autocorrelation.
 In this case, autocorrelation can be removed by using the first
 Moran's eigenvector as a covariate.
 In general, the appropriate eigenvector(s) can be chosen by usual
@@ -621,17 +585,16 @@ $\alpha=0.05$.
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Using multivariate analyses}
 %%%%%%%%%%%%%%%%%%%%%
-Multivariate analyses can of course be used to identify the main
-biodemographic strategies in a large set of traits.
-This could be (and likely is) the topic of an entire book.
-Such application is not particular to \code{adephylo}, but some
-practices are made easier by the package.
-We here provide a simple example, using the \code{maples} dataset.
-This dataset contains a tree and a set of 31 quantitative traits (see \code{?maples}).
 
-First of all, we seek a summary of the variability in traits using a
-principal component analysis.
-Missing data are replaced by mean values, so they are placed at the origin of the axes (the 'non-informative' point).
+Multivariate analyses can be used to identify the main biodemographic strategies in a large set of
+traits.  This could be the topic of an entire book.  Such application is not particular to
+\code{adephylo}, but some practices are made easier by the package, used together with \code{ade4}.
+We here provide a simple example, using the \code{maples} dataset.  This dataset contains a tree and
+a set of 31 quantitative traits (see \code{?maples}).
+
+First of all, we seek a summary of the variability in traits using a principal component analysis.
+Missing data are replaced by mean values, so they are placed at the origin of the axes (the
+`non-informative' point).
 <<pca1, fig=TRUE>>=
 f1 <- function(x){
     m <- mean(x,na.rm=TRUE)
@@ -642,30 +605,27 @@ f1 <- function(x){
 data(maples)
 traits <- apply(maples$tab, 2, f1)
 pca1 <- dudi.pca(traits, scannf=FALSE, nf=1)
-barplot(pca1$eig, main="PCA eigenvalues")
+barplot(pca1$eig, main="PCA eigenvalues", col=heat.colors(16))
 @
 
-\noindent One axis shall be retained.
-Does this axis reflect a phylogenetic structure?
-We can, as previously, plot it onto the phylogeny.
-In some cases, positive autocorrelation can be better perceived by
-examining the lag vector (see previous section on autoregressive
-models) instead of the original vector.
-Here, we shall plot both the retained principal component, and its lag vector:
+\noindent One axis shall be retained.  Does this axis reflect a phylogenetic structure?  We can
+represent this principal component onto the phylogeny.  In some cases, positive autocorrelation can
+be better perceived by examining the lag vector (see previous section on autoregressive models)
+instead of the original vector.  Here, we shall plot both the retained principal component, and its
+lag vector:
 <<pca2, fig=TRUE>>=
 tre <- read.tree(text=maples$tre)
 W <- proxTips(tre)
 myComp <- data.frame(PC1=pca1$li[,1], lagPC1=W %*% pca1$li[,1])
 myComp.4d <- phylo4d(tre, myComp)
+nodeLabels(myComp.4d) <- names(nodeLabels(myComp.4d))
 table.phylo4d(myComp.4d)
 @
 
-\noindent It is quite clear that the main component of diversity among
-taxa separates descendants from 'N02' from descendants of 'N07'.
-Phylogenetic autocorrelation can be checked in 'PC1' (note that
-testing it in the lag vector would be circulary, as the lag vector
-already otimizes positive autocorrelation), for instance using
-Abouheif's test:
+\noindent It is quite clear that the main component of diversity among taxa separates descendants
+from node 19 from descendants of node 24.  Phylogenetic autocorrelation can be checked in `PC1'
+(note that testing it in the lag vector would be circulary, as the lag vector already otimizes
+positive autocorrelation), for instance using Abouheif's test:
 <<aboutest, fig=TRUE>>=
 myTest <- abouheif.moran(myComp[,1], W=W)
 plot(myTest, main="Abouheif's test using patristic proximity")
@@ -674,7 +634,7 @@ mtext("First principal component - maples data", col="blue", line=1)
 
 \noindent To dig further into the interpretation of this structure,
 one can have a look at the loadings of the traits, to see to which
-biological traits these opposed strategy correspond:
+biological traits these opposed life histories correspond:
 <<loadings, fig=TRUE>>=
 ldgs <- pca1$c1[,1]
 plot(ldgs, type="h", xlab="Variable", xaxt="n", ylab="Loadings")
