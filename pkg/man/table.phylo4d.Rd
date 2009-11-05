@@ -55,7 +55,7 @@ table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squar
    indicating the lower-left position of the legend. Can be set to
    \code{locator(1) to position the legend interactively.}}
  \item{\dots}{further arguments to be passed to plot methods from
-  \code{ape}. See \code{?\link[pkg:ape]{plot.phylo}}.}
+  \code{ape}. See \code{\link[pkg:ape]{plot.phylo}}.}
 }
 \seealso{The \linkS4class{phylo4d} class for storing \code{phylogeny+data}.\cr
 
