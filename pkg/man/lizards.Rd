@@ -51,7 +51,7 @@ title("Phylogeny and the principal components")
 ## remove size effect
 temp <- lapply(liz.pca1$tab, function(e) residuals(lm(e~-1+liz.pca1$li[,1])) )
 temp <- data.frame(temp)
-row.names(temp) <- liz@tip.label
+row.names(temp) <- tipLabels(liz)
 
 ## build corresponding phylo4d object
 liz.noSize <- phylo4d(liz.tr, temp)

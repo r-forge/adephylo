@@ -86,7 +86,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     y.inset <- SYMBSCALE * cex.symbol * usr.height / par("pin")[2]
     x.base <- plotres$x.lim[2] + x.inset # start plotting from x.base rightwards
     if(show.tip.label){
-        temp <- x@tip.label[which.max(nchar(tipLabels(x)))] # longest tip label
+        temp <- tipLabels(x)[which.max(nchar(tipLabels(x)))] # longest tip label
         lab.width <- strwidth(temp, units="user", cex=cex.label) # compute the width to keep for tip labels
     } else{
         lab.width <- 0
