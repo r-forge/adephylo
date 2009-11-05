@@ -3,14 +3,14 @@
 \title{List tips descendings from all nodes of a tree}
 \description{
   The function \code{listTips} lists the tips descending from each node
-  of a tree. The tree can be of class \code{\link[ape]{phylo}},
+  of a tree. The tree can be of class \code{\link[ape:read.tree]{phylo}},
   \linkS4class{phylo4} or \linkS4class{phylo4d}.
 }
 \usage{
 listTips(x)
 }
 \arguments{
-  \item{x}{A tree of  class \code{\link[ape]{phylo}},
+  \item{x}{A tree of  class \code{\link[ape:read.tree]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
 }
 \value{

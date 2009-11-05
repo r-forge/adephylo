@@ -9,7 +9,7 @@
 distRoot(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
 }
 \arguments{
-  \item{x}{a tree of  class \code{\link[ape]{phylo}},
+  \item{x}{a tree of  class \code{\link[ape:read.tree]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{tips}{A vector of integers identifying tips by their numbers, or
     a vector of characters identifying tips by their names.}

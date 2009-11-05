@@ -25,7 +25,7 @@ orthogram(x, tre=NULL, orthobas = NULL, prox = NULL,
 }
 \arguments{
   \item{x}{a numeric vector corresponding to the quantitative variable}
-  \item{tre}{a tree of  class \code{\link[ape]{phylo}},
+  \item{tre}{a tree of  class \code{\link[ape:read.tree]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{orthobas}{an object of class \code{'orthobasis'}}
   \item{prox}{a matrix of phylogenetic proximities as returned by \code{\link{proxTips}}.}

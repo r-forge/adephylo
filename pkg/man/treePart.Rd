@@ -16,7 +16,7 @@
 treePart(x, result=c("dummy", "orthobasis"))
 }
 \arguments{
-  \item{x}{a tree of  class \code{\link[ape]{phylo}},
+  \item{x}{a tree of  class \code{\link[ape:read.tree]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{result}{a character string specifying the type of result: either
   a basis of dummy vectors (\code{dummy}), or an orthobasis derived from these dummy vectors (\code{orthobasis}).}

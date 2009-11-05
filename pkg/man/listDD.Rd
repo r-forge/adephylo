@@ -3,14 +3,14 @@
 \title{List direct descendants for all nodes of a tree}
 \description{
   The function \code{listDD} lists the direct descendants from each node
-  of a tree. The tree can be of class \code{\link[ape]{phylo}},
+  of a tree. The tree can be of class \code{\link[ape:read.tree]{phylo}},
   \linkS4class{phylo4} or \linkS4class{phylo4d}.
 }
 \usage{
 listDD(x, nameBy=c("label","number"))
 }
 \arguments{
-  \item{x}{A tree of  class \code{\link[ape]{phylo}},
+  \item{x}{A tree of  class \code{\link[ape:read.tree]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{nameBy}{a character string indicating whether the returned list
     must be named by node labels ("label") or by node numbers ("number").}

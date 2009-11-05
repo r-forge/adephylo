@@ -25,7 +25,7 @@ me.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouhei
 orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1)
 }
 \arguments{
-  \item{x}{A tree of  class \code{\link[ape]{phylo}},
+  \item{x}{A tree of  class \code{\link[ape:read.tree]{phylo}},
     \linkS4class{phylo4} or \linkS4class{phylo4d}.}
   \item{prox}{a matrix of phylogenetic proximities as returned by \code{\link{proxTips}}.}
   \item{method}{a character string (full or abbreviated without
