@@ -50,7 +50,7 @@ treePart <- function(x, result=c("dummy", "orthobasis")){
     HTU.idx <- (n+1):(n+nNodes(x)) # index of internal nodes (HTU)
 
     if(!hasNodeLabels(x)) { # node labels will be used after
-        x@node.label <- as.character(HTU.idx)
+        nodeLabels(x) <- as.character(HTU.idx)
     }
 
     ## function coding one dummy vector
