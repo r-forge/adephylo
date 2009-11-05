@@ -3,5 +3,12 @@
 
 NEW FEATURES
 
-	o 
+	o first release of the package with unstable status. Compatible
+	with phylobase (in	development) and ape packages; package
+	only released on R-Forge, not CRAN.
+
+	o re-implements all phylogenetic methods and datasets available in ade4
+
+	o add new features to compute phylogenetic distances/proximities,
+	pPCA, tree walks, ... 
 

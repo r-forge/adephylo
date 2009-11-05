@@ -326,15 +326,15 @@ the function \code{proxTips}.
 
 <<moranI>>=
 W <- proxTips(myTree, met="Abouheif")
-moran.idx(tdata(ung)$afbw, W)
-moran.idx(ung@tip.data[,1], W, addInfo=TRUE)
+moran.idx(tdata(ung, type="tip")$afbw, W)
+moran.idx(tdata(ung, type="tip")[,1], W, addInfo=TRUE)
 @
 
 From here, it is quite straightforward to build a non-parametric test
 based on Moran's $I$.
 For instance (taken from \code{?moran.idx}):
 <<fig=TRUE>>=
-afbw <- tdata(ung)$afbw
+afbw <- tdata(ung, type="tip")$afbw
 sim <- replicate(499, moran.idx(sample(afbw), W)) # permutations
 sim <- c(moran.idx(afbw, W), sim)
 
