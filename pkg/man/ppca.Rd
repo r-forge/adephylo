@@ -140,7 +140,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
 
 }
 \seealso{The implementation of \code{\link[pkg:adegenet]{spca}} in the
-  adegenet package (?\code{\link[pkg:adegenet]{adegenet}}) \cr
+  adegenet package (\code{\link[pkg:adegenet]{adegenet}}) \cr
  }
 \author{ Thibaut Jombart \email{jombart@biomserv.univ-lyon1.fr} }
 \examples{
