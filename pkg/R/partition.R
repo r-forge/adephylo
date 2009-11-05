@@ -93,7 +93,7 @@ treePart <- function(x, result=c("dummy", "orthobasis")){
     names(nbOfDD) <- HTU.idx # used to match the results of Dn
 
     findAlldHTU <- function(node){ # find all HTU descending from a node
-        res <- descendants(x, node, which="all") # tips and HTU
+        res <- descendants(x, node, type="all") # tips and HTU
         res <- res[res > n] # only HTU (here, just node numbers are kept
         if(length(res)==0) return(NULL)
         return(res)
