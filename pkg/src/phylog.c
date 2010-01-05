@@ -64,22 +64,12 @@ void MVarianceDecompInOrthoBasis (int *param, double *z, int *nvar, double *iner
     }
     /* mat contient une distribution de fréquence bivariée */
     for (j=1; j<=nobs; j++) {
-        provi = 0;
-        for (i=1; i<=nobs; i++) {
-            provi = provi + mat[i][j] ;
-        }
-        poili[j] = provi;
+      poili[j] = 1/(double)(nobs);
     }
-    /* poili contient la distribution marginale
-    le test sera du type xtPx avec x centré normé pour la pondération
-    marginale et A = QtFQ soit la matrice des pij-pi.p.j */
+    /* poili contains uniform weights*/
     matmodifcn(tab,poili);
-    /* le tableau est normalisé pour la pondération marginale de la forme*/
-    for (j=1; j<=nobs; j++) {
-        for (i=1; i<=nobs; i++) {
-            mat[i][j] = mat[i][j] -poili[i]*poili[j] ;
-        }
-    }
+    /* data are standardized using uniform weights */
+   
     for (kvar=1; kvar<=nvar; kvar++) {
         provi = 0;
         for (j=1; j<=nobs; j++) {
@@ -94,7 +84,7 @@ void MVarianceDecompInOrthoBasis (int *param, double *z, int *nvar, double *iner
     for (krepet=1; krepet<=nrepet; krepet++) {
         getpermutation (numero, krepet);
         matpermut (tab, numero, tabperm);
-        matmodifcn (tabperm,poili);
+       
         for (kvar=1; kvar<=nvar; kvar++) {
             provi = 0;
             for (j=1; j<=nobs; j++) {
