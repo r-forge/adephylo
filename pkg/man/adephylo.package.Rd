@@ -130,8 +130,8 @@
   \tabular{ll}{
     Package: \tab adephylo\cr
     Type: \tab Package\cr
-    Version: \tab 1.0-0\cr
-    Date: \tab 2008-12-24 \cr
+    Version: \tab 1.0-2\cr
+    Date: \tab 2009-01-11 \cr
     License: \tab GPL (>=2)
   }  
 }

@@ -1,11 +1,23 @@
-			CHANGES IN ADEPHYLO VERSION 1.0-1
+			CHANGES IN ADEPHYLO VERSION 1.0-2
 
 
 BUG FIXES
 
 	o ...
 
+
 	
+			CHANGES IN ADEPHYLO VERSION 1.0-1
+
+
+NEW FEATURES
+
+	o first release on CRAN, first stable version
+
+	o compatible with the first stable release of the phylobase package
+
+	
+
 			CHANGES IN ADEPHYLO VERSION 1.0-0
 
 

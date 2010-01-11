@@ -1,6 +1,6 @@
 Package: adephylo
-Version: 1.0-1
-Date: 2009/11/5
+Version: 1.0-2
+Date: 2010/01/11
 Title: adephylo: exploratory analyses for the phylogenetic comparative method.
 Author: Thibaut Jombart <t.jombart@imperial.ac.uk>, Stephane Dray <dray@biomserv.univ-lyon1.fr>
 Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>

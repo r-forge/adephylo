@@ -1,6 +1,6 @@
 #######################
 #
-# adegenet TODO list
+# adephylo TODO list
 #
 #######################
 #
@@ -27,43 +27,21 @@
 
 # CODE ISSUES:
 ==============
-o make a working package that passes the check -- done (TJ)
+
 
 # DOCUMENTATION ISSUES:
 =======================
-* make a vignette
+
 
 
 # NEW IMPLEMENTATIONS:
 =====================
-o plot methods from phylobase ('old' version) -- done (TJ)
-o implement a pathTwoTips method, which has to go fast to find shortest path between two tips - done (TJ): is now sp.tips.
-o basic stuff existing in phylog objects (while option=TRUE), e.g. distance to the root for tips, etc.
-o proximities between OTUs like Abouheif, etc. -- done (TJ)
-o distances between OTUs (like sum of branch lengths) -- done (TJ)
-o dummy vectors indicating class of related OTUs (like in orthogram) -- done (TJ)
-o add a orthobasis method for objects inheriting phylo4 or phylo. -- done(TJ)
-o orthogram and multivariate orthogram; use Stephane's version -- done (SD, TJ)
-o ppca -- done (TJ)
-o migrate datasets from ade4 to adephylo: -- done (TJ)
-- carni19.Rd -- done
-- carni70.Rd -- done
-- lizards.Rd -- done
-- maples.Rd -- done
-- mjrochet.Rd -- done
-- palm.Rd -- done
-- procella.Rd -- done
-- tithonia.Rd -- done
-- ungulates.Rd -- done
-o build an orthobasis from treePart dummy variables -- done (TJ)
-o move gearymoran inside adephylo -- done, is now abouheif.moran. (TJ)
+
 
 
 
 # TESTING:
 ==========
-o test distTips a little more (see Abouheif with an outgroup, otherwise seems ok) -- done (TJ)
-o test ppca: are results identical to those with previous implementation? -- done (TJ)
 
 
 
@@ -76,10 +54,5 @@ o test ppca: are results identical to those with previous implementation? -- don
 # LONG TERM
 ==========================
 ==========================
-o re-implement all relevant phylogenetic methods from ade4 in adephylo -- done (TJ)
-o implement several phylogenetic proximities -- done (TJ)
-o implement an orthobasis for phylogenies -- done (TJ)
 * write a comprehensive tutorial, going through adephylo, ade4, ape, phylobase, etc.
-o new plotting / summary for ppca objects. Maybe move actual plot to a scatter method, and make a plot similar to other plots. -- done (TJ)
-o make a summary method for ppca. -- done (TJ)
 
