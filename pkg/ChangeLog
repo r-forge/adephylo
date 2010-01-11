@@ -3,7 +3,8 @@
 
 BUG FIXES
 
-	o ...
+	o standardization of variables in abouheif.moran is now performed using 
+	uniform weights (instead of marginal phylogenetic weights) 
 
 
 	
