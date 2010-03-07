@@ -1,12 +1,12 @@
 /* Notes:
-these functions are used to find the shortest path between specified pairs of tips.
-The algorithm proceeds as follows:
-1) find the paths (pathA, pathB) to the root
-2) find the MRCA, defined as the first term of pathA in pathB (same as the converse)
-3) from A, go back to MRCA, adding crossed nodes to the result, not including the MRCA
-4) from B, go back to MRCA, adding crossed nodes to the result, not including the MRCA
-5) add the MRCA to the output
-6) return the output
+   these functions are used to find the shortest path between specified pairs of tips.
+   The algorithm proceeds as follows:
+   1) find the paths (pathA, pathB) to the root
+   2) find the MRCA, defined as the first term of pathA in pathB (same as the converse)
+   3) from A, go back to MRCA, adding crossed nodes to the result, not including the MRCA
+   4) from B, go back to MRCA, adding crossed nodes to the result, not including the MRCA
+   5) add the MRCA to the output
+   6) return the output
 */
 
 
@@ -21,16 +21,17 @@ The algorithm proceeds as follows:
 
 
 /* 
-=====================
-UTILITARY FUNCTIONS
-=====================
+   =====================
+   UTILITARY FUNCTIONS
+   =====================
 */
 
 
 /* 
-=== replicate %in% / match operator for integers === 
-- *b has to be a vector created using vecintalloc
-- returns 0 if there are no matches, and the index of the first match otherwise
+   === replicate %in% / match operator for integers === 
+   == for internal use only ==
+   - *b has to be a vector created using vecintalloc
+   - returns 0 if there are no matches, and the index of the first match otherwise
 */
 int intAinB(int a, int *b, int lengthB){
 	if(lengthB == 0) return(0); /* avoid comparison with empty vector */
@@ -45,16 +46,17 @@ int intAinB(int a, int *b, int lengthB){
 		}
 	}
 	return(0);
-}
+} /* intAinB */
 
 
 
 
 
 /* 
-=== replicate setdiff match operator for integers === 
-- *b has to be a vector created using vecintalloc
-- finds (possibly duplicated) elements of a not in b
+   === replicate setdiff match operator for integers === 
+   == for internal use only ==
+   - *b has to be a vector created using vecintalloc
+   - finds (possibly duplicated) elements of a not in b
 */
 void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 	int i;
@@ -74,7 +76,7 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 		}
 	}
 
-}
+} /* intANotInB */
 
 
 
@@ -82,9 +84,10 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 
 
 /*
-=== union of two integer vectors ===
-- a, b, and res have to be created by vecintalloc
-- returns unique(c(a,b))
+  === union of two integer vectors ===
+  == for internal use only ==
+  - a, b, and res have to be created by vecintalloc
+  - returns unique(c(a,b))
 */
 void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 	int i, idx;
@@ -95,21 +98,21 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
         /* For a */
 	for(i=1;i<=lengthA;i++){
 		idx = intAinB(a[i], res, *resSize); /* check if element is in res */
-			if(idx==0) {
-				*resSize++;
-				res[*resSize] = a[i];
-			}
+		if(idx==0) {
+			*resSize++;
+			res[*resSize] = a[i];
+		}
 	}
 
         /* For b */
 	for(i=1;i<=lengthB;i++){
 		idx = intAinB(b[i], res, *resSize); /* check if element is in res */
-			if(idx==0) {
-				*resSize++;
-				res[resSize] = b[i];
-			}
+		if(idx==0) {
+			*resSize++;
+			res[resSize] = b[i];
+		}
 	}
-}
+} /* unionInt */
 
 
 
@@ -117,8 +120,9 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 
 
 /* 
-=== intersection of two integer vectors ===
-- a, b, and res have to be created by vecintalloc
+   === intersection of two integer vectors ===
+   == for internal use only ==
+   - a, b, and res have to be created by vecintalloc
 */
 void intersectInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 	int resSize, i, idx;
@@ -133,16 +137,17 @@ void intersectInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSi
 			res[*resSize] = a[i];
 		}
 	}
-}
+} /* intersectInt */
 
 
 
 
 
 /* 
-=== find the path from a tip to the root === 
-- ances, desc and path must have been created using vecintalloc; their indices start at 1.
-- N is the number of edges in the tree, i.e. number of rows of $edge
+   === find the path from a tip to the root === 
+   == for internal use only ==
+   - ances, desc and path must have been created using vecintalloc; their indices start at 1.
+   - N is the number of edges in the tree, i.e. number of rows of $edge
 */
 void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize){
 	int i, curNode=0, keepOn=1, pathSize=0;
@@ -159,19 +164,20 @@ void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize
 			keepOn = 0;
 		}
 	}
-}
+} /* pathTipToRoot */
 
 
 
 
 
 /*
-=== find the MRCA between two tips ===
-- a and b are two tips
-- ances and desc must be created using vecintalloc
-- N is the number of edges
+  === find the MRCA between two tips ===
+  == for internal use only ==
+  - a and b are two tips
+  - ances and desc must be created using vecintalloc
+  - N is the number of edges
 */
-int mrca(int *ances, int*desc, int a, int b, int N){
+int mrca2tips(int *ances, int*desc, int a, int b, int N){
 	int *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, i, res;
 
 	/* allocate memory */
@@ -192,81 +198,126 @@ int mrca(int *ances, int*desc, int a, int b, int N){
 		if(i > lengthPathA){ /* that would indicate an error */
 			idx=0;
 			printf("\n Likely error: no MRCA found between specified tips.")
-		}
+				}
 	}
 
 	/* free memory */
 	freeintvec(pathAroot);
 	freeintvec(pathBroot);
 
-	return(pathAroot[idx])
-}
+	return(pathAroot[idx]);
+} /* end mrca */
 
 
 
 
 
 
-/* 
-=== Find shortest path between two tips ===
-- ances, desc, tipsA, tipsB must be created using vecintalloc
-- N is the number of edges
-- ntips is the number of tips (size of tips A and tipsB)
+/*
+  === Find shortest path between two tips ===
+  == for internal use only ==
+  - ances and desc must be created using vecintalloc
+  - N is the number of edges to represent the tree
 */
-void sptips(int *ances, int *desc, int N, int *tipsA, int *tipsB, int N, int ntips, int **res, inr *resSize){
+void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, inr *resSize){
 	/* declarations */
-	int i, j, k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
+	int k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
 
-	for(i;;){
-		for(j;;){
+	/* allocate memory */
+	vecintalloc(&pathAroot, N);
+	vecintalloc(&pathBroot, N);
 
-			/* allocate memory */
-			vecintalloc(&pathAroot, N);
-			vecintalloc(&pathBroot, N);
+	/* find paths to the root */
+	pathTipToRoot(tipA, ances, desc, N, pathAroot, lengthPathA);
+	pathTipToRoot(tipB, ances, desc, N, pathBroot, lengthPathB);
 
-			/* find paths to the root */
-			pathTipToRoot(tipsA[i], ances, desc, N, pathAroot, lengthPathA);
-			pathTipToRoot(tipsB[j], ances, desc, N, pathBroot, lengthPathB);
+	/* find the MRCA between both tips */
+	myMrca = mrca2tips(ances, desc, tipsA, tipsB, N);
 
-			/* find the MRCA between both tips */
-			myMrca = mrca(ances, desc, tipsA[i], tipsB[j], N);
-
-			/* go back the paths and stop at MRCA (exclude MRCA) */
-			/* for A */
-			k = 1;
-			*resSize = 0;
-			while(pathAroot[k] != myMrca){ /* ### reprendre ici.*/
-				resSize++;
-				res[resSize] = pathAroot[k];
-				k++;
-			}
-
-			/* for B */
-			k = 1;
-			while(pathBroot[k] != myMrca){ /* ### reprendre ici.*/
-				resSize++;
-				res[resSize] = pathBroot[k];
-				k++;
-			}
-
-			/* add the MRCA */
-			resSize++;
-			res[resSize] = myMrca;
-
-
-			/* free memory */
-			freeintvec(pathAroot);
-			freeintvec(pathBroot);
-
-		}
+	/* go back the paths and stop at MRCA (exclude MRCA) */
+	/* for A */
+	k = 1;
+	*resSize = 0;
+	while(pathAroot[k] != myMrca){ /* ### reprendre ici.*/
+		resSize++;
+		res[resSize] = pathAroot[k];
+		k++;
 	}
-}
+
+	/* for B */
+	k = 1;
+	while(pathBroot[k] != myMrca){ /* ### reprendre ici.*/
+		resSize++;
+		res[resSize] = pathBroot[k];
+		k++;
+	}
+
+	/* add the MRCA */
+	resSize++;
+	res[resSize] = myMrca;
+
+
+	/* free memory */
+	freeintvec(pathAroot);
+	freeintvec(pathBroot);
+
+} /* end sp2tips */
 
 
 
 
 
 
+
+/*
+  === Find shortest path between two tips ===
+  == for internal/external uses ==
+  - ances, desc, tipsA, tipsB are passed from R
+  - N is the number of edges to represent the tree
+*/
+void sptips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, inr *resSize){
+	/* declarations */
+	int k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
+
+	/* allocate memory for local variables */
+	vecintalloc(&ancesLoc, N);
+	vecintalloc(&descLoc, N);
+
+	/* find paths to the root */
+	pathTipToRoot(tipA, ances, desc, N, pathAroot, lengthPathA);
+	pathTipToRoot(tipB, ances, desc, N, pathBroot, lengthPathB);
+
+	/* find the MRCA between both tips */
+	myMrca = mrca(ances, desc, tipsA, tipsB, N);
+
+	/* go back the paths and stop at MRCA (exclude MRCA) */
+	/* for A */
+	k = 1;
+	*resSize = 0;
+	while(pathAroot[k] != myMrca){ /* ### reprendre ici.*/
+		resSize++;
+		res[resSize] = pathAroot[k];
+		k++;
+	}
+
+	/* for B */
+	k = 1;
+	while(pathBroot[k] != myMrca){ /* ### reprendre ici.*/
+		resSize++;
+		res[resSize] = pathBroot[k];
+		k++;
+	}
+
+	/* add the MRCA */
+	resSize++;
+	res[resSize] = myMrca;
+
+
+	/* free memory */
+	freeintvec(pathAroot);
+	freeintvec(pathBroot);
+
+} /* end sptips */
 
 
 
@@ -313,7 +364,7 @@ void sharedAll(int *matAll, int *nRow, int *nCol, double *resVec)
 	for(i1=1; i1<=(n-1); i1++){
 		for(i2=(i1+1); i2<=n; i2++){
 			/* Used for debugging
-			printf("\n\n debug: ## %d-%d ##",i1,i2);
+			   printf("\n\n debug: ## %d-%d ##",i1,i2);
 			*/
 
 			resVec[k] = 0.0; /* Initialization of the result */
