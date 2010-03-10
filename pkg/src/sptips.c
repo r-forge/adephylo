@@ -337,3 +337,19 @@ void spalltips(int *ances, int *desc, int N, int nTips, int *res, int *resId, in
 
 } /* end sptips */
 
+
+
+
+/* TESTING */
+/*
+library(adephylo)
+tre=rtree(10)
+plot(tre)
+nodelabels()
+tiplabels()
+
+res <- resId <- integer(1e5)
+resSize=as.integer(1e5)
+
+.C("spalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), nrow(tre$edge), as.integer(nTips(tre)), res, resId, resSize)
+*/
