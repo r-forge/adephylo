@@ -189,11 +189,14 @@ void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize
   - N is the number of edges
 */
 int mrca2tips(int *ances, int*desc, int a, int b, int N){
-	int *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, i, res, idx;
+	int i, res, idx;
+	int *pathAroot, *pathBroot, *lengthPathA, *lengthPathB;
 
 	/* allocate memory */
 	vecintalloc(&pathAroot, N);
 	vecintalloc(&pathBroot, N);
+	lengthPathA = (int *) calloc(1, sizeof(int));
+	lengthPathB = (int *) calloc(1, sizeof(int));
 
 	/* find paths to the root */
 	pathTipToRoot(a, ances, desc, N, pathAroot, lengthPathA);
@@ -215,6 +218,8 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 	/* free memory */
 	freeintvec(pathAroot);
 	freeintvec(pathBroot);
+	free(lengthPathA);
+	free(lengthPathB);
 
 	return(pathAroot[idx]);
 } /* end mrca */
@@ -237,6 +242,9 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 	/* allocate memory */
 	vecintalloc(&pathAroot, N);
 	vecintalloc(&pathBroot, N);
+	lengthPathA = (int *) calloc(1, sizeof(int));
+	lengthPathB = (int *) calloc(1, sizeof(int));
+
 
 	/* find paths to the root */
 	pathTipToRoot(tipA, ances, desc, N, pathAroot, lengthPathA);
@@ -271,6 +279,8 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 	/* free memory */
 	freeintvec(pathAroot);
 	freeintvec(pathBroot);
+	free(lengthPathA);
+	free(lengthPathB);
 
 } /* end sp2tips */
 
@@ -289,51 +299,59 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
   - resSize is the total size of the output vector; it can't be known in advance, so a fake value has to be passed
   - resId indicates how the final result should be cut
 */
-void spalltips(int *ances, int *desc, int N, int nTips, int *res, int *resId, int *resSize){
+void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
 	/* declarations */
-	int i, j, k, finalResId, *ancesLoc, *descLoc, *tempRes, *tempResSize, idPair;
+	int i, j, k, m, idPair;
+	int *ancesLoc, *descLoc, *tempRes, *tempResSize; /* must use dynamic allocation */
 
 	/* allocate memory for local variables */
-	vecintalloc(&ancesLoc, N);
-	vecintalloc(&descLoc, N);
-	vecintalloc(&tempRes, N);
+	vecintalloc(&ancesLoc, *N);
+	vecintalloc(&descLoc, *N);
+	vecintalloc(&tempRes, *N);
+	tempResSize = (int *) calloc(1, sizeof(int));
 
 
 	/* create local vectors for ancestors and descendents */
-	ancesLoc[0] = N;
-	descLoc[0] = N;
-	for(i=0; i<N; i++){
+	ancesLoc[0] = *N;
+	descLoc[0] = *N;
+	for(i=0; i< *N; i++){
 		ancesLoc[i+1] = ances[i];
 		descLoc[i+1] = desc[i];
 	}
 
-
-	/* perform computations for all pairs of tips (indexed 'i,j') */
-	*tempResSize=0;
-	*resSize=0;
-	finalResId=0; /* used to browse 'res' and 'resId' */
-	idPair=0;
 	
-	for(i=0; i<=(N-2); i++){
-		for(j=(i+1); j<=(N-1); j++){
+	/* perform computations for all pairs of tips (indexed 'i,j') */
+	printf("\ngot to 1");
+	*tempResSize = 0;
+	printf("\ngot to 2");
+	*resSize = 0;
+	m = 0; /* used to browse 'res' and 'resId' */
+	idPair = 0;
+	
+	printf("\ngot to 3");
+
+	for(i=0; i<=(*nTips-2); i++){
+		for(j=(i+1); j<=(*nTips-1); j++){
 			/* temp results are save in tempRes and tempResSize */
 			idPair++;
-			sp2tips(ancesLoc, descLoc, N, i+1, j+1, tempRes, tempResSize); /* i+1 and j+1 are tips id */
+			sp2tips(ancesLoc, descLoc, *N, i+1, j+1, tempRes, tempResSize); /* i+1 and j+1 are tips id */
 
 			/* copy temp results to returned results */
 			*resSize += *tempResSize;
 			for(k=1; k <= *tempResSize; k++){
-				res[finalResId] = tempRes[k];
-				resId[finalResId] = idPair;
-				finalResId++;
+				res[m] = tempRes[k];
+				resId[m] = idPair;
+				m++;
 			}
 		}
 	}
+	printf("\ngot to 4");
 
 	/* free memory */
 	freeintvec(ancesLoc);
 	freeintvec(descLoc);
 	freeintvec(tempRes);
+	free(tempResSize);
 
 } /* end sptips */
 
@@ -342,6 +360,7 @@ void spalltips(int *ances, int *desc, int N, int nTips, int *res, int *resId, in
 
 /* TESTING */
 /*
+
 library(adephylo)
 tre=rtree(10)
 plot(tre)
@@ -351,5 +370,9 @@ tiplabels()
 res <- resId <- integer(1e5)
 resSize=as.integer(1e5)
 
+# void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
+
 .C("spalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), nrow(tre$edge), as.integer(nTips(tre)), res, resId, resSize)
+
+
 */
