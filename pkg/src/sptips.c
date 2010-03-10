@@ -28,7 +28,7 @@
 
 
 /* 
-   === replicate %in% / match operator for integers === 
+   === REPLICATE %IN% / MATCH OPERATOR FOR INTEGERS === 
    == for internal use only ==
    - *b has to be a vector created using vecintalloc
    - returns 0 if there are no matches, and the index of the first match otherwise
@@ -53,7 +53,7 @@ int intAinB(int a, int *b, int lengthB){
 
 
 /* 
-   === replicate setdiff match operator for integers === 
+   === REPLICATE SETDIFF MATCH OPERATOR FOR INTEGERS === 
    == for internal use only ==
    - *b has to be a vector created using vecintalloc
    - finds (possibly duplicated) elements of a not in b
@@ -84,7 +84,7 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 
 
 /*
-  === union of two integer vectors ===
+  === UNION OF TWO INTEGER VECTORS ===
   == for internal use only ==
   - a, b, and res have to be created by vecintalloc
   - returns unique(c(a,b))
@@ -120,7 +120,7 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 
 
 /* 
-   === intersection of two integer vectors ===
+   === INTERSECTION OF TWO INTEGER VECTORS ===
    == for internal use only ==
    - a, b, and res have to be created by vecintalloc
 */
@@ -144,7 +144,7 @@ void intersectInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSi
 
 
 /* 
-   === find the path from a tip to the root === 
+   === FIND THE PATH FROM A TIP TO THE ROOT === 
    == for internal use only ==
    - ances, desc and path must have been created using vecintalloc; their indices start at 1.
    - N is the number of edges in the tree, i.e. number of rows of $edge
@@ -171,7 +171,7 @@ void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize
 
 
 /*
-  === find the MRCA between two tips ===
+  === FIND THE MRCA BETWEEN TWO TIPS ===
   == for internal use only ==
   - a and b are two tips
   - ances and desc must be created using vecintalloc
@@ -214,12 +214,12 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 
 
 /*
-  === Find shortest path between two tips ===
+  === FIND SHORTEST PATH BETWEEN TWO TIPS ===
   == for internal use only ==
   - ances and desc must be created using vecintalloc
   - N is the number of edges to represent the tree
 */
-void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, inr *resSize){
+void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *resSize){
 	/* declarations */
 	int k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
 
@@ -270,18 +270,22 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res,
 
 
 /*
-  === Find shortest path between two tips ===
+  === FIND SHORTEST PATH BETWEEN ALL PAIRS OF TIPS ===
   == for internal/external uses ==
-  - ances, desc, tipsA, tipsB are passed from R
+  - all arguments are passed from R
   - N is the number of edges to represent the tree
+  - nTips is the total number of tips in the tree
+  - resSize is the total size of the output vector; it can't be known in advance, so a fake value has to be passed
+  - resId indicates how the final result should be cut
 */
-void sptips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, inr *resSize){
+void spalltips(int *ances, int *desc, int N, int nTips, int *res, int *resId, int *resSize){
 	/* declarations */
-	int i, k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
+	int i, j, k, finalResId, *tempRes, *tempResSize, idPair;
 
 	/* allocate memory for local variables */
 	vecintalloc(&ancesLoc, N);
 	vecintalloc(&descLoc, N);
+	vecintalloc(&tempRes, N);
 
 
 	/* create local vectors for ancestors and descendents */
@@ -293,157 +297,32 @@ void sptips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, 
 	}
 
 
-	/* find paths to the root */
-	pathTipToRoot(tipA, ances, desc, N, pathAroot, lengthPathA);
-	pathTipToRoot(tipB, ances, desc, N, pathBroot, lengthPathB);
+	/* perform computations for all pairs of tips (indexed 'i,j') */
+	*tempResSize=0;
+	*resSize=0;
+	finalResId=0; /* used to browse 'res' and 'resId' */
+	idPair=0;
+	
+	for(i=0; i<=(N-2); i++){
+		for(j=(i+1); j<=(N-1); j++){
+			/* temp results are save in tempRes and tempResSize */
+			idPair++;
+			sp2tips(ancesLoc, descLoc, N, i+1, j+1, N, tempRes, tempResSize); /* i+1 and j+1 are tips id */
 
-
-	/* find the MRCA between both tips */
-	myMrca = mrca(ances, desc, tipsA, tipsB, N);
-
-
-	/* go back the paths and stop at MRCA (exclude MRCA) */
-	/* for A */
-	k = 1;
-	*resSize = 0;
-	while(pathAroot[k] != myMrca){ /* ### reprendre ici.*/
-		resSize++;
-		res[resSize] = pathAroot[k];
-		k++;
-	}
-
-
-	/* for B */
-	k = 1;
-	while(pathBroot[k] != myMrca){ /* ### reprendre ici.*/
-		resSize++;
-		res[resSize] = pathBroot[k];
-		k++;
-	}
-
-	/* add the MRCA */
-	resSize++;
-	res[resSize] = myMrca;
-
-
-	/* free memory */
-	freeintvec(pathAroot);
-	freeintvec(pathBroot);
-
-} /* end sptips */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void sharedAll(int *matAll, int *nRow, int *nCol, double *resVec)
-{
-/* Declare local C variables */
-	int i, i1, i2, j, k, n, p, nbAll, **mat, temp;
-	n = *nRow;
-	p = *nCol;
-
-	int nLoc=p/2;
-
-/* Memory allocation for local C variables */
-
-	tabintalloc(&mat, n, p); /* function from ade4 */
-
-/* Local reconstruction of the matrix of alleles
-   ! beware: this matrix is to be used from 1 to n and 1 to p included,
-   and not from zero to n and p excluded as it is common in C */
-	k = 0;
-	for (j=1; j<=p; j++) {
-		for (i=1; i<=n; i++) {
-			mat[i][j] = matAll[k];
-			k = k + 1;
+			/* copy temp results to returned results */
+			*resSize += *tempResSize;
+			for(k=1; k <= *tempResSize; k++){
+				res[finalResId] = tempRes[k];
+				resId[finalResId] = idPair;
+				finalResId++;
+			}
 		}
 	}
 
-/* == Main Computations: ==
-   - i1, i2: indices of genotypes
-   - j: index of allele
-   - n: number of genotypes
-   - p number of columns in mat (i.e. twice the number of loci)
-   - each term in mat codes an allele (NAs are coded by 0)
-*/
+	/* free memory */
+	freeintvec(ancesLoc);
+	freeintvec(descLoc);
+	freeintvec(tempRes);
 
-	k=0; /* counter used to browse resVec */
-	for(i1=1; i1<=(n-1); i1++){
-		for(i2=(i1+1); i2<=n; i2++){
-			/* Used for debugging
-			   printf("\n\n debug: ## %d-%d ##",i1,i2);
-			*/
+} /* end sptips */
 
-			resVec[k] = 0.0; /* Initialization of the result */
-			nbAll = 0; /* counts the number of types alleles */
-			for(j=1; j<=nLoc; j++){
-				/* Used for debugging
-				   printf("\n debug: j=%d",j);
-				   printf("\n debug: mat[i1,j]=%d",mat[i1][j]);
-				   printf("\n debug: mat[i1,j]=%d",mat[i1][j+nLoc]);
-				   printf("\n debug: mat[i2,j]=%d",mat[i2][j]);
-				   printf("\n debug: mat[i2,j+nLoc]=%d",mat[i2][j+nLoc]);
-				*/
-				if(mat[i1][j] != 0 && mat[i1][j+nLoc] != 0 && 
-				   mat[i2][j] != 0 && mat[i2][j+nLoc] != 0){
-					/* Used for debugging 
-					   printf("\n debug: alleles are typed");
-					*/
-					nbAll+=2;
-					/* Used for debugging
-					   printf("\n debug: nbAll=%d", nbAll);
-					*/
-					/* Compare alleles: 
-					   -> either both alleles are in common, 
-					   -> or no allele are common, 
-					   -> or there is one common allele */
-					/* both alleles common */
-					if((mat[i1][j] == mat[i2][j] 
-					    && mat[i1][j+nLoc] == mat[i2][j+nLoc])
-					   || (mat[i1][j] == mat[i2][j+nLoc]
-					       && mat[i1][j+nLoc] == mat[i2][j])){
-						resVec[k] += 2.0;
-					} else if(!( /* if not 'all alleles differe' */
-							  mat[i1][j] != mat[i2][j] 
-							  && mat[i1][j] != mat[i2][j+nLoc]
-							  && mat[i1][j+nLoc] != mat[i2][j] 
-							  && mat[i1][j+nLoc] != mat[i2][j+nLoc])
-						) resVec[k]++;
-
-				} /* end if */
-			} /* end for j in 1:(nLoc) */
-
-			/* Divide the number of shared alleles by the number of typed alleles */
-			if(nbAll > 0) resVec[k] = resVec[k]/nbAll;
-			/*printf("\n debug: resVec[i1,i2]/nbAll (%d,%d)=# %f #", i1,i2,resVec[k]);*/
-			k++;
-
-		} /* end for i2 */
-	} /* end for i1*/
-
-	/* Free allocated memory */
-	freeinttab(mat);
-
-} /* end sharedAll */
