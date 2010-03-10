@@ -64,7 +64,7 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 	/* a few checks */
 	if(lengthA==0) return;
 	if(lengthB==0){
-		*resSize = 0; /* ### have to check that*/
+		*resSize = 0; 
 		return;
 	}
 
@@ -72,7 +72,7 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 	for(i=1; i<=lengthA; i++){
 		if(intAinB(a[i], b, lengthB)==0){
 			*resSize++;
-			res[resSize] = a[i];
+			res[*resSize] = a[i];
 		}
 	}
 
@@ -90,6 +90,12 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
   - returns unique(c(a,b))
 */
 void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
+	if(lengthA==0 && lengthB && 0) {
+		*res = 0;
+		*resSize = 0;
+		return;
+	}
+
 	int i, idx;
 
 	res[1] = a[1]; /* initialization of temp results */
@@ -109,7 +115,7 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 		idx = intAinB(b[i], res, *resSize); /* check if element is in res */
 		if(idx==0) {
 			*resSize++;
-			res[resSize] = b[i];
+			res[*resSize] = b[i];
 		}
 	}
 } /* unionInt */
@@ -125,13 +131,18 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
    - a, b, and res have to be created by vecintalloc
 */
 void intersectInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
-	int resSize, i, idx;
+	if((lengthA * lengthB) ==0) {
+		*res = 0;
+		*resSize = 0;
+		return;
+	}
+	int i, idx;
 
-	resSize = 0;
+	*resSize = 0;
 
         /* store elements of a present in b */
 	for(i=1;i<=lengthA;i++){
-		idx = intAinB(a[i], b, lengthB) * intAinB(a[i], temp, *resSize); /* a in b and not already in temp */
+		idx = intAinB(a[i], b, lengthB) * intAinB(a[i], res, *resSize); /* a in b and not already in res */
 		if(idx != 0) {
 			*resSize++;
 			res[*resSize] = a[i];
@@ -150,7 +161,7 @@ void intersectInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSi
    - N is the number of edges in the tree, i.e. number of rows of $edge
 */
 void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize){
-	int i, curNode=0, keepOn=1, pathSize=0;
+	int i, curNode=0, keepOn=1, nextNodeId;
 
 	curNode = tip;
 
@@ -158,7 +169,7 @@ void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize
 		nextNodeId = intAinB(curNode, desc, N);
 		if(nextNodeId != 0){
 			*resSize++;
-			res[resSize] = ances[nextNodeId];
+			res[*resSize] = ances[nextNodeId];
 			curNode = ances[nextNodeId];
 		} else {
 			keepOn = 0;
@@ -178,7 +189,7 @@ void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize
   - N is the number of edges
 */
 int mrca2tips(int *ances, int*desc, int a, int b, int N){
-	int *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, i, res;
+	int *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, i, res, idx;
 
 	/* allocate memory */
 	vecintalloc(&pathAroot, N);
@@ -195,9 +206,9 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 	while(idx==0){
 		i++;
 		idx = intAinB(pathAroot[i], pathBroot, *lengthPathA);
-		if(i > lengthPathA){ /* that would indicate an error */
+		if(i > *lengthPathA){ /* that would indicate an error */
 			idx=0;
-			printf("\n Likely error: no MRCA found between specified tips.")
+			printf("\n Likely error: no MRCA found between specified tips.");
 				}
 	}
 
@@ -232,29 +243,29 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 	pathTipToRoot(tipB, ances, desc, N, pathBroot, lengthPathB);
 
 	/* find the MRCA between both tips */
-	myMrca = mrca2tips(ances, desc, tipsA, tipsB, N);
+	myMrca = mrca2tips(ances, desc, tipA, tipB, N);
 
 	/* go back the paths and stop at MRCA (exclude MRCA) */
 	/* for A */
 	k = 1;
 	*resSize = 0;
 	while(pathAroot[k] != myMrca){ /* ### reprendre ici.*/
-		resSize++;
-		res[resSize] = pathAroot[k];
+		*resSize++;
+		res[*resSize] = pathAroot[k];
 		k++;
 	}
 
 	/* for B */
 	k = 1;
 	while(pathBroot[k] != myMrca){ /* ### reprendre ici.*/
-		resSize++;
-		res[resSize] = pathBroot[k];
+		*resSize++;
+		res[*resSize] = pathBroot[k];
 		k++;
 	}
 
 	/* add the MRCA */
-	resSize++;
-	res[resSize] = myMrca;
+	*resSize++;
+	res[*resSize] = myMrca;
 
 
 	/* free memory */
@@ -280,7 +291,7 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 */
 void spalltips(int *ances, int *desc, int N, int nTips, int *res, int *resId, int *resSize){
 	/* declarations */
-	int i, j, k, finalResId, *tempRes, *tempResSize, idPair;
+	int i, j, k, finalResId, *ancesLoc, *descLoc, *tempRes, *tempResSize, idPair;
 
 	/* allocate memory for local variables */
 	vecintalloc(&ancesLoc, N);
@@ -307,7 +318,7 @@ void spalltips(int *ances, int *desc, int N, int nTips, int *res, int *resId, in
 		for(j=(i+1); j<=(N-1); j++){
 			/* temp results are save in tempRes and tempResSize */
 			idPair++;
-			sp2tips(ancesLoc, descLoc, N, i+1, j+1, N, tempRes, tempResSize); /* i+1 and j+1 are tips id */
+			sp2tips(ancesLoc, descLoc, N, i+1, j+1, tempRes, tempResSize); /* i+1 and j+1 are tips id */
 
 			/* copy temp results to returned results */
 			*resSize += *tempResSize;
