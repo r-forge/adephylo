@@ -277,18 +277,30 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res,
 */
 void sptips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, inr *resSize){
 	/* declarations */
-	int k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
+	int i, k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
 
 	/* allocate memory for local variables */
 	vecintalloc(&ancesLoc, N);
 	vecintalloc(&descLoc, N);
 
+
+	/* create local vectors for ancestors and descendents */
+	ancesLoc[0] = N;
+	descLoc[0] = N;
+	for(i=0; i<N; i++){
+		ancesLoc[i+1] = ances[i];
+		descLoc[i+1] = desc[i];
+	}
+
+
 	/* find paths to the root */
 	pathTipToRoot(tipA, ances, desc, N, pathAroot, lengthPathA);
 	pathTipToRoot(tipB, ances, desc, N, pathBroot, lengthPathB);
 
+
 	/* find the MRCA between both tips */
 	myMrca = mrca(ances, desc, tipsA, tipsB, N);
+
 
 	/* go back the paths and stop at MRCA (exclude MRCA) */
 	/* for A */
@@ -299,6 +311,7 @@ void sptips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, 
 		res[resSize] = pathAroot[k];
 		k++;
 	}
+
 
 	/* for B */
 	k = 1;
@@ -318,6 +331,22 @@ void sptips(int *ances, int *desc, int N, int tipA, int tipB, int N, int **res, 
 	freeintvec(pathBroot);
 
 } /* end sptips */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
