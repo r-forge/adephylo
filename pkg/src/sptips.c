@@ -38,13 +38,14 @@ int intAinB(int a, int *b, int lengthB){
 
 	int i=1;
 
-	while(i < lengthB){
+	while(i <= lengthB){
 		if(b[i]==a) {
 			return(i);
 		} else {
 			i++;
 		}
 	}
+
 	return(0);
 } /* intAinB */
 
@@ -71,7 +72,7 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 
 	for(i=1; i<=lengthA; i++){
 		if(intAinB(a[i], b, lengthB)==0){
-			*resSize++;
+			*resSize = *resSize+1;
 			res[*resSize] = a[i];
 		}
 	}
@@ -105,7 +106,7 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 	for(i=1;i<=lengthA;i++){
 		idx = intAinB(a[i], res, *resSize); /* check if element is in res */
 		if(idx==0) {
-			*resSize++;
+			*resSize = *resSize + 1;
 			res[*resSize] = a[i];
 		}
 	}
@@ -114,7 +115,7 @@ void unionInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize){
 	for(i=1;i<=lengthB;i++){
 		idx = intAinB(b[i], res, *resSize); /* check if element is in res */
 		if(idx==0) {
-			*resSize++;
+			*resSize = *resSize + 1;
 			res[*resSize] = b[i];
 		}
 	}
@@ -144,7 +145,7 @@ void intersectInt(int *a, int *b, int lengthA, int lengthB, int *res, int *resSi
 	for(i=1;i<=lengthA;i++){
 		idx = intAinB(a[i], b, lengthB) * intAinB(a[i], res, *resSize); /* a in b and not already in res */
 		if(idx != 0) {
-			*resSize++;
+			*resSize = *resSize + 1;
 			res[*resSize] = a[i];
 		}
 	}
@@ -164,17 +165,34 @@ void pathTipToRoot(int tip, int *ances, int *desc, int N, int *res, int *resSize
 	int i, curNode=0, keepOn=1, nextNodeId;
 
 	curNode = tip;
+	*resSize = 0;
+
+	/* printf("\nInput inside pathTipTo...: \n"); */
+	/* for(i=1; i<= N;i++){ */
+	/* 	printf(" %d", res[i]); */
+	/* } */
 
 	while(keepOn==1){
 		nextNodeId = intAinB(curNode, desc, N);
-		if(nextNodeId != 0){
-			*resSize++;
-			res[*resSize] = ances[nextNodeId];
+		/* printf("\n%d in desc: %d", curNode, nextNodeId); */
+
+		if(nextNodeId > 0){
+			*resSize = *resSize + 1;
 			curNode = ances[nextNodeId];
+			res[*resSize] = curNode;
 		} else {
 			keepOn = 0;
 		}
 	}
+
+	/* /\* debugging *\/ */
+	/* printf("\nOutput from pathTip... :"); */
+	/* printf("\nresSize: %d \n", *resSize); */
+	
+	/* for(i=1; i<= *resSize;i++){ */
+	/* 	printf(" %d", res[i]); */
+	/* } */
+	
 } /* pathTipToRoot */
 
 
@@ -198,22 +216,53 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 	lengthPathA = (int *) calloc(1, sizeof(int));
 	lengthPathB = (int *) calloc(1, sizeof(int));
 
+	/* printf("\n N: %d", N); */
+	/* printf("\nEmpty res passed to pathTip...:\n"); */
+	/* for(i=1; i<= N;i++){ */
+	/* 	printf(" %d", pathAroot[i]); */
+	/* } */
+
 	/* find paths to the root */
 	pathTipToRoot(a, ances, desc, N, pathAroot, lengthPathA);
 	pathTipToRoot(b, ances, desc, N, pathBroot, lengthPathB);
 
+	/* debugging*/
+	/* printf("\n Information found within mrca2tips:\n"); */
+	/* printf("\nlengthPathA: %d \n", *lengthPathA); */
+	/* printf("\nlengthPathB: %d \n", *lengthPathB); */
+
+	/* printf("\nPath from %d to the root:\n", a); */
+	/* for(i=1; i<= *lengthPathA;i++){ */
+	/* 	printf(" %d", pathAroot[i]); */
+	/* } */
+
+	/* printf("\nPath from %d to the root\n", b); */
+	/* for(i=1; i<= *lengthPathB;i++){ */
+	/* 	printf(" %d", pathBroot[i]); */
+	/* } */
+
 	/* initialization */
-	i=1;
-	idx = intAinB(pathAroot[1], pathBroot, *lengthPathA);
-	
+	i = 0;
+	idx = 0;
+
+	/* printf("\n - marker within mrca2tips - \n"); */
 	while(idx==0){
+		if(i == *lengthPathA){ /* that would indicate an error */
+			/* printf("\n Likely error: no MRCA found between specified tips."); */
+				/* free memory */
+			freeintvec(pathAroot);
+			freeintvec(pathBroot);
+			free(lengthPathA);
+			free(lengthPathB);
+			return(0);
+		}
 		i++;
 		idx = intAinB(pathAroot[i], pathBroot, *lengthPathA);
-		if(i > *lengthPathA){ /* that would indicate an error */
-			idx=0;
-			printf("\n Likely error: no MRCA found between specified tips.");
-				}
+		/* printf("\ni: %d    idx: %d    node: %d", i, idx, pathAroot[i]); */
 	}
+
+	/* store the result in a local variable */
+	res = pathBroot[idx];
 
 	/* free memory */
 	freeintvec(pathAroot);
@@ -221,7 +270,7 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 	free(lengthPathA);
 	free(lengthPathB);
 
-	return(pathAroot[idx]);
+	return(res);
 } /* end mrca */
 
 
@@ -237,7 +286,9 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 */
 void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *resSize){
 	/* declarations */
-	int k, *pathAroot, *pathBroot, *lengthPathA, *lengthPathB, myMrca;
+	int *pathAroot, *pathBroot, *lengthPathA, *lengthPathB;
+	int k, myMrca;
+
 
 	/* allocate memory */
 	vecintalloc(&pathAroot, N);
@@ -257,23 +308,40 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 	/* for A */
 	k = 1;
 	*resSize = 0;
-	while(pathAroot[k] != myMrca){ /* ### reprendre ici.*/
-		*resSize++;
+	while(pathAroot[k] != myMrca){
+		*resSize = *resSize + 1;
 		res[*resSize] = pathAroot[k];
 		k++;
 	}
 
+	printf("\nsp step a:");
+	int i;
+	for(i=1; i<=*resSize; i++){
+		printf(" %d", res[i]);
+	}
+
 	/* for B */
 	k = 1;
-	while(pathBroot[k] != myMrca){ /* ### reprendre ici.*/
-		*resSize++;
+	while(pathBroot[k] != myMrca){
+		*resSize = *resSize + 1;
 		res[*resSize] = pathBroot[k];
 		k++;
 	}
 
+
+	printf("\nsp step b:");
+	for(i=1; i<=*resSize; i++){
+		printf(" %d", res[i]);
+	}
+
 	/* add the MRCA */
-	*resSize++;
+	*resSize = *resSize + 1;
 	res[*resSize] = myMrca;
+
+	printf("\nsp step mrca (%d):", myMrca);
+	for(i=1; i<=*resSize; i++){
+		printf(" %d", res[i]);
+	}
 
 
 	/* free memory */
@@ -321,15 +389,25 @@ void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, 
 
 	
 	/* perform computations for all pairs of tips (indexed 'i,j') */
-	printf("\ngot to 1");
 	*tempResSize = 0;
-	printf("\ngot to 2");
 	*resSize = 0;
 	m = 0; /* used to browse 'res' and 'resId' */
 	idPair = 0;
 	
-	printf("\ngot to 3");
+	/* printf("\ngot to 1"); */
+	/* debugging*/
+/*	printf("\nancesLoc:\n");
+	for(i=1; i<= *N;i++){
+		printf(" %d", ancesLoc[i]);
+	}
 
+	printf("\ndesc:\n");
+	for(i=1; i<= *N;i++){
+		printf(" %d", descLoc[i]);
+	}
+
+	printf("\nN: %d", *N);
+*/
 	for(i=0; i<=(*nTips-2); i++){
 		for(j=(i+1); j<=(*nTips-1); j++){
 			/* temp results are save in tempRes and tempResSize */
@@ -337,7 +415,7 @@ void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, 
 			sp2tips(ancesLoc, descLoc, *N, i+1, j+1, tempRes, tempResSize); /* i+1 and j+1 are tips id */
 
 			/* copy temp results to returned results */
-			*resSize += *tempResSize;
+			*resSize = *resSize + *tempResSize;
 			for(k=1; k <= *tempResSize; k++){
 				res[m] = tempRes[k];
 				resId[m] = idPair;
@@ -372,7 +450,10 @@ resSize=as.integer(1e5)
 
 # void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
 
-.C("spalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), nrow(tre$edge), as.integer(nTips(tre)), res, resId, resSize)
+toto <- .C("spalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), nrow(tre$edge), as.integer(nTips(tre)), res, resId, resSize)
+toto[[5]] <- toto[[5]][1:toto[[7]]]
+toto[[6]] <- toto[[6]][1:toto[[7]]]
 
+res <- split(toto[[5]], toto[[6]])
 
 */
