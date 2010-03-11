@@ -38,7 +38,10 @@ int intAinB(int a, int *b, int lengthB){
 
 	int i=1;
 
+	/* printf("\n AinB debugging: a=%d", a); */
 	while(i <= lengthB){
+		/* printf("\t i=%d \t bi=%d ", a, b[i]); */
+
 		if(b[i]==a) {
 			return(i);
 		} else {
@@ -257,7 +260,7 @@ int mrca2tips(int *ances, int*desc, int a, int b, int N){
 			return(0);
 		}
 		i++;
-		idx = intAinB(pathAroot[i], pathBroot, *lengthPathA);
+		idx = intAinB(pathAroot[i], pathBroot, *lengthPathB);
 		/* printf("\ni: %d    idx: %d    node: %d", i, idx, pathAroot[i]); */
 	}
 
@@ -314,11 +317,11 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 		k++;
 	}
 
-	printf("\nsp step a:");
-	int i;
-	for(i=1; i<=*resSize; i++){
-		printf(" %d", res[i]);
-	}
+	/* printf("\nsp step a:"); */
+	/* int i; */
+	/* for(i=1; i<=*resSize; i++){ */
+	/* 	printf(" %d", res[i]); */
+	/* } */
 
 	/* for B */
 	k = 1;
@@ -329,19 +332,19 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 	}
 
 
-	printf("\nsp step b:");
-	for(i=1; i<=*resSize; i++){
-		printf(" %d", res[i]);
-	}
+	/* printf("\nsp step b:"); */
+	/* for(i=1; i<=*resSize; i++){ */
+	/* 	printf(" %d", res[i]); */
+	/* } */
 
 	/* add the MRCA */
 	*resSize = *resSize + 1;
 	res[*resSize] = myMrca;
 
-	printf("\nsp step mrca (%d):", myMrca);
-	for(i=1; i<=*resSize; i++){
-		printf(" %d", res[i]);
-	}
+	/* printf("\nsp step mrca (%d):", myMrca); */
+	/* for(i=1; i<=*resSize; i++){ */
+	/* 	printf(" %d", res[i]); */
+	/* } */
 
 
 	/* free memory */
@@ -423,7 +426,7 @@ void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, 
 			}
 		}
 	}
-	printf("\ngot to 4");
+	/* printf("\ngot to 4"); */
 
 	/* free memory */
 	freeintvec(ancesLoc);
@@ -440,13 +443,13 @@ void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, 
 /*
 
 library(adephylo)
-tre=rtree(10)
+tre=rtree(1000)
 plot(tre)
 nodelabels()
 tiplabels()
 
-res <- resId <- integer(1e5)
-resSize=as.integer(1e5)
+res <- resId <- integer(1e8)
+resSize=as.integer(1e8)
 
 # void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
 
@@ -455,5 +458,6 @@ toto[[5]] <- toto[[5]][1:toto[[7]]]
 toto[[6]] <- toto[[6]][1:toto[[7]]]
 
 res <- split(toto[[5]], toto[[6]])
+res
 
 */
