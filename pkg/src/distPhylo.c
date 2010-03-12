@@ -135,7 +135,7 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 		 break;
 
 	 case 2: /* number of nodes */
-		 res = static_cast<double> (*lengthPath);
+		 res = *lengthPath;
 		 break;
 
 	 case 3: /* prod DD (Abouheif) */
@@ -163,7 +163,7 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 	free(lengthPath);
 	free(myMrca);
 
-	return(res)
+	return(res);
 } /* end dist2tips */
 
 
@@ -189,11 +189,11 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, double *res, int *resSize, int *method){
 	/* declarations */
 	int i, j, k, temp;
-	int *ancesLoc, *descLoc, *brlengthLoc; /* must use dynamic allocation */
-
+	int *ancesLoc, *descLoc; /* must use dynamic allocation */
+	double *brlengthLoc; /* must use dynamic allocation */
 
 	/* check resSize */
-	temp = (*nTips)*(nTips-1) / 2;
+	temp = (*nTips) * (*nTips-1) / 2;
 	if(*resSize !=  temp) {
 		printf("\n Likely error in distalltips: resSize is %d, and should be %d.\n", *resSize, temp);
 		return;
@@ -209,7 +209,7 @@ void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, do
 	/* create local vectors for ancestors, descendents and branch lengths */
 	ancesLoc[0] = *N;
 	descLoc[0] = *N;
-	brlengthLoc[0] = static_cast<double>(*N) ; /* conversion (casting) int->double*/
+	brlengthLoc[0] = *N ; /* conversion (casting) int->double*/
 	for(i=0; i< *N; i++){
 		ancesLoc[i+1] = ances[i];
 		descLoc[i+1] = desc[i];
