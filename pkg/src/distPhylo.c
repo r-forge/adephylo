@@ -33,7 +33,7 @@
   - ances, desc, and brlength must be created using vecintalloc
   - N is the number of edges to represent the tree
 */
-double findedgelength(int *ances, int *desc, double *brlength, int N, int myNode){
+double findedgelength(int *desc, double *brlength, int N, int myNode){
 	int posi=0;
 
 
@@ -130,7 +130,7 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 		 /* compute length */
 		 res=0.0;
 		 for(i=1; i<=*lengthPath; i++){
-			 res += findedgelength(ances, desc, brlength, N, path[i]);
+			 res += findedgelength(desc, brlength, N, path[i]);
 		 }
 		 break;
 
