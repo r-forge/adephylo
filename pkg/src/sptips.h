@@ -1,15 +1,3 @@
-/* Notes:
-   these functions are used to find the shortest path between specified pairs of tips.
-   The algorithm proceeds as follows:
-   1) find the paths (pathA, pathB) to the root
-   2) find the MRCA, defined as the first term of pathA in pathB (same as the converse)
-   3) from A, go back to MRCA, adding crossed nodes to the result, not including the MRCA
-   4) from B, go back to MRCA, adding crossed nodes to the result, not including the MRCA
-   5) add the MRCA to the output
-   6) return the output
-*/
-
-
 #include <math.h>
 #include <time.h>
 #include <string.h>

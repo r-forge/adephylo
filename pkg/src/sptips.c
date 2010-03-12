@@ -77,6 +77,8 @@ void intANotInB(int *a, int *b, int lengthA, int lengthB, int *res, int *resSize
 		return;
 	}
 
+	/* main code */
+	*resSize = 0;
 
 	for(i=1; i<=lengthA; i++){
 		if(intAinB(a[i], b, lengthB)==0){
