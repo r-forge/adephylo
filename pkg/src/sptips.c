@@ -25,10 +25,11 @@
 
 
 
+
 /* 
-   =====================
-   UTILITARY FUNCTIONS
-   =====================
+   =============================
+   UTILITARY (INTERNAL) FUNCTIONS
+   =============================
 */
 
 
@@ -368,6 +369,16 @@ void sp2tips(int *ances, int *desc, int N, int tipA, int tipB, int *res, int *re
 
 
 
+
+
+/* 
+   ==========================
+     MAIN  (EXTERNAL) FUNCTION
+   ==========================
+*/
+
+
+
 /*
   === FIND SHORTEST PATH BETWEEN ALL PAIRS OF TIPS ===
   == for internal/external uses ==
@@ -418,11 +429,11 @@ void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, 
 
 	printf("\nN: %d", *N);
 */
-	for(i=0; i<=(*nTips-2); i++){
-		for(j=(i+1); j<=(*nTips-1); j++){
+	for(i=1; i<=(*nTips-1); i++){
+		for(j=(i+1); j<=(*nTips); j++){
 			/* temp results are save in tempRes and tempResSize */
 			idPair++;
-			sp2tips(ancesLoc, descLoc, *N, i+1, j+1, tempRes, tempResSize); /* i+1 and j+1 are tips id */
+			sp2tips(ancesLoc, descLoc, *N, i, j, tempRes, tempResSize); /* i and j are tips id */
 
 			/* copy temp results to returned results */
 			*resSize = *resSize + *tempResSize;

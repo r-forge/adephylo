@@ -20,9 +20,9 @@
 
 
 /* 
-   =====================
-   UTILITARY FUNCTIONS
-   =====================
+   =============================
+   UTILITARY (INTERNAL) FUNCTIONS
+   =============================
 */
 
 
@@ -33,7 +33,7 @@
   - ances, desc, and brlength must be created using vecintalloc
   - N is the number of edges to represent the tree
 */
-double findedgelength(int *ances, int *desc, int *brlength, int N, int myNode){
+double findedgelength(int *ances, int *desc, double *brlength, int N, int myNode){
 	int posi=0;
 
 
@@ -94,7 +94,7 @@ int findNbDD(int *ances, int *desc, int N, int myNode){
   - for patristic distances, the set of edge used is: {output of sp2tips} U {tipA, tipB} \ {output of mrca2tips}
   - for all others: {output of sp2tips}
 */
-int dist2tips(int *ances, int *desc, int *brlength, int N, int tipA, int tipB, int *res, int *resSize, int method){
+int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB, int method){
 	/* declarations */
 	int *path, *lengthPath, *myMrca;
 	int i, res;
@@ -119,7 +119,7 @@ int dist2tips(int *ances, int *desc, int *brlength, int N, int tipA, int tipB, i
 		 *myMrca = mrca2tips(ances, desc, tipA, tipB, N);
 
 		 /* remove mrca from the path */
-		 intANotInB(path, myMrca, lengthPath, 1, path, lengthPath);
+		 intANotInB(path, myMrca, *lengthPath, 1, path, lengthPath);
 
 		 /* add tips to the path */
 		 *lengthPath = *lengthPath + 1;
@@ -135,7 +135,7 @@ int dist2tips(int *ances, int *desc, int *brlength, int N, int tipA, int tipB, i
 		 break;
 
 	 case 2: /* number of nodes */
-		 res = double(*lengthPath);
+		 res = static_cast<double> (*lengthPath);
 		 break;
 
 	 case 3: /* prod DD (Abouheif) */
@@ -170,82 +170,69 @@ int dist2tips(int *ances, int *desc, int *brlength, int N, int tipA, int tipB, i
 
 
 
+/* 
+   ==========================
+     MAIN  (EXTERNAL) FUNCTION
+   ==========================
+*/
+
 
 
 /*
-  === ... BETWEEN ALL PAIRS OF TIPS ===
+  === FIND DISTANCES BETWEEN ALL PAIRS OF TIPS ===
   == for internal/external uses ==
   - all arguments are passed from R
   - N is the number of edges to represent the tree
   - nTips is the total number of tips in the tree
-  - resSize is the total size of the output vector; it can't be known in advance, so a fake value has to be passed
-  - resId indicates how the final result should be cut
+  - 'method' indicates the type of distance: 1) patristic 2) nNodes 3) Abouheif 4) sumDD
 */
-void distalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
+void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, double *res, int *resSize, int *method){
 	/* declarations */
-	int i, j, k, m, idPair;
-	int *ancesLoc, *descLoc, *tempRes, *tempResSize; /* must use dynamic allocation */
+	int i, j, k, temp;
+	int *ancesLoc, *descLoc, *brlengthLoc; /* must use dynamic allocation */
+
+
+	/* check resSize */
+	temp = (*nTips)*(nTips-1) / 2;
+	if(*resSize !=  temp) {
+		printf("\n Likely error in distalltips: resSize is %d, and should be %d.\n", *resSize, temp);
+		return;
+	}
+
 
 	/* allocate memory for local variables */
 	vecintalloc(&ancesLoc, *N);
 	vecintalloc(&descLoc, *N);
-	vecintalloc(&tempRes, *N);
-	tempResSize = (int *) calloc(1, sizeof(int));
+	vecalloc(&brlengthLoc, *N);
 
 
-	/* create local vectors for ancestors and descendents */
+	/* create local vectors for ancestors, descendents and branch lengths */
 	ancesLoc[0] = *N;
 	descLoc[0] = *N;
+	brlengthLoc[0] = static_cast<double>(*N) ; /* conversion (casting) int->double*/
 	for(i=0; i< *N; i++){
 		ancesLoc[i+1] = ances[i];
 		descLoc[i+1] = desc[i];
+		brlengthLoc[i+1] = brlength[i];
 	}
 
-	
+
 	/* perform computations for all pairs of tips (indexed 'i,j') */
-	*tempResSize = 0;
-	*resSize = 0;
-	m = 0; /* used to browse 'res' and 'resId' */
-	idPair = 0;
-	
-	/* printf("\ngot to 1"); */
-	/* debugging*/
-/*	printf("\nancesLoc:\n");
-	for(i=1; i<= *N;i++){
-		printf(" %d", ancesLoc[i]);
-	}
+	k = 0; /* used to browse 'res' and 'resId' */
 
-	printf("\ndesc:\n");
-	for(i=1; i<= *N;i++){
-		printf(" %d", descLoc[i]);
-	}
-
-	printf("\nN: %d", *N);
-*/
-	for(i=0; i<=(*nTips-2); i++){
-		for(j=(i+1); j<=(*nTips-1); j++){
-			/* temp results are save in tempRes and tempResSize */
-			idPair++;
-			sp2tips(ancesLoc, descLoc, *N, i+1, j+1, tempRes, tempResSize); /* i+1 and j+1 are tips id */
-
-			/* copy temp results to returned results */
-			*resSize = *resSize + *tempResSize;
-			for(k=1; k <= *tempResSize; k++){
-				res[m] = tempRes[k];
-				resId[m] = idPair;
-				m++;
-			}
+	for(i=1; i<=(*nTips-1); i++){
+		for(j=(i+1); j<=(*nTips); j++){
+			res[k] = dist2tips(ancesLoc, descLoc, brlengthLoc, *N, i, j, *method);
+			k++;
 		}
 	}
-	/* printf("\ngot to 4"); */
 
 	/* free memory */
 	freeintvec(ancesLoc);
 	freeintvec(descLoc);
-	freeintvec(tempRes);
-	free(tempResSize);
+	freevec(brlengthLoc);
 
-} /* end sptips */
+} /* end distalltips */
 
 
 
@@ -259,16 +246,31 @@ plot(tre)
 nodelabels()
 tiplabels()
 
-res <- resId <- integer(1e5)
-resSize=as.integer(1e5)
+n <- as.integer(nTips(tre))
+resSize=as.integer(n*(n-1)/2)
+res <- integer(resSize)
 
-# void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
 
-toto <- .C("spalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), nrow(tre$edge), as.integer(nTips(tre)), res, resId, resSize)
-toto[[5]] <- toto[[5]][1:toto[[7]]]
-toto[[6]] <- toto[[6]][1:toto[[7]]]
+# void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, double *res, int *resSize, int *method){
 
-res <- split(toto[[5]], toto[[6]])
+## nb nodes
+toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(2))
+res <- toto[[6]]
+res
+
+## patristic
+toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(1))
+res <- toto[[6]]
+res
+
+## Abou
+toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(3))
+res <- toto[[6]]
+res
+
+## sumDD
+toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(4))
+res <- toto[[6]]
 res
 
 */
