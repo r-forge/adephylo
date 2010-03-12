@@ -443,13 +443,13 @@ void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, 
 /*
 
 library(adephylo)
-tre=rtree(1000)
+tre=rtree(10)
 plot(tre)
 nodelabels()
 tiplabels()
 
-res <- resId <- integer(1e8)
-resSize=as.integer(1e8)
+res <- resId <- integer(1e5)
+resSize=as.integer(1e5)
 
 # void spalltips(int *ances, int *desc, int *N, int *nTips, int *res, int *resId, int *resSize){
 
