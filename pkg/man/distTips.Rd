@@ -4,10 +4,15 @@
 \description{
   The function \code{distTips} computes a given distance between a set
   of tips of a phylogeny. A vector of tips is supplied: distances
-  between all possible pairs of these tips are computed.
-  The distances are computed from the shortest path
-  between the tips. Several distances can be used, defaulting to the
-  sum of branch lengths (see argument \code{method}).
+  between all possible pairs of these tips are computed.  The distances
+  are computed from the shortest path between the tips. Several
+  distances can be used, defaulting to the sum of branch lengths (see
+  argument \code{method}).
+
+  An option (enabled by default) allows computations to be run using
+  compiled C code, which is much faster than pure R code. In this case,
+  a matrix of all pairwise distances is returned (i.e., \code{tips}
+  argument is ignored).
 }
 \usage{
 distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"), useC=TRUE)
