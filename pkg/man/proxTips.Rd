@@ -37,7 +37,7 @@
 }
 \usage{
 proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"),
-         a=1, normalize=c("row","col","none"), symmetric=TRUE)
+         a=1, normalize=c("row","col","none"), symmetric=TRUE, useC=TRUE)
 }
 \arguments{
   \item{x}{a tree of  class \code{\link[ape:read.tree]{phylo}},
@@ -69,6 +69,12 @@ proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"
   using a bilinear symmetric form (more appropriate for optimization
   purposes).
 }
+ \item{useC}{a logical indicating whether computations of distances
+  (before transformation into proximities) should be performed using
+  compiled C code (TRUE, default), or using a pure R version (FALSE). C
+  version is several orders of magnitude faster, and R version is kept
+  for backward compatibility.
+  }
 }
 \value{
   A matrix of phylogenetic proximities.

@@ -3,7 +3,7 @@
 ###########
 proxTips <- function(x, tips="all",
                       method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"),
-                     a=1, normalize=c("row","col","none"), symmetric=TRUE){
+                     a=1, normalize=c("row","col","none"), symmetric=TRUE, useC=TRUE){
 
     if(!require(phylobase)) stop("phylobase package is not installed")
 
@@ -24,7 +24,7 @@ proxTips <- function(x, tips="all",
     if(length(grep("Abouheif", distMethod)>1)){
         distMethod <- "Abouheif"
     }
-    D <- distTips(x, tips=tips, method=distMethod)
+    D <- distTips(x, tips=tips, method=distMethod, useC=useC)
     D <- as.matrix(D)
 
     ## compute proximities

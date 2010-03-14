@@ -10,7 +10,7 @@
   sum of branch lengths (see argument \code{method}).
 }
 \usage{
-distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
+distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"), useC=TRUE)
 }
 \arguments{
   \item{x}{a tree of  class \code{\link[ape:read.tree]{phylo}},
@@ -26,7 +26,12 @@ distTips(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))
     - \code{Abouheif}: Abouheif's distance (see details) \cr
     - \code{sumDD}: sum of direct descendants of all nodes on the path
     (see details) \cr
-   }
+  }
+  \item{useC}{a logical indicating whether computations should be
+    performed using compiled C code (TRUE, default), or using a pure R version
+    (FALSE). C version is several orders of magnitude faster, and R
+    version is kept for backward compatibility.
+  }
 }
 \value{
   An object of class \code{dist}, containing phylogenetic distances.
