@@ -94,20 +94,40 @@ int findNbDD(int *ances, int *desc, int N, int myNode){
   - for patristic distances, the set of edge used is: {output of sp2tips} U {tipA, tipB} \ {output of mrca2tips}
   - for all others: {output of sp2tips}
 */
-int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB, int method){
+double dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB, int method){
 	/* declarations */
 	int *path, *lengthPath, *myMrca;
-	int i, res;
+	int i;
+	double res;
 
 
 	/* allocate memory */
 	vecintalloc(&path, N);
 	lengthPath = (int *) calloc(1, sizeof(int));
-	myMrca = (int *) calloc(1, sizeof(int));
+	vecintalloc(&myMrca, 1); /* has to be this way, not a simple pointer, to be used in intANotInB */
 
+	/* /\* debugging *\/ */
+	/* printf("\n-- Input to dist2tips --\n"); */
+	/* printf("\nances:"); */
+	/* for(i=1;i<=N; i++){ */
+	/* 	printf(" %d", ances[i]); */
+	/* } */
+	/* printf("\ndesc:"); */
+	/* for(i=1;i<=N; i++){ */
+	/* 	printf(" %d", desc[i]); */
+	/* } */
+	/* printf("\nedge length:"); */
+	/* for(i=1;i<=N; i++){ */
+	/* 	printf(" %f", brlength[i]); */
+	/* } */
+	
 
 	/* find the shortest path between the two tips */
 	 sp2tips(ances, desc, N, tipA, tipB, path, lengthPath);
+	/*  printf("\nShortest path found in dist2tips:"); */
+	/*  for(i=1;i<=*lengthPath; i++){ */
+	/* 	 printf(" %d", path[i]); */
+	/* } */
 
 
 	 /* compute the distance */
@@ -115,10 +135,11 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 	 {
 	 case 1: /* patristic distance */
 		 /* find the mrca */
-		 *myMrca = 0;
-		 *myMrca = mrca2tips(ances, desc, tipA, tipB, N);
+		 myMrca[1] = 0;
+		 myMrca[1] = mrca2tips(ances, desc, tipA, tipB, N);
 
 		 /* remove mrca from the path */
+		 /* printf("\nMRCA: %d", myMrca[1]); */
 		 intANotInB(path, myMrca, *lengthPath, 1, path, lengthPath);
 
 		 /* add tips to the path */
@@ -127,10 +148,17 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 		 *lengthPath = *lengthPath + 1;
 		 path[*lengthPath] = tipB;
 
+		 /* printf("\nPath used in patristic distance:"); */
+		 /* for(i=1;i<=*lengthPath; i++){ */
+		 /* 	 printf(" %d", path[i]); */
+		 /* } */
+
 		 /* compute length */
 		 res=0.0;
 		 for(i=1; i<=*lengthPath; i++){
-			 res += findedgelength(desc, brlength, N, path[i]);
+			 res = res + findedgelength(desc, brlength, N, path[i]);
+			 /* printf("\nlength of edge terminating by %d: %f", path[i], findedgelength(desc, brlength, N, path[i])); */
+			 /* printf("\n value of res: %f", res); */
 		 }
 		 break;
 
@@ -141,14 +169,14 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 	 case 3: /* prod DD (Abouheif) */
 		 res=1.0;
 		 for(i=1; i<=*lengthPath; i++){
-			 res *= findNbDD(ances, desc, N, path[i]);
+			 res = res * findNbDD(ances, desc, N, path[i]);
 		 }
 		 break;
 
 	 case 4: /* sum DD */
 		 res=0.0;
 		 for(i=1; i<=*lengthPath; i++){
-			 res += findNbDD(ances, desc, N, path[i]);
+			 res = res + findNbDD(ances, desc, N, path[i]);
 		 }
 		 break;
 
@@ -161,8 +189,9 @@ int dist2tips(int *ances, int *desc, double *brlength, int N, int tipA, int tipB
 	/* free memory */
 	freeintvec(path);
 	free(lengthPath);
-	free(myMrca);
+	freeintvec(myMrca);
 
+	/* printf("\nDistance between %d and %d: %f", tipA, tipB, res); */
 	return(res);
 } /* end dist2tips */
 
@@ -209,7 +238,7 @@ void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, do
 	/* create local vectors for ancestors, descendents and branch lengths */
 	ancesLoc[0] = *N;
 	descLoc[0] = *N;
-	brlengthLoc[0] = *N ; /* conversion (casting) int->double*/
+	brlengthLoc[0] = *N ; /* implicit casting int->double */
 	for(i=0; i< *N; i++){
 		ancesLoc[i+1] = ances[i];
 		descLoc[i+1] = desc[i];
@@ -218,11 +247,12 @@ void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, do
 
 
 	/* perform computations for all pairs of tips (indexed 'i,j') */
-	k = 0; /* used to browse 'res' and 'resId' */
+	k = 0; /* used to browse 'res' */
 
 	for(i=1; i<=(*nTips-1); i++){
 		for(j=(i+1); j<=(*nTips); j++){
 			res[k] = dist2tips(ancesLoc, descLoc, brlengthLoc, *N, i, j, *method);
+			/*printf("\nDistance between tip %d and %d in main function: %f", i, j, res[k]);*/
 			k++;
 		}
 	}
@@ -241,25 +271,29 @@ void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, do
 /*
 
 library(adephylo)
-tre=rtree(10)
+tre=rtree(5)
+#tre$edge.length <- round(tre$edge.length*10)
+#tre$edge.length[tre$edge.length<1] <- 1
+
 plot(tre)
 nodelabels()
 tiplabels()
+edgelabels(text=tre$edge.length)
 
 n <- as.integer(nTips(tre))
 resSize=as.integer(n*(n-1)/2)
-res <- integer(resSize)
+res <- numeric(resSize)
 
 
 # void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, double *res, int *resSize, int *method){
 
-## nb nodes
-toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(2))
+## patristic
+toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(1))
 res <- toto[[6]]
 res
 
-## patristic
-toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(1))
+## nNodes
+toto <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, length(res), as.integer(2))
 res <- toto[[6]]
 res
 
