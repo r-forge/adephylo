@@ -13,6 +13,9 @@ distTips <- function(x, tips="all",
         res <- double(resSize)
         method <- match.arg(method)
         method <- match(method, c("patristic","nNodes","Abouheif","sumDD"))
+        if(is.null(tre$edge.length)){
+            tre$edge.length <- as.double(rep(1, nrow(tre$edge)))
+        }
 
         temp <- .C("distalltips", as.integer(tre$edge[,1]), as.integer(tre$edge[,2]), as.double(tre$edge.length), nrow(tre$edge), n, res, resSize, as.integer(method), PACKAGE="adephylo")
         res <- temp[[6]]
