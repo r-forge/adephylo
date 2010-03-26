@@ -1,17 +1,18 @@
 #############
 ## table.phylo4d
 #############
-table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
-                      repVar=1:ncol(tdata(x, type="tip")), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
-                      show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
-                      ratio.tree=1/3, font=3,
-                      tip.label=tipLabels(x), var.label=colnames(tdata(x,type="tip")),
-                      cex.symbol=1, cex.label=1, cex.legend=1, coord.legend=NULL, ...)
+table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares", "colors"),
+                          repVar=1:ncol(tdata(x, type="tip")), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
+                          show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
+                          ratio.tree=1/3, font=3,
+                          tip.label=tipLabels(x), var.label=colnames(tdata(x,type="tip")),
+                          cex.symbol=1, cex.label=1, cex.legend=1,
+                          pch=20, col=heat.colors(100), coord.legend=NULL, ...)
 {
 
     ## preliminary stuff and checks
     if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
-    # if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk) <- needed?
+                                        # if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk) <- needed?
 
     if(!require(ape)) stop("the ape package is required")
     if(cex.label<0.1) {
@@ -25,6 +26,9 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     treetype <- match.arg(treetype)
 
     SYMBSCALE <- 0.2 # i.e. max size of a plotted symbol is 0.2*cex.symbol inches
+    if(symbol=="colors") {
+        SYMBSCALE <- 0.05
+    }
 
     ## convert the tree into phylo
     tre <- suppressWarnings(as(x,"phylo"))
@@ -93,7 +97,8 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     }
     xrange.data <- c(x.base , (par("usr")[1]+usr.width) - lab.width - 2*x.inset) # plot data within this range
 
-    if(diff(xrange.data) < (x.inset*ncol(dat))) stop("No room left to plot data; please try reducing ratio.tree or cex.label.")
+    ##    if(diff(xrange.data) < (x.inset*ncol(dat))) ("No room left to plot data; please try reducing ratio.tree or cex.label.")
+    if(diff(xrange.data) < (x.inset*ncol(dat))) warning("There may not be enough room left to plot data; you may consider reducing ratio.tree or cex.label.")
 
     ## define x and y coordinates
     x.grid <- seq(xrange.data[1],xrange.data[2], length=ncol(dat))
@@ -119,6 +124,21 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
                  x1=rep(max(x.grid),plotres$Ntip), y1=y.grid, col="grey")
     }
 
+
+    ## auxiliary function to translate a variable into colors
+    makeColors <- function(x, col){ # x is a numeric vector, col is a vector of colors
+        if(length(x)==1) return(col[1])
+        nCol <- length(col)
+        res <- x - min(x)
+        res <- res / max(res)
+        res <- res * (nCol-1) + 1
+        res <- round(res)
+        res[res>nCol] <- nCol
+        res[res<1] <- 1
+        return(col[res])
+    }
+
+
     ## auxiliary function to plot a single variable
     ## max size of a symbol is set to SYMBSCALE*cex inches
     plotaux <- function(x,y,var,symbol,cex){
@@ -143,6 +163,11 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
                 symbols(x=x, y=y, circles=abs(var), inches=SYMBSCALE*cex, fg=fg.col, bg=bg.col, add=TRUE)
             } # end circles
 
+            if(symbol == "colors"){
+                myCol <- makeColors(var, col)
+                points(x=x, y=y, pch=pch, cex=cex, col=myCol)
+            } # end colors
+
         } else {
 
             if(symbol == "squares"){
@@ -152,6 +177,12 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
             if(symbol == "circles"){
                 symbols(x=x, y=y, circles=var, inches=SYMBSCALE*cex, fg="white", bg="black", add=TRUE)
             } # end circles
+
+            if(symbol == "colors"){
+                myCol <- makeColors(var, col)
+                points(x=x, y=y, pch=pch, cex=cex, col=myCol)
+            } # end colors
+
         } # end else
 
         if(any(is.na(var))){
@@ -195,11 +226,18 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
             leg.txt <- as.character(leg.values)
 
             ## compute the maximum size taken by symbols in usr coordinates
-            usr.w <- (par("usr")[2]-par("usr")[1]) / ratio.tree # because par("usr") is the one of plot.phylo
-            usr.h <- par("usr")[4]-par("usr")[3]
-            sym.w <- usr.w *
-                ((abs(leg.values)/max(abs(leg.values))) * SYMBSCALE * cex.symbol * cex.legend) / par("pin")[1]
-            sym.h <- usr.h * (SYMBSCALE * cex.symbol * cex.legend) / par("pin")[2]
+            if(symbol=="colors") {
+                sym.w <-strwidth("o",units="user",cex=cex.symbol)
+                sym.w <- rep(sym.w, length(leg.values))
+                sym.h <- strheight("o",units="user",cex=cex.symbol)
+                sym.h <- rep(sym.h, length(leg.values))
+            } else {
+                usr.w <- (par("usr")[2]-par("usr")[1]) / ratio.tree # because par("usr") is the one of plot.phylo
+                usr.h <- par("usr")[4]-par("usr")[3]
+                sym.w <- usr.w *
+                    ((abs(leg.values)/max(abs(leg.values))) * SYMBSCALE * cex.symbol * cex.legend) / par("pin")[1]
+                sym.h <- usr.h * (SYMBSCALE * cex.symbol * cex.legend) / par("pin")[2]
+            }
 
             ## compute the maximum size taken by annotations in usr coordinates
             ann.w <- strwidth(leg.txt,units="user",cex=cex.label*cex.legend)
@@ -210,8 +248,12 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
             space.w.ann <- sapply(1:(length(ann.w)-1),function(i)  sum(ann.w[c(i,i+1)])) / 2
             temp <- cbind(space.w.sym, space.w.ann)
             space.w <- apply(temp,1,max)
-            space.w <- space.w + 0.01*usr.w
-            space.h <- sym.h + ann.h + 0.01*usr.h
+            if(symbol=="colors"){
+                space.h <- sym.h + ann.h
+            } else {
+                space.w <- space.w + 0.01*usr.w
+                space.h <- sym.h + ann.h + 0.01*usr.h
+            }
 
             ## define coordinates of annotations and symbols
             ann.coordX <- c(x, x + cumsum(space.w)) + max(sym.w[1],ann.w[1]) + 0.01*usr.w

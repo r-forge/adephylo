@@ -14,18 +14,19 @@
   through the \dots argument, but their names must be complete.
 }
 \usage{
-table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares"),
+table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares","colors"),
                       repVar=1:ncol(tdata(x, type="tip")), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
                       show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
                       ratio.tree=1/3, font=3,
                       tip.label=tipLabels(x), var.label=colnames(tdata(x,type="tip")),
-                      cex.symbol=1, cex.label=1, cex.legend=1,
-  coord.legend=NULL, \dots)
+                      cex.symbol=1, cex.label=1, cex.legend=1, pch=20, col=heat.colors(100),
+                      coord.legend=NULL, \dots)
 }
 \arguments{
   \item{x}{a \linkS4class{phylo4d} object}
   \item{treetype}{the type of tree to be plotted ("phylogram" or "cladogram")}
-  \item{symbol}{the type of symbol used to represent data ("circles" or "squares")}
+  \item{symbol}{the type of symbol used to represent data ("circles",
+  "squares", or "colors")}
   \item{repVar}{the numerical index of variables to be plotted}
   \item{center}{a logical stating whether variables should be centred
     (TRUE, default) or not (FALSE)}
@@ -51,6 +52,10 @@ table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squar
  \item{cex.symbol}{a numeric giving the factor scaling the symbols}
  \item{cex.label}{a numeric giving the factor scaling all labels}
  \item{cex.legend}{a numeric giving the factor scaling the legend}
+ \item{pch}{is \code{symbol} is set to 'colors', a number indicating the
+   type of point to be plotted (see ?points)}
+ \item{col}{is \code{symbol} is set to 'colors', a vector of colors
+   to be used to represent the data}
  \item{coord.legend}{an optional list with two components 'x' and 'y'
    indicating the lower-left position of the legend. Can be set to
    \code{locator(1) to position the legend interactively.}}
