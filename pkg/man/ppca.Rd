@@ -8,10 +8,9 @@
 \alias{plot.ppca}
 \title{Phylogenetic principal component analysis}
 \description{These functions are designed to perform a phylogenetic principal
-  component analysis (pPCA, Jombart et al. in prep) and to display the
-  results. As this method is not published yet, please email the author
-  before using it.
-
+  component analysis (pPCA, Jombart et al. 2010) and to display the
+  results.
+  
   \code{ppca} performs the phylogenetic component analysis. Other
   functions are:\cr
 
@@ -83,16 +82,17 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
 }
 \details{
   The phylogenetic Principal Component Analysis (pPCA, Jombart et al.,
-  in prep) is derived from the spatial Principal Component Analysis
-  (spca, Jombart et al. 2008), implemented in the adegenet package (see
+  2010) is derived from the spatial Principal Component Analysis (spca,
+  Jombart et al. 2008), implemented in the adegenet package (see
   \code{\link[adegenet]{spca}}).\cr
 
-  pPCA is designed to investigate phylogenetic patterns in the variability of a set of
-  traits. The analysis returns principal components maximizing the
-  product of variance and phylogenetic autocorrelation (Moran's
-  I), therefore reflecting biodemographic strategies that are linked
-  to the phylogeny. Large positive and large negative eigenvalues
-  correspond to global and local structures.\cr
+  pPCA is designed to investigate phylogenetic patterns a set of
+  quantitative traits. The analysis returns principal components
+  maximizing the product of variance of the scores and their
+  phylogenetic autocorrelation (Moran's I), therefore reflecting life
+  histories that are phylogenetically structured. Large positive and
+  large negative eigenvalues correspond to global and local
+  structures.\cr
 }
 \value{The class \code{ppca} are given to lists with the following
   components:\cr
@@ -116,35 +116,92 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
   - \code{scatter.ppca} returns the matched call.\cr
 }
 \references{
-  Jombart, T.; Pavoine, S.; Dufour, A.-B. & Pontier, D. (in prep)
+  Jombart, T.; Pavoine, S.; Dufour, A. & Pontier, D. (2010, in press)
   Exploring phylogeny as a source of ecological variation: a
-  methodological approach \cr
+  methodological approach. doi:10.1016/j.jtbi.2010.03.038
 
-  Jombart, T., Devillard, S., Dufour, A.-B. and Pontier, D.
-  Revealing cryptic phylogenetic patterns in genetic variability by a new
-  multivariate method. \emph{Heredity}, \bold{101}, 92--103.
-
-  Wartenberg, D. E. (1985) Multivariate phylogenetic correlation: a method for
-  exploratory geographical analysis. \emph{Geographical Analysis},
-  \bold{17}, 263--283.
-
-  Moran, P.A.P. (1948) The interpretation of statistical
-  maps. \emph{Journal of the Royal Statistical Society, B}
-  \bold{10}, 243--251.
-
-  Moran, P.A.P. (1950) Notes on continuous stochastic
-  phenomena. \emph{Biometrika}, \bold{37}, 17--23.
-
-  de Jong, P. and Sprenger, C. and van Veen, F. (1984) On extreme values
-  of Moran's I and Geary's c. \emph{Geographical Analysis}, \bold{16}, 17--24.
-
+  Jombart, T., Devillard, S., Dufour, A.-B. and Pontier, D. (2008)
+  Revealing cryptic phylogenetic patterns in genetic variability by a
+  new multivariate method. \emph{Heredity}, \bold{101}, 92--103.
 }
 \seealso{The implementation of \code{\link[adegenet]{spca}} in the
   adegenet package (\code{\link[adegenet]{adegenet}}) \cr
  }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
-## build an look at data
+if(require(ade4)){
+
+#### ORIGINAL EXAMPLE FROM JOMBART ET AL 2010 ####
+data(lizards)
+
+
+## BUILD A TREE AND A PHYLO4D OBJECT
+liz.tre <- read.tree(tex=lizards$hprA)
+liz.4d <- phylo4d(liz.tre, lizards$traits)
+par(mar=rep(.1,4))
+table.phylo4d(liz.4d,var.lab=c(names(lizards$traits),"ACP 1\n(\"effet taille\")"),show.node=FALSE, cex.lab=1.2)
+
+
+## REMOVE DUPLICATED POPULATIONS
+liz.4d <- prune(liz.4d, c(7,14))
+table.phylo4d(liz.4d)
+
+
+## CORRECT LABELS
+lab <- structure(c("Pa", "Ph", "Ll", "Lmca", "Lmcy", "Phha", "Pha", "Pb", "Pm",
+"Ae", "Tt", "Ts", "Lviv", "La", "Ls", "Lvir"), .Names = c("1", "2",
+"3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
+"15", "16"))
+tipLabels(liz.4d) <- lab
+
+
+## REMOVE SIZE EFFECT
+dat <- tdata(liz.4d, type="tip")
+dat <- log(dat)
+newdat <- data.frame(lapply(dat, function(v) residuals(lm(v~dat$mean.L))))
+rownames(newdat) <- rownames(dat)
+tdata(liz.4d, type="tip") <- newdat[,-1] # replace data in the phylo4d object
+
+
+## pPCA
+liz.ppca <- ppca(liz.4d,scale=FALSE,scannf=FALSE,nfposi=1,nfnega=1, method="Abouheif")
+liz.ppca
+tempcol <- rep("grey",7)
+tempcol[c(1,7)] <- "black"
+barplot(liz.ppca$eig,main='pPCA eigenvalues',cex.main=1.8,col=tempcol)
+
+par(mar=rep(.1,4))
+plot(liz.ppca,ratio.tree=.7)
+
+
+## CONTRIBUTIONS TO PC (LOADINGS) (viewed as dotcharts)
+dotchart(liz.ppca$c1[,1],lab=rownames(liz.ppca$c1),main="Global principal
+component 1")
+abline(v=0,lty=2)
+
+dotchart(liz.ppca$c1[,2],lab=rownames(liz.ppca$c1),main="Local principal
+component 1")
+abline(v=0,lty=2)
+
+
+## REPRODUCE FIGURES FROM THE PAPER
+obj.ppca <- liz.4d
+tdata(obj.ppca, type="tip") <- liz.ppca$li
+myLab <- paste(" ",rownames(liz.ppca$li), sep="")
+
+## FIGURE 1
+par(mar=c(.1,2.4,2.1,1))
+table.phylo4d(obj.ppca, ratio=.7, var.lab=c("1st global PC", "1st local PC"), tip.label=myLab, box=FALSE,cex.lab=1.4, cex.sym=1.2, show.node.label=TRUE)
+add.scatter.eig(liz.ppca$eig,1,1,1,csub=1.2, posi="topleft", ratio=.23)
+
+
+## FIGURE 2
+s.arrow(liz.ppca$c1,xlim=c(-1,1),clab=1.3,cgrid=1.3)
+
+
+
+#### ANOTHER EXAMPLE - INCLUDING NA REPLACEMENT ####
+## LOAD THE DATA
 data(maples)
 tre <- read.tree(text=maples$tre)
 x <- phylo4d(tre, maples$tab)
@@ -152,7 +209,7 @@ omar <- par("mar")
 par(mar=rep(.1,4))
 table.phylo4d(x, cex.lab=.5, cex.sym=.6, ratio=.1) # note NAs in last trait ('x')
 
-## function to replace NA
+## FUNCTION TO REPLACE NAS
 f1 <- function(vec){
 if(any(is.na(vec))){
 m <- mean(vec, na.rm=TRUE)
@@ -161,29 +218,32 @@ vec[is.na(vec)] <- m
 return(vec)
 }
 
-## compute a PCA
+
+## PERFORM THE PPCA
 dat <- apply(maples$tab,2,f1) # replace NAs
 x.noNA <- phylo4d(tre, as.data.frame(dat))
-if(require(ade4)){
-ppca1 <- ppca(x.noNA, scannf=FALSE, method="Abouheif")
-ppca1
+map.ppca <- ppca(x.noNA, scannf=FALSE, method="Abouheif")
+map.ppca
 
-## some graphics
-screeplot(ppca1)
-scatter(ppca1, useLag=TRUE)
-plot(ppca1, useLag=TRUE)
 
-## most structured traits
-a <- ppca1$c1[,1] # loadings on PC 1
-names(a) <- row.names(ppca1$c1)
+## SOME GRAPHICS
+screeplot(map.ppca)
+scatter(map.ppca, useLag=TRUE)
+plot(map.ppca, useLag=TRUE)
+
+
+## MOST STRUCTURED TRAITS
+a <- map.ppca$c1[,1] # loadings on PC 1
+names(a) <- row.names(map.ppca$c1)
 highContrib <- a[a< quantile(a,0.1) | a>quantile(a,0.9)]
-datSel <- cbind.data.frame(dat[, names(highContrib)], ppca1$li)
+datSel <- cbind.data.frame(dat[, names(highContrib)], map.ppca$li)
 temp <- phylo4d(tre, datSel)
 table.phylo4d(temp) # plot of most structured traits
 
-## phylogenetic autocorrelation tests for these traits
+
+## PHYLOGENETIC AUTOCORRELATION TESTS FOR THESE TRAITS
 prox <- proxTips(tre, method="Abouheif")
-gearymoran(prox, dat[, names(highContrib)]) # one test per trait
+abouheif.moran(dat[, names(highContrib)], prox)
 }
 }
 \keyword{multivariate}
