@@ -129,7 +129,6 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
  }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
-if(require(ade4)){
 
 #### ORIGINAL EXAMPLE FROM JOMBART ET AL 2010 ####
 data(lizards)
@@ -139,7 +138,7 @@ data(lizards)
 liz.tre <- read.tree(tex=lizards$hprA)
 liz.4d <- phylo4d(liz.tre, lizards$traits)
 par(mar=rep(.1,4))
-table.phylo4d(liz.4d,var.lab=c(names(lizards$traits),"ACP 1\n(\"effet taille\")"),show.node=FALSE, cex.lab=1.2)
+table.phylo4d(liz.4d,var.lab=c(names(lizards$traits),"ACP 1\n(\"size effect\")"),show.node=FALSE, cex.lab=1.2)
 
 
 ## REMOVE DUPLICATED POPULATIONS
@@ -148,10 +147,7 @@ table.phylo4d(liz.4d)
 
 
 ## CORRECT LABELS
-lab <- structure(c("Pa", "Ph", "Ll", "Lmca", "Lmcy", "Phha", "Pha", "Pb", "Pm",
-"Ae", "Tt", "Ts", "Lviv", "La", "Ls", "Lvir"), .Names = c("1", "2",
-"3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
-"15", "16"))
+lab <- c("Pa", "Ph", "Ll", "Lmca", "Lmcy", "Phha", "Pha", "Pb", "Pm", "Ae", "Tt", "Ts", "Lviv", "La", "Ls", "Lvir")
 tipLabels(liz.4d) <- lab
 
 
@@ -244,6 +240,6 @@ table.phylo4d(temp) # plot of most structured traits
 ## PHYLOGENETIC AUTOCORRELATION TESTS FOR THESE TRAITS
 prox <- proxTips(tre, method="Abouheif")
 abouheif.moran(dat[, names(highContrib)], prox)
-}
+
 }
 \keyword{multivariate}
