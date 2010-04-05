@@ -94,8 +94,8 @@
    provides a description of how biological variability is structured
    on a phylogeny.\cr
 
-   - \code{\link{ppca}}: performs a phylogenetic principal
-   component analysis (pPCA, Jombart et al. in prep). This multivariate
+   - \code{\link{ppca}}: performs a phylogenetic Principal
+   Component Analysis (pPCA, Jombart et al. 2010). This multivariate
    method investigates phylogenetic patterns in a set of quantitative
    traits.\cr
 
@@ -130,8 +130,8 @@
   \tabular{ll}{
     Package: \tab adephylo\cr
     Type: \tab Package\cr
-    Version: \tab 1.0-2\cr
-    Date: \tab 2009-01-11 \cr
+    Version: \tab 1.1-0\cr
+    Date: \tab 2010-04-05 \cr
     License: \tab GPL (>=2)
   }  
 }
