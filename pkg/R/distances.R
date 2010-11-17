@@ -146,7 +146,7 @@ distRoot <- function(x, tips="all", method=c("patristic","nNodes","Abouheif","su
     ## main computations
 
     ## get path from root to tops
-    allPath <- lapply(tips, function(tip) .tipToRoot(x, tip, root))
+    allPath <- lapply(tips, function(tip) .tipToRoot(x, tip, root, include.root = TRUE))
 
     ## compute distances
     if(method=="patristic"){
