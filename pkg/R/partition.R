@@ -64,7 +64,7 @@ treePart <- function(x, result=c("dummy", "orthobasis")){
     temp <- listTips(x)
     res <- data.frame(lapply(temp,fDum))
     row.names(res) <- tipLabels(x)
-    res <- res[,-1]
+    res <- res[,-1, drop=FALSE]
 
     if(result=="dummy"){
         return(res) # res is a data.frame of dummy vectors
