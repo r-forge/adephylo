@@ -52,7 +52,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     var.label <- var.label[repVar]
     var.label <- var.label[isNum]
     ## order data like tips
-    E <- edges(x)
+    E <- phylobase::edges(x)
     tips.ord <- E[,2][!E[,2] %in% E[,1]]
     dat <- dat[tips.ord,,FALSE]
     tip.label <- tip.label[tips.ord] # reorder tip labels
