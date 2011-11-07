@@ -1,8 +1,8 @@
 Package: adephylo
-Version: 1.1-1
-Date: 2011/01/017
+Version: 1.1-2
+Date: 2011/11/07
 Title: adephylo: exploratory analyses for the phylogenetic comparative method.
-Author: Thibaut Jombart <t.jombart@imperial.ac.uk>, Stephane Dray <dray@biomserv.univ-lyon1.fr>
+Author: Thibaut Jombart <t.jombart@imperial.ac.uk>, Stephane Dray <stephane.dray@univ-lyon1.fr>
 Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>
 Suggests:
 Depends: methods, phylobase, ape, ade4
