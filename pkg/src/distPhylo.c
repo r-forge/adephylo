@@ -267,6 +267,60 @@ void distalltips(int *ances, int *desc, double *brlength, int *N, int *nTips, do
 
 
 
+
+
+
+/* /\* === FIND DISTANCES BETWEEN GIVEN PAIRS OF TIPS === *\/ */
+/* /\* === THIS HAS NOT BEEN TESTED === *\/ */
+/* void distpairtips(int *ances, int *desc, double *brlength, int *N, int *nTips, double *res, int *resSize, int *method, int *tipsA, int *tipsB){ */
+/* 	/\* declarations *\/ */
+/* 	int i, j, k, temp; */
+/* 	int *ancesLoc, *descLoc; /\* must use dynamic allocation *\/ */
+/* 	double *brlengthLoc; /\* must use dynamic allocation *\/ */
+
+/* 	/\* check resSize *\/ */
+/* 	temp = (*nTips) * (*nTips-1) / 2; */
+/* 	if(*resSize !=  temp) { */
+/* 		printf("\n Likely error in distalltips: resSize is %d, and should be %d.\n", *resSize, temp); */
+/* 		return; */
+/* 	} */
+
+
+/* 	/\* allocate memory for local variables *\/ */
+/* 	vecintalloc(&ancesLoc, *N); */
+/* 	vecintalloc(&descLoc, *N); */
+/* 	vecalloc(&brlengthLoc, *N); */
+
+
+/* 	/\* create local vectors for ancestors, descendents and branch lengths *\/ */
+/* 	ancesLoc[0] = *N; */
+/* 	descLoc[0] = *N; */
+/* 	brlengthLoc[0] = *N ; /\* implicit casting int->double *\/ */
+/* 	for(i=0; i< *N; i++){ */
+/* 		ancesLoc[i+1] = ances[i]; */
+/* 		descLoc[i+1] = desc[i]; */
+/* 		brlengthLoc[i+1] = brlength[i]; */
+/* 	} */
+
+
+/* 	/\* perform computations for all pairs of tips (indexed 'i,j') *\/ */
+/* 	k = 0; /\* used to browse 'res' *\/ */
+
+/* 	for(i=0; i<*resSize; i++){ */
+/* 		res[k++] = dist2tips(ancesLoc, descLoc, brlengthLoc, *N, tipsA[i], tipsB[j], *method); */
+/* 		/\*printf("\nDistance between tip %d and %d in main function: %f", i, j, res[k]);*\/ */
+/* 	} */
+
+/* 	/\* free memory *\/ */
+/* 	freeintvec(ancesLoc); */
+/* 	freeintvec(descLoc); */
+/* 	freevec(brlengthLoc); */
+
+/* } /\* end distpairtips *\/ */
+
+
+
+
 /* TESTING */
 /*
 
