@@ -1,24 +1,26 @@
 ##############
 ## treeGroup
 ##############
-treeGroup <- function(x, grp, dat, FUN, boot=FALSE, n.boot=10,
+treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
                       n.dens=4096, plot=TRUE, warn.lab=FALSE, ...){
     if(!require(ape)) stop("ape package is required")
     if(!inherits(x,"phylo")) stop("x is not a phylo object")
-    if(warn.lab && !identical(x$tip.label,rownames(dat))) warning("Tip labels in x and rownames of dat differ \nplease make sure the same order is used in x, grp, and dat")
+    if(boot && (is.null(dat) || is.null(FUN))) stop("dat and FUN must be provided for the bootstrap procedure")
+    if(warn.lab && !is.null(dat) && !identical(x$tip.label,rownames(dat))) warning("Tip labels in x and rownames of dat differ \nplease make sure the same order is used in x, grp, and dat")
     grp <- factor(grp)
     K <- length(LEV <- levels(grp))
-    N <- nrow(dat)
+    N <- length(x$tip.label)
     D <- cophenetic.phylo(x)
     THRES <- 1e-320 # densities < THRES will be set to THRES to avoid log(x)=-Inf
 
 
     ## RE-ORDER GRP AND DATA MATRIX AFTER TIP LABELS ##
-    if(is.null(rownames(dat))) rownames(dat) <- x$tip.label
-    if(!all(x$tip.label %in% rownames(dat))) stop("some tips do not have data matching their label")
-    grp <- grp[match(x$tip.label, rownames(dat))] # grp is assumed to be in the same order as 'dat'
-    dat <- dat[x$tip.label,,drop=FALSE]
-
+    if(!is.null(dat)){
+        if(is.null(rownames(dat))) rownames(dat) <- x$tip.label
+        if(!all(x$tip.label %in% rownames(dat))) stop("some tips do not have data matching their label")
+        grp <- grp[match(x$tip.label, rownames(dat))] # grp is assumed to be in the same order as 'dat'
+        dat <- dat[x$tip.label,,drop=FALSE]
+    }
 
     #### AUXILIARY FUNCTIONS ####
     ## FUNCTION TO ESTIMATE A DENSITY AT A SERIES OF POINTS ##
@@ -115,7 +117,7 @@ treeGroup <- function(x, grp, dat, FUN, boot=FALSE, n.boot=10,
     annot <- rep(" ", N)
     annot[as.character(grp)!=as.character(temp)] <- "!"
     groups <- data.frame(observed=grp, inferred=temp, annot=annot)
-    rownames(groups) <- x$tip.labels
+    rownames(groups) <- rownames(prob)
 
 
     ## BUILD / RETURN RESULT ##
@@ -123,7 +125,7 @@ treeGroup <- function(x, grp, dat, FUN, boot=FALSE, n.boot=10,
     ## propcorrect.bygroup <- tapply(annot==" ", grp, mean)
     assignability <- mean((apply(prob,1,max)-.5)/.5)
     ##res <- list(prob=prob,groups=groups, mean.correct=propcorrect, prop.correct=propcorrect.bygroup)
-    res <- list(prob=prob,groups=groups, assigndex=assignability, mean.correct=propcorrect)
+    res <- list(prob=prob, groups=groups, assigndex=assignability, mean.correct=propcorrect)
 
     return(res)
 } # end treeGroup
