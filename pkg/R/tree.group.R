@@ -117,7 +117,7 @@ treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
     annot <- rep(" ", N)
     annot[as.character(grp)!=as.character(temp)] <- "!"
     groups <- data.frame(observed=grp, inferred=temp, annot=annot)
-    rownames(groups) <- rownames(prob)
+    ##rownames(groups) <- rownames(prob)
 
 
     ## BUILD / RETURN RESULT ##
