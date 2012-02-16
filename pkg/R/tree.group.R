@@ -1,12 +1,16 @@
 ##############
 ## treeGroup
 ##############
-treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
-                      n.dens=4096, plot=TRUE, warn.lab=FALSE, ...){
+treeGroup <- function(x, grp, method=c("default","leaveOneOut","bootstrap"), n.dens=4096, plot=TRUE,
+                      warn.lab=FALSE, dat=NULL, FUN=NULL, n.boot=10, ...){
     if(!require(ape)) stop("ape package is required")
     if(!inherits(x,"phylo")) stop("x is not a phylo object")
-    if(boot && (is.null(dat) || is.null(FUN))) stop("dat and FUN must be provided for the bootstrap procedure")
+    method <- match.arg(method)
+
+    if(method=="bootstrap" && (is.null(dat) || is.null(FUN))) stop("dat and FUN must be provided for the bootstrap procedure")
     if(warn.lab && !is.null(dat) && !identical(x$tip.label,rownames(dat))) warning("Tip labels in x and rownames of dat differ \nplease make sure the same order is used in x, grp, and dat")
+
+    ## DECLARE SOME VARIABLES, HANDLE ARGUMENTS ##
     grp <- factor(grp)
     K <- length(LEV <- levels(grp))
     N <- length(x$tip.label)
@@ -46,9 +50,9 @@ treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
 
 
     ## FUNCTION TO GET PROBA FOR ONE INDIV / ONE GROUP ##
-    getprob.ind <- function(i, g){ # i: idx of indiv; g: idx of a group
+    getprob.ind <- function(i, g, dens.per.grp){ # i: idx of indiv; g: idx of a group
         temp <- 1:ncol(D)
-        dens <- compute.dens(list.dens[[g]], D[i,grp==LEV[g] & temp!=i])
+        dens <- compute.dens(dens.per.grp[[g]], D[i,grp==LEV[g] & temp!=i])
         dens[dens < THRES] <- THRES
         res <- exp(mean(log(dens)))
         return(res)
@@ -56,8 +60,14 @@ treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
 
 
     ## FUNCTION TO GET PROBA FOR ALL INDIV / ONE GROUP ##
-    getprob.grp <- function(g){ # g: idx of a group
-        return(sapply(1:N, function(i) getprob.ind(i,g)))
+    if(method=="leaveOneOut"){
+        getprob.grp <- function(g, dens.per.ind.grp){ # g: idx of a group; dens.per.ind.grp is a list giving grp density for each indiv
+            return(sapply(1:N, function(i) getprob.ind(i,g,dens.per.ind.grp[[i]])))
+        }
+    } else {
+        getprob.grp <- function(g, dens.per.grp){ # g: idx of a group
+            return(sapply(1:N, function(i) getprob.ind(i,g,dens.per.grp)))
+        }
     }
 
 
@@ -70,7 +80,23 @@ treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
     }
 
 
-    if(boot){ # USE BOOTSTRAP
+    #### CORE COMPUTATIONS ####
+    ## DEFAULT: DENSITY BASED ON SAMPLE ##
+    if(method=="default"){
+        dens.dat <- getdist.within.allgrp(D, grp) # density data for each group
+        list.dens <- lapply(dens.dat, density, n=n.dens, ...) # densities for each group
+    }
+
+
+    ## LEAVEONEOUT: GRP DENSITY EXCLUDES THE INDIV FOR WHICH PROBA IS SEEKED ##
+    if(method=="leaveOneOut"){
+        dens.dat <- lapply(1:N, function(i) getdist.within.allgrp(D[-i,-i], grp[-i])) # grp density data for each individual
+        list.dens <- lapply(1:N, function(i) lapply(dens.dat[[i]], density, n=n.dens, ...)) # densities for each group
+    }
+
+
+    ## BOOTSTRAP: DENSITY BASED ON BOOTSTRAPPIN INDIVIDUALS ##
+    if(method=="bootstrap"){
         ## GET BOOTSTRAPPED TREES ##
         list.trees.grp <- lapply(1:n.boot, function(i) getboot.tree.grp())
 
@@ -83,15 +109,11 @@ treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
         ## GET DENSITIES FOR EACH GROUP ##
         dens.dat <- lapply(LEV, function(onegroup) unlist(lapply(temp, function(e) e[[onegroup]]))) # density data for each group
         list.dens <- lapply(dens.dat, density, n=n.dens, ...) # densities for each group
-
-    } else { # DO NOT USE BOOTSTRAP
-         dens.dat <- getdist.within.allgrp(D, grp) # density data for each group
-         list.dens <- lapply(dens.dat, density, n=n.dens, ...) # densities for each group
     }
 
 
     ## PLOT DENSITIES ##
-    if(plot){
+    if(method != "leaveOneOut" && plot){
         find.mfrow <- function(i) {
             nrow <- ceiling(sqrt(i))
             ncol <- ceiling(i/ceiling(sqrt(i)))
@@ -106,7 +128,7 @@ treeGroup <- function(x, grp, dat=NULL, FUN=NULL, boot=FALSE, n.boot=10,
 
 
     ## COMPUTE MEMBERSHIP PROBABILITIES ##
-    prob <- matrix(unlist(lapply(1:K, getprob.grp)), ncol=K)
+    prob <- matrix(unlist(lapply(1:K, getprob.grp, list.dens)), ncol=K)
     prob <- prop.table(prob,1)
     colnames(prob) <- LEV
     rownames(prob) <- x$tip.label
