@@ -138,11 +138,13 @@ dibas.matrix <- function(x, grp, method=c("default","leaveOneOut"), ...){
 ###############
 ## dibas.phylo
 ###############
-dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), ...){
+dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), metric=c("Abouheif", "nNodes", "sumDD"),...){
     if(!require(ape)) stop("ape package is required")
     if(!inherits(x,"phylo")) stop("x is not a phylo object")
 
-    res <- dibas.matrix(cophenetic.phylo(x), grp, method)
+    metric <- match.arg(metric)
+
+    res <- dibas(distTips(x, method=metric), grp, method)
 
     return(res)
 } # end dibas.phylo
