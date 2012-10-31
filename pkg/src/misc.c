@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <R_ext/Print.h>
 
 /* interpolate values in a density */
 /* x contais n values for which we want y=f(x) */

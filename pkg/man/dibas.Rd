@@ -38,6 +38,7 @@
 }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
+\dontrun{
 if(require(ape)){
 #### SIMPLE SIMULATED DATA ####
 ## 50 variables, 2 groups, 30 indiv
@@ -106,9 +107,8 @@ res
 
 plot(table(res$groups), main="Group assignment - dibas Abouheif")
 
-
 }
-
+}
 }
 
 

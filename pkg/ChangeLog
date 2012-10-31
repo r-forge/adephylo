@@ -1,3 +1,24 @@
+			CHANGES IN ADEPHYLO VERSION 1.1-3
+
+
+NEW FEATURES
+
+	o added dibas, a new (and still under development) method for
+	describing/testing phylogenetic clusters
+
+
+BUG FIXES
+
+	o replaced the use of .First.lib and library.dynam by more
+	up-to-date procedures
+
+	o replaced a call to a C procedure from ade4 to the same procedure
+	in adephylo
+
+	o replaced instances of 'printf' by 'Rprintf' in C procedures
+
+
+
 			CHANGES IN ADEPHYLO VERSION 1.1-1
 
 
@@ -15,7 +36,7 @@ NEW FEATURES
 	o the phylogenetic Principal Component Analysis (pPCA, Jombart et
 	al. 2010) has been implemented in adephylo. See ?ppca for more
 	information.
-	
+
 	o phylogenetic distances and proximities are now computed using
 	compiled C code, speeding up dramatically computations and making
 	the functions applicable to large trees (thousands of tips).

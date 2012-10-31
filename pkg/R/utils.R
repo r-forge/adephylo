@@ -91,7 +91,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
     ## function pathTwoTips (takes two path-to-root as args)
     pathTwoTips <- function(path1, path2){
         cpath <- c(path1, path2)
-        temp <- factor(cpath, level=unique(cpath))
+        temp <- factor(cpath, levels=unique(cpath))
         CA <- temp[table(temp)==2][1] # most recent common ancestor (MRCA)
         CA <- as.integer(as.character(CA)) # retrieve integer type
         path1 <- path1[1:(which(path1==CA))] # cut path1 after MRCA (keep MRCA)

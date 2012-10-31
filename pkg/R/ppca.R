@@ -66,7 +66,7 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
 
     ## computations of the ppca
     X <- as.matrix(X)
-    decomp <- eigen( ((t(X) %*% W %*% X)/N), sym=TRUE)
+    decomp <- eigen( ((t(X) %*% W %*% X)/N), symmetric=TRUE)
     U <- decomp$vectors # U: principal axes
     lambda <- decomp$values
 
@@ -413,7 +413,7 @@ plot.ppca <- function(x, axes = 1:ncol(x$li), useLag=FALSE, ...){
     ## 3) loadings
     if(length(axes)==1){ # one axis retained
         par(mar=c(2.5,4,2,1))
-        dotchart(x$c1[,1], lab=row.names(x$c1), main="Loadings",
+        dotchart(x$c1[,1], labels=row.names(x$c1), main="Loadings",
                  cex=par("cex")*.66)
         abline(v=median(x$c1[,1]), lty=2)
         par(mar=rep(.1,4))

@@ -47,7 +47,7 @@ abouheif.moran <- function (x, W=NULL,
         restot = double (nrepet),
         PACKAGE="adephylo"
     )
-    res <- as.krandtest(obs=res$obs,sim=matrix(res$result,ncol=nvar, byr=TRUE),
+    res <- as.krandtest(obs=res$obs,sim=matrix(res$result,ncol=nvar, byrow=TRUE),
                         names=test.names,alter=alter)
     return(res)
 } # end abouheif.moran

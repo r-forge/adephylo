@@ -100,7 +100,7 @@ orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
                 Dmax = double(nrepet+1),
                 SCE = double(nrepet+1),
                 ratio = double(nrepet+1),
-                PACKAGE="ade4"
+                PACKAGE="adephylo"
                 )
     } else {
         w <- .C("MVarianceDecompInOrthoBasis",
@@ -178,7 +178,7 @@ orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
     segments(mp[1], 1/npro, mp[npro], 1, lty = 1)
     fun(w$sig975)
     fun(w$sig025)
-    arrows(mp[x0], sig50[x0], mp[x0], phylocum[x0], ang = 15, le = 0.15,
+    arrows(mp[x0], sig50[x0], mp[x0], phylocum[x0], angle = 15, length = 0.15,
            lwd = 2)
     box()
     if (missing(nclass)) {
