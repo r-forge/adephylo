@@ -14,7 +14,7 @@
 \method{dibas}{phylo}(x, grp, method = c("default", "leaveOneOut"),
       metric = c("nNodes", "patristic", "Abouheif", "sumDD"), \ldots)
 
-\method{dibas}{matrix}(x, grp, method = c("default", "leaveOneOut"), ldots)
+\method{dibas}{matrix}(x, grp, method = c("default", "leaveOneOut"), \ldots)
 
 \method{dibas}{dist}(x, grp, method = c("default", "leaveOneOut"), \ldots)
 
@@ -76,14 +76,16 @@ names(dat)
 ## make a tree
 tre <- nj(dist(dat$dat))
 plot(tre,type="unr", tip.col=c("blue","red")[as.integer(dat$grp)],main="simulated data - tree")
+mtext(side=3, text="hand-fan syndrome")
 
 ## use dibas method
-res <- dibas(tre, dat$grp, metric="nNodes")
-res$grp.tab # results OK
-
 res.patri <- dibas(tre, dat$grp, metric="patristic")
 res.patri$grp.tab # poor results
+plot(table(res.patri$groups), main="Group assignment - dibas patristic")
 
+res <- dibas(tre, dat$grp, metric="nNodes")
+res$grp.tab # results OK
+plot(table(res$groups), main="Group assignment - dibas nNodes")
 
 
 
@@ -91,7 +93,7 @@ res.patri$grp.tab # poor results
 #### MORE COMPLEX DATASET ####
 if(require(adegenet)){
 
-dat <- simDatGroups(k=5, p=50, n=c(5,10,10,30,60), mu=1:5, sigma=sample(1:5)/2)
+dat <- simDatGroups(k=5, p=50, n=c(5,10,10,30,60), mu=sample(1:5, 5, replace=TRUE), sigma=sample(1:5)/2)
 names(dat)
 
 ## make a tree
@@ -101,6 +103,9 @@ plot(tre,type="unr", tip.col=fac2col(dat$grp),main="simulated data - tree")
 ## use dibas method
 res <- dibas(tre, dat$grp, metric="Abouheif")
 res
+
+plot(table(res$groups), main="Group assignment - dibas Abouheif")
+
 
 }
 

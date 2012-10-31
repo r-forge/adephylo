@@ -11,3 +11,7 @@ import(
   ape,
   ade4
 )
+
+
+# Load DLL
+useDynLib(adephylo)
