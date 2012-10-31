@@ -12,7 +12,7 @@
 }
 \usage{
 \method{dibas}{phylo}(x, grp, method = c("default", "leaveOneOut"),
-      metric = c("nNodes", "patristic", "Abouheif", "sumDD"), \ldots)
+      metric = c("Abouheif", "nNodes", "patristic", "sumDD"), \ldots)
 
 \method{dibas}{matrix}(x, grp, method = c("default", "leaveOneOut"), \ldots)
 
