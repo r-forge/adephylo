@@ -236,21 +236,21 @@ dibas.vector <- function(x, grp, method=c("default","leaveOneOut"), n.items=NULL
 ###############
 ## dibas.phylo
 ###############
-dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), fromRoot=FALSE, metric=c("Abouheif", "nNodes", "patristic", "sumDD"),...){
+dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), fromRoot=FALSE, metric=c("Abouheif", "nNodes", "patristic", "sumDD"),
+                        n.items=NULL, ...){
     if(!require(ape)) stop("ape package is required")
     if(!inherits(x,"phylo")) stop("x is not a phylo object")
 
     metric <- match.arg(metric)
 
     if(fromRoot){
-
+        res <- dibas.vector(distRoot(x, method=metric), grp=grp, method=method, n.items=n.items)
     } else {
-        res <- dibas(distTips(x, method=metric), grp, method)
+        res <- dibas(distTips(x, method=metric), grp=grp, method=method)
     }
 
     return(res)
 } # end dibas.phylo
-
 
 
 
