@@ -1,4 +1,4 @@
-########
+#########
 ## dibas ('distance-based group assignment')
 #########
 
@@ -135,16 +135,118 @@ dibas.matrix <- function(x, grp, method=c("default","leaveOneOut"), ...){
 
 
 
+
+
+################
+## dibas.vector
+################
+##
+## in this one, one distance to a reference point
+## is used to defined group membership probabilities
+##
+dibas.vector <- function(x, grp, method=c("default","leaveOneOut"), n.items=NULL, ...){
+    method <- match.arg(method)
+
+    ## DECLARE SOME VARIABLES, HANDLE ARGUMENTS ##
+    grp <- factor(grp)
+    K <- length(LEV <- levels(grp))
+    N <- length(x)
+    if(!is.null(n.items)){
+        n.items <- round(n.items)
+        if(length(n.items)!=N) stop("n.items has a wrong length")
+        if(any(n.items<1)) stop("values in n.items cannot be less than 1")
+        x <- rep(x, n.items)
+        grp <- rep(grp, n.items)
+    }
+
+
+    ## AUXILIARY FUNCTIONS ##
+    ## COMPUTE LOG AND AVOIDS -INF
+    logprob <- function(prob){
+        res <- log(prob)
+        res[res< -1e20] <- -1e20
+        return(res)
+    }
+
+
+    ## FUNCTION TO COMPUTE MEMBERSHIP PROBA FOR ONE INDIV
+    ## i: index of an individual
+    ## distrib.mu: vector of the means of with-grp distance distributions
+    ## distrib.sigma: vector of the sds of with-grp distance distributions
+    getproba.ind <- function(i, leaveOneOut){
+        if(leaveOneOut){
+             distrib.mu  <- tapply(x[-i], grp[-i], mean, na.rm=TRUE)
+             distrib.sigma <- tapply(x[-i], grp[-i], sd, na.rm=TRUE)
+         } else {
+             distrib.mu  <- tapply(x, grp, mean, na.rm=TRUE)
+             distrib.sigma <- tapply(x, grp, sd, na.rm=TRUE)
+         }
+        out <- sapply(1:K, function(k) logprob(dnorm(x[i], distrib.mu[k],distrib.sigma[k])))
+        return(exp(out)/sum(exp(out)))
+    }
+
+
+
+    ## CORE COMPUTATIONS ##
+    prob <- t(sapply(1:length(x), getproba.ind, leaveOneOut=method=="leaveOneOut"))
+
+    ## SHAPE MEMBERSHIP PROBABILITIES MATRIX ##
+    colnames(prob) <- LEV
+    rownames(prob) <- rownames(x)
+
+
+    ## FIND GROUP ASSIGNMENTS ##
+    temp <- factor(colnames(prob)[apply(prob,1, which.max)])
+    annot <- rep(" ", N)
+    annot[as.character(grp)!=as.character(temp)] <- "!"
+    groups <- data.frame(observed=grp, inferred=temp, annot=annot)
+    ##rownames(groups) <- rownames(prob)
+
+
+    ## BUILD / RETURN RESULT ##
+    ## get proportion of correct assignment
+    propcorrect <- mean(annot==" ")
+    propcorrect.bygroup <- tapply(annot==" ", grp, mean)
+
+    ## get summary of assignments
+    grp.tab <- table(observed=groups[,1], assigned=groups[,2])
+
+    ## get assignability
+    ## i.e. how many times better than at random is assignment?
+    ## 0 = grp very unlikely
+    ## 1 = assignment no better than at random
+    ## >1 = better than random (e.g. 2 = twice as better as at random)
+    temp <- table(grp)/N
+    probActualGrp <- sapply(1:N, function(i) prob[i, as.character(grp[i])])
+    assign.idx <-     probActualGrp / as.numeric(temp[as.character(grp)])
+    assignStat <- list(assign.idx=assign.idx, mean=mean(assign.idx), grp.mean=tapply(assign.idx,grp,mean))
+
+
+    ##res <- list(prob=prob,groups=groups, mean.correct=propcorrect, prop.correct=propcorrect.bygroup)
+    res <- list(prob=prob, groups=groups, mean.ok=propcorrect, grp.tab=grp.tab, assignStat=assignStat)
+
+    return(res)
+} # end dibas.vector
+
+
+
+
+
+
 ###############
 ## dibas.phylo
 ###############
-dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), metric=c("Abouheif", "nNodes", "patristic", "sumDD"),...){
+dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), fromRoot=FALSE, metric=c("Abouheif", "nNodes", "patristic", "sumDD"),...){
     if(!require(ape)) stop("ape package is required")
     if(!inherits(x,"phylo")) stop("x is not a phylo object")
 
     metric <- match.arg(metric)
 
-    res <- dibas(distTips(x, method=metric), grp, method)
+    if(fromRoot){
+
+    } else {
+        res <- dibas(distTips(x, method=metric), grp, method)
+    }
 
     return(res)
 } # end dibas.phylo
