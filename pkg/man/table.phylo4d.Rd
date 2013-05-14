@@ -12,6 +12,8 @@
   from the \code{ape} package. Hence, many of the arguments of
   \code{\link[ape]{plot.phylo}} can be passed to \code{table.phylo4d},
   through the \dots argument, but their names must be complete.
+
+  For large trees, consider using \code{\link{bullseye}}.
 }
 \usage{
 table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares","colors"),
@@ -62,7 +64,10 @@ table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squar
  \item{\dots}{further arguments to be passed to plot methods from
   \code{ape}. See \code{\link[ape]{plot.phylo}}.}
 }
-\seealso{The \linkS4class{phylo4d} class for storing \code{phylogeny+data}.\cr
+\seealso{The \linkS4class{phylo4d} class for storing
+  \code{phylogeny+data}.\cr
+
+  For large trees, consider using \code{\link{bullseye}}.
 
   \code{\link[ape]{plot.phylo}} from the \code{ape} package.\cr
 

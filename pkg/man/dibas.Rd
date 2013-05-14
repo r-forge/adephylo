@@ -4,6 +4,7 @@
 \alias{dibas.matrix}
 \alias{dibas.dist}
 \alias{dibas.phylo}
+\alias{dibas.vector}
 \alias{simDatGroups}
 \title{DIstance-Based Assignment}
 \description{
@@ -12,11 +13,15 @@
 }
 \usage{
 \method{dibas}{phylo}(x, grp, method = c("default", "leaveOneOut"),
-      metric = c("Abouheif", "nNodes", "patristic", "sumDD"), \ldots)
+      fromRoot=FALSE, metric = c("Abouheif", "nNodes", "patristic","sumDD"),
+      n.items=NULL, \ldots)
 
 \method{dibas}{matrix}(x, grp, method = c("default", "leaveOneOut"), \ldots)
 
 \method{dibas}{dist}(x, grp, method = c("default", "leaveOneOut"), \ldots)
+
+\method{dibas}{vector}(x, grp, method=c("default","leaveOneOut"),
+      n.items=NULL, \ldots)
 
 }
 \arguments{
@@ -33,6 +38,12 @@
     \code{\link{distTips}} for more information. Note that patristic
     distances should be avoided in presence of one or more highly
     diverse group because of the 'hand fan' syndrome (see example).}
+  \item{fromRoot}{a logical indicating if distances from the root,
+    rather than between groups, should be used.}
+  \item{n.items}{a vector of integers of the same length as x, stating
+    how many times each items in 'x' should be repeated; used to take
+    into account differences in abundances of the different items
+    (e.g. sequences in multiple copies).}
   \item{\dots}{further arguments passed to other methods. Can be used to
     provide arguments to \code{\link{table.phylo4d}} in \code{plot} method.}
 }

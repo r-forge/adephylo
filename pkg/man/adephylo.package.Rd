@@ -109,6 +109,10 @@
    representing traits onto the tips of a phylogeny. Several traits can
    be plotted in a single graphic.\cr
 
+   - \code{\link{bullseye}}: an alternative to
+     \code{\link{table.phylo4d}} based on fan-like representation, better
+     for large trees.\cr
+
    - \code{\link{scatter.ppca}}, \code{\link{screeplot.ppca}},
    \code{\link{plot.ppca}}: several plots associated to a phylogenetic
    principal component analysis (see \code{\link{ppca}}).\cr
@@ -130,8 +134,8 @@
   \tabular{ll}{
     Package: \tab adephylo\cr
     Type: \tab Package\cr
-    Version: \tab 1.1-3\cr
-    Date: \tab 2012-10-30 \cr
+    Version: \tab 1.1-4\cr
+    Date: \tab 2013-05-15 \cr
     License: \tab GPL (>=2)
   }  
 }

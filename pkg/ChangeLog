@@ -1,3 +1,15 @@
+			CHANGES IN ADEPHYLO VERSION 1.1-4
+
+
+NEW FEATURES
+
+	o added the function bullseye to plot fan-like phylogenies and
+	associated traits.
+
+	o added new methods for dibas.
+
+
+
 			CHANGES IN ADEPHYLO VERSION 1.1-3
 
 
