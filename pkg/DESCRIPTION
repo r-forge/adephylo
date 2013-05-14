@@ -5,7 +5,7 @@ Title: adephylo: exploratory analyses for the phylogenetic comparative method.
 Author: Thibaut Jombart <t.jombart@imperial.ac.uk>, Stephane Dray <stephane.dray@univ-lyon1.fr>
 Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>
 Suggests:
-Depends: methods, phylobase, ape, ade4
+Depends: methods, phylobase, ape, ade4, adegenet
 Description: Multivariate tools to analyze comparative data, i.e. a phylogeny and some traits measured for each taxa.
 License: GPL (>=2)
 LazyLoad: yes
