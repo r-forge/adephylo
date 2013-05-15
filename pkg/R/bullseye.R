@@ -31,6 +31,16 @@ bullseye <- function(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
     }
 
     ## col.tips.by
+    if(!is.null(col.tips.by) && is.data.frame(col.tips.by)){
+        old.names <- row.names(col.tips.by)
+        col.tips.by <- unlist(col.tips.by)
+        names(col.tips.by) <- old.names
+    }
+    if(!is.null(col.tips.by) && is.matrix(col.tips.by)){
+        old.names <- rownames(col.tips.by)
+        col.tips.by <- as.vector(col.tips.by)
+        names(col.tips.by) <- old.names
+    }
     if(!is.null(col.tips.by) && !is.null(names(col.tips.by))){
         col.tips.by <- col.tips.by[phy$tip.label]
     }
@@ -43,6 +53,11 @@ bullseye <- function(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
 
 
     ## PLOT THE PHYLOGENY
+    ## window setting
+    oxpd <- par("xpd")
+    par(xpd=TRUE)
+    on.exit(par(oxpd))
+
     ## handle color info
     if(!is.null(col.tips.by)){
         tip.col.info <- any2col(col.tips.by, col.pal=col.pal[[1]])
@@ -53,11 +68,6 @@ bullseye <- function(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
 
 
     ## HANDLE THE 'BULLSEYE' ##
-    ## window setting
-    oxpd <- par("xpd")
-    par(xpd=TRUE)
-    on.exit(par(oxpd))
-
     ## annot info
     if(is.null(circ.unit)){
         annot.max <- 0.5*diff(par("usr")[1:2])
