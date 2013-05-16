@@ -36,11 +36,6 @@ bullseye <- function(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
         col.tips.by <- unlist(col.tips.by)
         names(col.tips.by) <- old.names
     }
-    if(!is.null(col.tips.by) && is.matrix(col.tips.by)){
-        old.names <- rownames(col.tips.by)
-        col.tips.by <- as.vector(col.tips.by)
-        names(col.tips.by) <- old.names
-    }
     if(!is.null(col.tips.by) && !is.null(names(col.tips.by))){
         col.tips.by <- col.tips.by[phy$tip.label]
     }
