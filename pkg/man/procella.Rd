@@ -3,7 +3,8 @@
 \docType{data}
 \title{Phylogeny and quantitative traits of birds}
 \description{
-This data set describes the phylogeny of 19 birds as reported by Bried et al. (2002). It also gives 6 traits corresponding to these 19 species.
+This data set describes the phylogeny of 19 birds as reported by Bried
+et al. (2002). It also gives 6 traits corresponding to these 19 species.
 }
 \usage{data(procella)}
 \format{
@@ -22,10 +23,12 @@ Variables of \code{procella$traits} are the following ones: \cr
 - col.size: an integer vector that describes the colony size (no nests monitored)
 }
 \references{
-Bried, J., Pontier, D. and Jouventin, P. (2002) Mate fidelity in monogamus birds: a re-examination of the Procellariiformes. 
+Bried, J., Pontier, D. and Jouventin, P. (2002) Mate fidelity in
+monogamus birds: a re-examination of the Procellariiformes.
 \emph{Animal Behaviour}, \bold{65}, 235--246. 
 
-See a data description at \url{http://pbil.univ-lyon1.fr/R/pps/pps037.pdf} (in French).
+See a data description at
+\url{http://pbil.univ-lyon1.fr/R/pps/pps037.pdf} (in French).
 }
 \note{
   This dataset replaces the former version in ade4.

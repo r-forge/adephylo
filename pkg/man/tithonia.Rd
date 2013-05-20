@@ -3,7 +3,9 @@
 \docType{data}
 \title{Phylogeny and quantitative traits of flowers}
 \description{
-This data set describes the phylogeny of 11 flowers as reported by Morales (2000). It also gives morphologic and demographic traits corresponding to these 11 species.
+This data set describes the phylogeny of 11 flowers as reported by
+Morales (2000). It also gives morphologic and demographic traits
+corresponding to these 11 species.
 }
 \usage{data(tithonia)}
 \format{

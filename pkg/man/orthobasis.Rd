@@ -21,8 +21,10 @@
   \code{\link{proxTips}}.
 }
 \usage{
-me.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1)
-orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"), a=1)
+me.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes",
+   "oriAbouheif","Abouheif","sumDD"), a=1)
+orthobasis.phylo(x=NULL, prox=NULL, method=c("patristic","nNodes",
+   "oriAbouheif","Abouheif","sumDD"), a=1)
 }
 \arguments{
   \item{x}{A tree of  class \code{\link[ape:read.tree]{phylo}},
@@ -96,7 +98,7 @@ orthogram(resid1, tre) # residuals are autocorrelated
 myME <- me.phylo(tre, method="Abou")
 lm2 <- lm(neonatw ~ myME[,1] + afbw) # use for ME as covariable
 resid2 <- residuals(lm2)
-orthogram(resid2, tre) # there is no longer phylogenetic autocorrelation 
+orthogram(resid2, tre) # there is no longer phylogenetic autocorrelation
 
 ## see the difference
 table.phylo4d(phylo4d(tre, cbind.data.frame(resid1, resid2)))

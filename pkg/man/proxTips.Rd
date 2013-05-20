@@ -94,9 +94,10 @@ proxTips(x, tips, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"
 
    \code{sumDD} refers to a phylogenetic proximity quite similar to that
   of Abouheif. We consider the same sets P and DDP. But instead of
-  taking the inverse of the product of all terms in DDP, this proximity computes the
-  inverse of the sum of all terms in DDP. This matrix was denoted 'M' in
-  Pavoine \emph{et al.} (2008), who reported that it is related to May's index (May, 1990).
+  taking the inverse of the product of all terms in DDP, this proximity
+  computes the inverse of the sum of all terms in DDP. This matrix was
+  denoted 'M' in Pavoine \emph{et al.} (2008), who reported that it is
+  related to May's index (May, 1990).
 }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \seealso{\code{\link{distTips}} which computes several phylogenetic

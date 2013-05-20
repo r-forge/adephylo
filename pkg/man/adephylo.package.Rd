@@ -60,20 +60,22 @@
    Several procedures allow one to measure, and/or test phylogenetic
    signal in biological traits:\cr
    
-   - \code{\link{abouheif.moran}}: performs Abouheif's test, designed to detect phylogenetic
-   autocorrelation in a quantitative trait. This implementation is not
-   based on original heuristic procedure, but on the exact formulation
-   proposed by Pavoine et al. (2008), showing that the test is in fact a
-   Moran's index test. This implementation further extends the procedure
-   by allowing any measure of phylogenetic proximity (5 are proposed).\cr
+   - \code{\link{abouheif.moran}}: performs Abouheif's test, designed to
+   detect phylogenetic autocorrelation in a quantitative trait. This
+   implementation is not based on original heuristic procedure, but on
+   the exact formulation proposed by Pavoine et al. (2008), showing that
+   the test is in fact a Moran's index test. This implementation further
+   extends the procedure by allowing any measure of phylogenetic
+   proximity (5 are proposed).\cr
 
    - \code{\link{orthogram}}: performs the orthonormal decomposition of
    variance of a quantitative variable on an orthonormal basis as in
    Ollier et al. (2005). It also returns the results of five non
    parametric tests associated to the variance decomposition.\cr
 
-   - \code{\link{moran.idx}}: computes Moran's index of autocorrelation given a
-   variable and a matrix of proximities among observations (no test).\cr
+   - \code{\link{moran.idx}}: computes Moran's index of autocorrelation
+   given a variable and a matrix of proximities among observations (no
+   test).\cr
    
 
    === MODELLING/INVESTIGATION OF PHYLOGENETIC SIGNAL ===\cr
@@ -142,7 +144,8 @@
 \author{
   Thibaut Jombart <tjombart@imperial.ac.uk>\cr
   with contributions Stéphane Dray <dray@biomserv.univ-lyon1.fr>. \cr
-  Parts of former code from \code{ade4} by Daniel Chessel and Sébastien Ollier.
+  Parts of former code from \code{ade4} by Daniel Chessel and Sébastien
+  Ollier.
 }
 \keyword{manip}
 \keyword{multivariate}

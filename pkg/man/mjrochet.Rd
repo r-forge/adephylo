@@ -4,7 +4,9 @@
 \docType{data}
 \title{Phylogeny and quantitative traits of teleos fishes}
 \description{
-This data set describes the phylogeny of 49 teleos fishes as reported by Rochet et al. (2000). It also gives life-history traits corresponding to these 49 species.
+This data set describes the phylogeny of 49 teleos fishes as reported by
+Rochet et al. (2000). It also gives life-history traits corresponding to
+these 49 species.
 }
 \usage{data(mjrochet)}
 \format{
@@ -14,10 +16,11 @@ This data set describes the phylogeny of 49 teleos fishes as reported by Rochet 
    \item{tab}{is a data frame with 49 rows and 7 traits.}  
 }}
 \details{
- Variables of \code{mjrochet$tab} are the following ones : tm (age at maturity (years)), 
- lm (length at maturity (cm)), l05 (length at 5 per cent survival (cm)),
- t05 (time to 5 per cent survival (years)), fb (slope of the log-log fecundity-length relationship),
- fm (fecundity the year of maturity), egg (volume of eggs (\eqn{mm^{3}}{mm^3})).
+ Variables of \code{mjrochet$tab} are the following ones : tm (age at
+ maturity (years)), lm (length at maturity (cm)), l05 (length at 5 per
+ cent survival (cm)), t05 (time to 5 per cent survival (years)), fb
+ (slope of the log-log fecundity-length relationship), fm (fecundity the
+ year of maturity), egg (volume of eggs (\eqn{mm^{3}}{mm^3})).
 }
 \source{
 Data taken from: \cr
@@ -33,9 +36,9 @@ Data taken from: \cr
     Phylogenetic tree : \url{http://www.ifremer.fr/maerha/life_history.html}
 }
 \references{
-Rochet, M. J., Cornillon, P-A., Sabatier, R. and Pontier, D. (2000) 
-Comparative analysis of phylogenic and fishing effects in life history patterns of teleos fishes.
-\emph{Oïkos}, \bold{91}, 255--270.
+Rochet, M. J., Cornillon, P-A., Sabatier, R. and Pontier, D. (2000)
+Comparative analysis of phylogenic and fishing effects in life history
+patterns of teleos fishes.  \emph{Oïkos}, \bold{91}, 255--270.
 }
 \note{
   This dataset replaces the former version in ade4.

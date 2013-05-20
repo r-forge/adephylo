@@ -2,27 +2,31 @@
 \alias{table.phylo4d}
 \title{Graphical display of phylogeny and traits}
 \description{
-  This function represents traits onto the tips of
-  a phylogeny. Plotted objects must be valid \linkS4class{phylo4d}
-  objects (implemented by the \code{phylobase} package). Current version
-  allows plotting of a tree and one or more quantitative traits
-  (possibly containing missing data, represented by an 'x').\cr
+  This function represents traits onto the tips of a phylogeny. Plotted
+  objects must be valid \linkS4class{phylo4d} objects (implemented by
+  the \code{phylobase} package). Current version allows plotting of a
+  tree and one or more quantitative traits (possibly containing missing
+  data, represented by an 'x').\cr
   
-  The plot of phylogenies is performed by a call to \code{\link[ape]{plot.phylo}}
-  from the \code{ape} package. Hence, many of the arguments of
-  \code{\link[ape]{plot.phylo}} can be passed to \code{table.phylo4d},
-  through the \dots argument, but their names must be complete.
+  The plot of phylogenies is performed by a call to
+  \code{\link[ape]{plot.phylo}} from the \code{ape} package. Hence, many
+  of the arguments of \code{\link[ape]{plot.phylo}} can be passed to
+  \code{table.phylo4d}, through the \dots argument, but their names must
+  be complete.
 
   For large trees, consider using \code{\link{bullseye}}.
 }
 \usage{
-table.phylo4d(x, treetype=c("phylogram","cladogram"), symbol=c("circles", "squares","colors"),
-                      repVar=1:ncol(tdata(x, type="tip")), center=TRUE, scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
-                      show.tip.label=TRUE, show.node.label=TRUE, show.var.label=TRUE,
-                      ratio.tree=1/3, font=3,
-                      tip.label=tipLabels(x), var.label=colnames(tdata(x,type="tip")),
-                      cex.symbol=1, cex.label=1, cex.legend=1, pch=20, col=heat.colors(100),
-                      coord.legend=NULL, \dots)
+table.phylo4d(x, treetype=c("phylogram","cladogram"),
+             symbol=c("circles", "squares","colors"),
+             repVar=1:ncol(tdata(x, type="tip")), center=TRUE,
+             scale=TRUE, legend=TRUE, grid=TRUE, box=TRUE,
+             show.tip.label=TRUE, show.node.label=TRUE,
+             show.var.label=TRUE, ratio.tree=1/3, font=3,
+             tip.label=tipLabels(x),
+             var.label=colnames(tdata(x,type="tip")), cex.symbol=1,
+             cex.label=1, cex.legend=1, pch=20, col=heat.colors(100),
+             coord.legend=NULL, \dots)
 }
 \arguments{
   \item{x}{a \linkS4class{phylo4d} object}

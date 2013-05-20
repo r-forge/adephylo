@@ -7,7 +7,8 @@
 \alias{screeplot.ppca}
 \alias{plot.ppca}
 \title{Phylogenetic principal component analysis}
-\description{These functions are designed to perform a phylogenetic principal
+\description{
+  These functions are designed to perform a phylogenetic principal
   component analysis (pPCA, Jombart et al. 2010) and to display the
   results.
   
@@ -138,7 +139,8 @@ data(lizards)
 liz.tre <- read.tree(tex=lizards$hprA)
 liz.4d <- phylo4d(liz.tre, lizards$traits)
 par(mar=rep(.1,4))
-table.phylo4d(liz.4d,var.lab=c(names(lizards$traits),"ACP 1\n(\"size effect\")"),show.node=FALSE, cex.lab=1.2)
+table.phylo4d(liz.4d,var.lab=c(names(lizards$traits),
+   "ACP 1\n(\"size effect\")"),show.node=FALSE, cex.lab=1.2)
 
 
 ## REMOVE DUPLICATED POPULATIONS
@@ -147,7 +149,8 @@ table.phylo4d(liz.4d)
 
 
 ## CORRECT LABELS
-lab <- c("Pa", "Ph", "Ll", "Lmca", "Lmcy", "Phha", "Pha", "Pb", "Pm", "Ae", "Tt", "Ts", "Lviv", "La", "Ls", "Lvir")
+lab <- c("Pa", "Ph", "Ll", "Lmca", "Lmcy", "Phha", "Pha",
+   "Pb", "Pm", "Ae", "Tt", "Ts", "Lviv", "La", "Ls", "Lvir")
 tipLabels(liz.4d) <- lab
 
 
@@ -187,7 +190,8 @@ myLab <- paste(" ",rownames(liz.ppca$li), sep="")
 
 ## FIGURE 1
 par(mar=c(.1,2.4,2.1,1))
-table.phylo4d(obj.ppca, ratio=.7, var.lab=c("1st global PC", "1st local PC"), tip.label=myLab, box=FALSE,cex.lab=1.4, cex.sym=1.2, show.node.label=TRUE)
+table.phylo4d(obj.ppca, ratio=.7, var.lab=c("1st global PC", "1st local
+   PC"), tip.label=myLab,box=FALSE,cex.lab=1.4, cex.sym=1.2, show.node.label=TRUE)
 add.scatter.eig(liz.ppca$eig,1,1,1,csub=1.2, posi="topleft", ratio=.23)
 
 

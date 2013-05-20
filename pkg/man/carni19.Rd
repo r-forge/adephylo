@@ -3,7 +3,9 @@
 \docType{data}
 \title{Phylogeny and quantative trait of carnivora}
 \description{
-This data set describes the phylogeny of carnivora as reported by Diniz-Filho et al. (1998). It also gives the body mass of these 19 species.
+This data set describes the phylogeny of carnivora as reported by
+Diniz-Filho et al. (1998). It also gives the body mass of these 19
+species.
 }
 \usage{data(carni19)}
 \format{
@@ -13,8 +15,9 @@ This data set describes the phylogeny of carnivora as reported by Diniz-Filho et
    \item{bm}{is a numeric vector which values correspond to the body mass of the 19 species (log scale).}
 }}
 \source{
-Diniz-Filho, J. A. F., de Sant'Ana, C.E.R. and Bini, L.M. (1998) 
-An eigenvector method for estimating phylogenetic inertia. \emph{Evolution}, \bold{52}, 1247--1262.
+Diniz-Filho, J. A. F., de Sant'Ana, C.E.R. and Bini, L.M. (1998) An
+eigenvector method for estimating phylogenetic
+inertia. \emph{Evolution}, \bold{52}, 1247--1262.
 }
 \note{
   This dataset replaces the former version in ade4.

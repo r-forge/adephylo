@@ -4,7 +4,9 @@
 \docType{data}
 \title{Phylogeny and quantitative traits of carnivora}
 \description{
-This data set describes the phylogeny of 70 carnivora as reported by Diniz-Filho and Torres (2002). It also gives the geographic range size and body size corresponding to these 70 species.
+This data set describes the phylogeny of 70 carnivora as reported by
+Diniz-Filho and Torres (2002). It also gives the geographic range size
+and body size corresponding to these 70 species.
 }
 \usage{data(carni70)}
 \format{
@@ -15,8 +17,10 @@ This data set describes the phylogeny of 70 carnivora as reported by Diniz-Filho
    \item{tab}{is a data frame with 70 species and two traits: size (body size (kg)) ; range (geographic range size (km)).}    
 }}
 \source{
-Diniz-Filho, J. A. F., and N. M. Tôrres. (2002) Phylogenetic comparative methods and the 
-geographic range size-body size relationship in new world terrestrial carnivora. \emph{Evolutionary Ecology}, \bold{16}, 351--367.
+Diniz-Filho, J. A. F., and N. M. Tôrres. (2002) Phylogenetic comparative
+methods and the geographic range size-body size relationship in new
+world terrestrial carnivora. \emph{Evolutionary Ecology}, \bold{16},
+351--367.
 }
 \note{
   This dataset replaces the former version in ade4.

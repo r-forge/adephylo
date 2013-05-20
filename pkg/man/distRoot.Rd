@@ -2,8 +2,9 @@
 \alias{distRoot}
 \title{Compute the distance of tips to the root}
 \description{
-  The function \code{distRoot} computes the distance of a set of tips to the
-  root. Several distances can be used, defaulting to the sum of branch lengths.
+  The function \code{distRoot} computes the distance of a set of tips to
+  the root. Several distances can be used, defaulting to the sum of
+  branch lengths.
 }
 \usage{
 distRoot(x, tips, method=c("patristic","nNodes","Abouheif","sumDD"))

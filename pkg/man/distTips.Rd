@@ -77,9 +77,12 @@ distTips(x, 1:3, "sumDD")
 ## compare C and pure R code outputs
 x <- rtree(10)
 all.equal(as.matrix(distTips(x)), as.matrix(distTips(x, useC=FALSE)))
-all.equal(as.matrix(distTips(x, meth="nNode")), as.matrix(distTips(x, meth="nNode", useC=FALSE)))
-all.equal(as.matrix(distTips(x, meth="Abou")), as.matrix(distTips(x, meth="Abou", useC=FALSE)))
-all.equal(as.matrix(distTips(x, meth="sumDD")), as.matrix(distTips(x, meth="sumDD", useC=FALSE)))
+all.equal(as.matrix(distTips(x, meth="nNode")),
+   as.matrix(distTips(x, meth="nNode", useC=FALSE)))
+all.equal(as.matrix(distTips(x, meth="Abou")),
+   as.matrix(distTips(x, meth="Abou", useC=FALSE)))
+all.equal(as.matrix(distTips(x, meth="sumDD")),
+   as.matrix(distTips(x, meth="sumDD", useC=FALSE)))
 
 ## compare speed
 x <- rtree(50)

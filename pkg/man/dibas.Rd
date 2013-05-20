@@ -58,7 +58,8 @@ names(dat)
 
 ## make a tree
 tre <- nj(dist(dat$dat))
-plot(tre,type="unr", tip.col=c("blue","red")[as.integer(dat$grp)],main="simulated data - tree")
+plot(tre,type="unr", tip.col=c("blue","red")[as.integer(dat$grp)],
+   main="simulated data - tree")
  
 ## use dibas method
 res <- dibas(tre, dat$grp, metric="nNodes")
@@ -70,11 +71,13 @@ barplot(t(res$prob), main="group membership probabilities")
 
 #### NON-PARAMETRIC TEST BASED ON MEAN SUCCESSFUL ASSIGNMENT ####
 ## use dibas method
-distHo <- replicate(100, dibas(tre, sample(dat$grp), metric="patristic")$mean.ok)
+distHo <- replicate(100,
+   dibas(tre, sample(dat$grp), metric="patristic")$mean.ok)
 pval <- mean(res$mean.ok<=c(distHo,res$mean.ok))
 pval
 
-hist(c(distHo,res$mean.ok), col="grey", main="Mean successful assignement - permuted values")
+hist(c(distHo,res$mean.ok), col="grey",
+   main="Mean successful assignement - permuted values")
 abline(v=res$mean.ok, col="red")
 mtext(side=3, text="Observed value in red")
 
@@ -87,7 +90,8 @@ names(dat)
 
 ## make a tree
 tre <- nj(dist(dat$dat))
-plot(tre,type="unr", tip.col=c("blue","red")[as.integer(dat$grp)],main="simulated data - tree")
+plot(tre,type="unr", tip.col=c("blue","red")[as.integer(dat$grp)],
+   main="simulated data - tree")
 mtext(side=3, text="hand-fan syndrome")
 
 ## use dibas method
@@ -105,7 +109,8 @@ plot(table(res$groups), main="Group assignment - dibas nNodes")
 #### MORE COMPLEX DATASET ####
 if(require(adegenet)){
 
-dat <- simDatGroups(k=5, p=50, n=c(5,10,10,30,60), mu=sample(1:5, 5, replace=TRUE), sigma=sample(1:5)/2)
+dat <- simDatGroups(k=5, p=50, n=c(5,10,10,30,60), mu=sample(1:5, 5,
+   replace=TRUE), sigma=sample(1:5)/2)
 names(dat)
 
 ## make a tree

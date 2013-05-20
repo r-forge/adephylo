@@ -3,9 +3,9 @@
 \title{Find the shortest path between tips of a tree}
 \description{
   The function \code{sp.tips} finds the shortest path between tips of a
-  tree, identified as \code{tip1} and \code{tip2}.
-  This function applies to trees with the class \code{\link[ape:read.tree]{phylo}}, \linkS4class{phylo4} or
-  \linkS4class{phylo4d}. Several tips can be provided at a time.
+  tree, identified as \code{tip1} and \code{tip2}.  This function
+  applies to trees with the class \code{\link[ape:read.tree]{phylo}},
+  \linkS4class{phylo4} or \linkS4class{phylo4d}. Several tips can be provided at a time.
 }
 \usage{
 sp.tips(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=TRUE)

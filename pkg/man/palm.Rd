@@ -4,7 +4,8 @@
 \docType{data}
 \title{Phylogenetic and quantitative traits of amazonian palm trees}
 \description{
-This data set describes the phylogeny of 66 amazonian palm trees. It also gives 7 traits corresponding to these 66 species.
+This data set describes the phylogeny of 66 amazonian palm trees. It
+also gives 7 traits corresponding to these 66 species.
 }
 \usage{data(palm)}
 \format{
@@ -17,7 +18,9 @@ This data set describes the phylogeny of 66 amazonian palm trees. It also gives 
 Variables of \code{palm$traits} are the following ones: \cr
 - rord: specific richness with five ordered levels\cr
 - h: height in meter (squared transform)\cr
-- dqual: diameter at breast height in centimeter with five levels \code{sout : subterranean}, \code{ d1(0, 5 cm)}, \code{ d2(5, 15 cm)}, \code{ d3(15, 30 cm)} and \code{ d4(30, 100 cm)}\cr
+- dqual: diameter at breast height in centimeter with five levels
+ \code{sout : subterranean}, \code{ d1(0, 5 cm)}, \code{ d2(5, 15 cm)},
+ \code{ d3(15, 30 cm)} and \code{ d4(30, 100 cm)}\cr
 - vfruit: fruit volume in \eqn{mm^{3}}{mm^3} (logged transform)\cr
 - vgrain: seed volume in \eqn{mm^{3}}{mm^3} (logged transform)\cr
 - aire: spatial distribution area (\eqn{km^{2}}{km^2})\cr

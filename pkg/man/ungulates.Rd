@@ -4,7 +4,9 @@
 \docType{data}
 \title{Phylogeny and quantitative traits of ungulates.}
 \description{
-This data set describes the phylogeny of 18 ungulates as reported by Pélabon et al. (1995). It also gives 4 traits corresponding to these 18 species.
+This data set describes the phylogeny of 18 ungulates as reported by
+Pélabon et al. (1995). It also gives 4 traits corresponding to these 18
+species.
 }
 \usage{data(ungulates)}
 \format{

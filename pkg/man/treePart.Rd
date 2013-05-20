@@ -27,7 +27,9 @@ treePart(x, result=c("dummy", "orthobasis"))
 }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \references{
-Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompose the Variance of a Life-History Trait across a Phylogenetic Tree. \emph{Biometrics}, \bold{62}, 471--477.
+Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to
+Decompose the Variance of a Life-History Trait across a Phylogenetic
+Tree. \emph{Biometrics}, \bold{62}, 471--477.
 }
 
 \seealso{
@@ -62,7 +64,8 @@ ung <- read.tree(text=ungulates$tre)
 ung.orthobas <- treePart(ung, res="orthobasis")
 
 ## comparison of the first 3 vectors
-cbind(ung.Bscores[,1], ung.orthobas[,1],ung.Bscores[,2], ung.orthobas[,2], ung.Bscores[,3], ung.orthobas[,3])
+cbind(ung.Bscores[,1], ung.orthobas[,1],ung.Bscores[,2],
+   ung.orthobas[,2], ung.Bscores[,3], ung.orthobas[,3])
 }
 }
 \keyword{manip}

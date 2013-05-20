@@ -12,18 +12,20 @@
   proximities as well.\cr
 
   Note that the original Abouheif's proximity (Abouheif, 1999; Pavoine
-  \emph{et al.} 2008) unifies Moran's I and Geary'c tests (Thioulouse \emph{et
-    al.} 1995).\cr
+  \emph{et al.} 2008) unifies Moran's I and Geary'c tests (Thioulouse
+  \emph{et al.} 1995).\cr
 
   \code{abouheif.moran} can be used in two ways:\cr
   - providing a data.frame of traits (\code{x}) and a matrix of
-  phylogenetic proximities (\code{W})\cr
-  - providing a \linkS4class{phylo4d} object (\code{x}) and specifying the type of proximity to be
-  used (\code{method}).
+    phylogenetic proximities (\code{W})\cr
+  - providing a \linkS4class{phylo4d} object (\code{x}) and specifying
+    the type of proximity to be used (\code{method}).
   
 }
 \usage{
-abouheif.moran(x, W=NULL, method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"), a=1, nrepet = 999, alter=c("greater", "less", "two-sided"))
+abouheif.moran(x, W=NULL,
+          method=c("oriAbouheif","patristic","nNodes","Abouheif","sumDD"),
+          a=1, nrepet = 999, alter=c("greater", "less", "two-sided"))
 }
 \arguments{
   \item{x}{a data frame with continuous variables, or a
@@ -56,10 +58,12 @@ ade4), containing one Monte Carlo test for each trait.
 }
 \references{
 
-Thioulouse, J., Chessel, D. and Champely, S. (1995) Multivariate analysis of spatial patterns: a unified approach to local and global structures.
-\emph{Environmental and Ecological Statistics}, \bold{2}, 1--14.
+Thioulouse, J., Chessel, D. and Champely, S. (1995) Multivariate
+analysis of spatial patterns: a unified approach to local and global
+structures. \emph{Environmental and Ecological Statistics}, \bold{2}, 1--14.
 }
-\author{Original code from ade4 (gearymoran function) by Sébastien Ollier\cr
+\author{
+  Original code from ade4 (gearymoran function) by Sébastien Ollier\cr
   Adapted and maintained by Thibaut Jombart <tjombart@imperial.ac.uk>.
 }
 \seealso{

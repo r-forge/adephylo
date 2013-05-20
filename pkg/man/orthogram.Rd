@@ -3,10 +3,12 @@
 \alias{orthogram}
 \title{Orthonormal decomposition of variance}
 \description{
-This function performs the orthonormal decomposition of variance of a quantitative variable on an orthonormal basis. It also returns the results of five non parametric tests associated to the variance decomposition.
-It thus provides tools (graphical displays and test) for analysing
-phylogenetic, pattern in one quantitative trait. This implementation
-replace the (deprecated) version from the \code{ade4} package.\cr
+This function performs the orthonormal decomposition of variance of a
+quantitative variable on an orthonormal basis. It also returns the
+results of five non parametric tests associated to the variance
+decomposition.  It thus provides tools (graphical displays and test) for
+analysing phylogenetic, pattern in one quantitative trait. This
+implementation replace the (deprecated) version from the \code{ade4} package.\cr
 
 Several orthonormal bases can be used. By default, basis is constructed
 from a partition of tips according to tree topology (as returned by
@@ -43,23 +45,47 @@ orthogram(x, tre=NULL, orthobas = NULL, prox = NULL,
     must be one of "greater" (default), "less" or "two-sided"}
 }
 \details{
-The function computes the variance decomposition of a quantitative vector x on an orthonormal basis B. The variable is normalized given the uniform weight to eliminate problem of scales.
-It plots the squared correlations \eqn{R^{2}}{R^2} between x and vectors of B (variance decomposition) and the cumulated squared correlations \eqn{SR^{2}}{SR^2} (cumulative decomposition).
-The function also provides five non parametric tests to test the existence of autocorrelation. The tests derive from the five following statistics :
-    - R2Max=\eqn{\max(R^{2})}{max(R^2)}. It takes high value when a high part of the variability is explained by one score.\cr
-    - SkR2k=\eqn{\sum_{i=1}^{n-1}(iR^{2}_i)}{sum_i^(n-1) i*(R^2)_i}. It compares the part of variance explained by internal nodes to the one explained by end nodes.\cr
-    - Dmax=\eqn{\max_{m=1,...,n-1}(\sum_{j=1}^{m}R^{2}_j - \frac{m}{n-1})}{max_(m=1,...,n-1)(sum_(j=1)^m(R^2_j) - (m/n-1))}. It examines the accumulation of variance for a sequence of scores.\cr
-    - SCE=\eqn{\sum_{m=1}^{n-1} (\sum_{j=1}^{m}R^{2}_j - \frac{m}{n-1})^{2}}{sum_(m=1)^(n-1)(sum_(j=1)^m(R^2_j) - (m/n-1))^2}. It examines also the accumulation of variance for a sequence of scores.\cr
-    - ratio: depends of the parameter posinega. If posinega > 0, the statistic ratio exists and equals \eqn{\sum_{i=1}^{posinega}R^{2}_i}{sum_i (R^2)_i with i < posinega + 1}. It compares the part of variance explained by internal nodes to the one explained by end nodes when we can define how many vectors correspond to internal nodes.
+The function computes the variance decomposition of a quantitative
+vector x on an orthonormal basis B. The variable is normalized given the
+uniform weight to eliminate problem of scales.  It plots the squared
+correlations \eqn{R^{2}}{R^2} between x and vectors of B (variance
+decomposition) and the cumulated squared correlations \eqn{SR^{2}}{SR^2}
+(cumulative decomposition).  The function also provides five non
+parametric tests to test the existence of autocorrelation. The tests
+derive from the five following statistics :
+
+    - R2Max=\eqn{\max(R^{2})}{max(R^2)}. It takes high value when a high
+      part of the variability is explained by one score.\cr
+    - SkR2k=\eqn{\sum_{i=1}^{n-1}(iR^{2}_i)}{sum_i^(n-1) i*(R^2)_i}. It
+      compares the part of variance explained by internal nodes to the
+      one explained by end nodes.\cr
+    - Dmax=\eqn{\max_{m=1,...,n-1}(\sum_{j=1}^{m}R^{2}_j -
+      \frac{m}{n-1})}{max_(m=1,...,n-1)(sum_(j=1)^m(R^2_j) -
+      (m/n-1))}. It examines the accumulation of variance for a sequence
+      of scores.\cr
+    - SCE=\eqn{\sum_{m=1}^{n-1} (\sum_{j=1}^{m}R^{2}_j -
+      \frac{m}{n-1})^{2}}{sum_(m=1)^(n-1)(sum_(j=1)^m(R^2_j) -
+      (m/n-1))^2}. It examines also the accumulation of variance for a
+      sequence of scores.\cr
+    - ratio: depends of the parameter posinega. If posinega > 0, the
+      statistic ratio exists and equals
+      \eqn{\sum_{i=1}^{posinega}R^{2}_i}{sum_i (R^2)_i with i < posinega
+      + 1}. It compares the part of variance explained by internal nodes
+      to the one explained by end nodes when we can define how many
+      vectors correspond to internal nodes.
 }
 \value{
-If (high.scores = 0), returns an object of class \code{'krandtest'} (randomization tests) corresponding to the five non parametric tests. \cr \cr
-If (high.scores > 0), returns a list containg : 
+If (high.scores = 0), returns an object of class \code{'krandtest'}
+(randomization tests) corresponding to the five non parametric
+tests. \cr \cr
+If (high.scores > 0), returns a list containg :
     \item{w}{: an object of class \code{'krandtest'} (randomization tests)}
     \item{scores.order}{: a vector which terms give labels of vectors that explain the larger part of variance}   
 }
 \references{
-Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to Decompose the Variance of a Life-History Trait across a Phylogenetic Tree. \emph{Biometrics}, \bold{62}, 471--477.
+Ollier, S., Chessel, D. and Couteron, P. (2005) Orthonormal Transform to
+Decompose the Variance of a Life-History Trait across a Phylogenetic
+Tree. \emph{Biometrics}, \bold{62}, 471--477.
 }
 \author{
   Original code: Sébastien Ollier and Daniel Chessel.\cr
