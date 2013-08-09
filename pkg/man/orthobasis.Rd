@@ -74,6 +74,7 @@ flexibility of eigenfunction spatial analyses \emph{Ecology} \bold{87}:
 
 }
 \examples{
+if(require(ape) && require(phylobase)){
 
 ## make a tree
 x <- rtree(50)
@@ -102,6 +103,6 @@ orthogram(resid2, tre) # there is no longer phylogenetic autocorrelation
 
 ## see the difference
 table.phylo4d(phylo4d(tre, cbind.data.frame(resid1, resid2)))
-
+}
 }
 \keyword{manip}

@@ -14,7 +14,7 @@ table.phylo4d <- function(x, treetype=c("phylogram","cladogram"), symbol=c("circ
     if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
                                         # if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk) <- needed?
 
-    if(!require(ape)) stop("the ape package is required")
+    ## if(!require(ape)) stop("the ape package is required")
     if(cex.label<0.1) {
         show.tip.label <- FALSE
         show.node.label <- FALSE

@@ -238,7 +238,7 @@ dibas.vector <- function(x, grp, method=c("default","leaveOneOut"), n.items=NULL
 ###############
 dibas.phylo <- function(x, grp, method=c("default","leaveOneOut"), fromRoot=FALSE, metric=c("Abouheif", "nNodes", "patristic", "sumDD"),
                         n.items=NULL, ...){
-    if(!require(ape)) stop("ape package is required")
+    ## if(!require(ape)) stop("ape package is required")
     if(!inherits(x,"phylo")) stop("x is not a phylo object")
 
     metric <- match.arg(metric)

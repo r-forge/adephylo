@@ -10,7 +10,7 @@ ppca <- function(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abou
                  center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0){
 
     ## handle arguments
-    if(!require(ade4)) stop("The package ade4 is not installed.")
+    ## if(!require(ade4)) stop("The package ade4 is not installed.")
     if (is.character(chk <- checkPhylo4(x))) stop("bad phylo4d object: ",chk)
     ##if (is.character(chk <- checkData(x))) stop("bad phylo4d object: ",chk) : no longer needed
 
@@ -234,7 +234,7 @@ summary.ppca <- function (object, ..., printres=TRUE) {
 
     ## some checks
     if (!inherits(object, "ppca"))stop("to be used with 'ppca' object")
-    if(!require(ade4)) stop("The package ade4 is not installed.")
+    ## if(!require(ade4)) stop("The package ade4 is not installed.")
 
 
     norm.w <- function(X, w) {

@@ -5,7 +5,7 @@ proxTips <- function(x, tips="all",
                       method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD"),
                      a=1, normalize=c("row","col","none"), symmetric=TRUE, useC=TRUE){
 
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## handle arguments
     x <- as(x, "phylo4")

@@ -26,7 +26,10 @@ world terrestrial carnivora. \emph{Evolutionary Ecology}, \bold{16},
   This dataset replaces the former version in ade4.
 }
 \examples{
+if(require(ape) && require(phylobase)){
+
 data(carni70)
+rownames(carni70$tab) <- gsub("_", ".", rownames(carni70$tab))
 tre <- read.tree(text=carni70$tre)
 x <- phylo4d(tre, carni70$tab)
 table.phylo4d(x)
@@ -41,9 +44,9 @@ names(size) <- row.names(carni70$tab)
 orthogram(size, tre)
 
 ## transform range and test for a phylogenetic signal
-yrange <- scalewt(carni70$tab)[,2]
+yrange <- scale(carni70$tab)[,2]
 names(yrange) <- row.names(carni70$tab)
 orthogram(yrange, tre)
-
+}
 }
 \keyword{datasets}

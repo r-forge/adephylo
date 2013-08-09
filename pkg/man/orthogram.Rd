@@ -103,6 +103,8 @@ Tree. \emph{Biometrics}, \bold{62}, 471--477.
   never happen, since ade4 is loaded as a dependence by adephylo.
 }
 \examples{
+if(require(ape) && require(phylobase)){
+
 ## a phylogenetic example
 data(ungulates)
 tre <- read.tree(text=ungulates$tre)
@@ -132,5 +134,5 @@ orthogram(resid, ortho=myOrthoBasis) # significant phylog. signal
 ## Abouheif's test
 W <- proxTips(tre, method="oriAbouheif") # proximity matrix
 abouheif.moran(resid, W)
-
+}
 }

@@ -3,7 +3,7 @@ abouheif.moran <- function (x, W=NULL,
                             a=1, nrepet=999,alter=c("greater", "less", "two-sided")) {
 
     ## some checks
-    if(!require(ade4)) stop("The ade4 package is not installed.")
+    ## if(!require(ade4)) stop("The ade4 package is not installed.")
     alter <- match.arg(alter)
     method <- match.arg(method)
 

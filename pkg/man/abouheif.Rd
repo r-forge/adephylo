@@ -72,7 +72,8 @@ structures. \emph{Environmental and Ecological Statistics}, \bold{2}, 1--14.
   classical Moran's I test. \cr
 }
 \examples{
-if(require(ade4)){
+
+if(require(ade4)&& require(ape) && require(phylobase)){
 ## load data
 data(ungulates)
 tre <- read.tree(text=ungulates$tre)

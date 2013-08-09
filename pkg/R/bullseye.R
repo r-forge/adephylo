@@ -9,7 +9,7 @@
 ############
 ## bullseye
 ############
-bullseye <- function(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
+bullseye <- function(phy, traits=NULL, col.tips.by=NULL, col.pal=spectral,
                      circ.n=6, circ.bg=transp("royalblue",.1), circ.unit=NULL,
                      legend=TRUE, leg.posi="bottomleft", leg.title="", leg.bg="white",
                      traits.inset=1.1, traits.space=0.05, traits.pch=19, traits.cex=1,

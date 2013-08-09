@@ -42,7 +42,7 @@
 # sp.tips
 ##########
 sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=TRUE){
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(x, "phylo4")
@@ -163,7 +163,7 @@ sp.tips <- function(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=
 # listDD
 ############
 listDD <- function(x, nameBy=c("label","number")){
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(x, "phylo4")
@@ -185,4 +185,7 @@ listDD <- function(x, nameBy=c("label","number")){
 
     return(res)
 } # end listDD
+
+
+
 

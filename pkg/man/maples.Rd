@@ -27,6 +27,8 @@ and Corner's rules: phylogeny and correlated evolution in Maples (Acer).
   This dataset replaces the former version in ade4.
 }
 \examples{
+if(require(ape) && require(phylobase)){
+
 data(maples)
 
 ## see the tree
@@ -50,5 +52,6 @@ table.phylo4d(temp) # correlation is strongly linked to phylogeny
 pic.bif <- pic(bif, tre)
 pic.dom <- pic(dom, tre)
 cor.test(pic.bif, pic.dom) # correlation is no longer significant
+}
 }
 \keyword{datasets}

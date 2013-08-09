@@ -34,6 +34,7 @@ See a data description at
   This dataset replaces the former version in ade4.
 }
 \examples{
+if(require(ape) && require(phylobase)){
 ## load data, make tree and phylo4d object
 data(procella)
 tre <- read.tree(text=procella$tre)
@@ -55,6 +56,7 @@ prox <- proxTips(tre)
 
 myTests <- gearymoran(prox, traits)
 plot(myTests)
+}
 }
 
 }

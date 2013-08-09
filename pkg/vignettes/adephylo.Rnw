@@ -133,8 +133,11 @@ the \texttt{update.packages} command, or by installing devel versions from R-For
 (\url{http://r-forge.r-project.org/}).  In all cases, the latest version of \code{adephylo} can be
 found from \url{http://r-forge.r-project.org/R/?group_id=303}.  \\
 
-When loading the package, dependencies are also loaded:
+We load \textit{adephylo}, alongside some useful packages:
 <<load>>=
+library(ape)
+library(phylobase)
+library(ade4)
 library(adephylo)
 search()
 @

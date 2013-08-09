@@ -8,7 +8,7 @@
   uses and is compatible with ape's \code{\link[ape]{plot.phylo}}.
 }
 \usage{
-bullseye(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
+bullseye(phy, traits=NULL, col.tips.by=NULL, col.pal=spectral,
          circ.n=6, circ.bg=transp("royalblue",.1), circ.unit=NULL,
          legend=TRUE, leg.posi="bottomleft", leg.title="", leg.bg="white",
          traits.inset=1.1, traits.space=0.05, traits.pch=19, traits.cex=1,
@@ -55,6 +55,7 @@ bullseye(phy, traits=NULL, col.tips.by=NULL, col.pal=seasun,
 }
 \author{Thibaut Jombart \email{tjombart@imperial.ac.uk}}
 \examples{
+if(require(ape) && require(phylobase) && require(adegenet)){
 
 data(lizards)
 tre <- read.tree(text=lizards$hprA) # make a tree
@@ -69,6 +70,7 @@ bullseye(tre, lizards$traits, traits.cex=sqrt(1:7), alpha=.7,
          legend=FALSE, circ.unit=10, circ.bg=transp("black",.1),
          edge.width=2)
 
+}
 }
 \keyword{hplot}
 \keyword{multivariate}

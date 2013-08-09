@@ -4,7 +4,7 @@
 distTips <- function(x, tips="all",
                       method=c("patristic","nNodes","Abouheif","sumDD"), useC=TRUE){
 
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     if(useC){
         tre <- as(x, "phylo")
@@ -126,7 +126,7 @@ distTips <- function(x, tips="all",
 # distRoot
 ###########
 distRoot <- function(x, tips="all", method=c("patristic","nNodes","Abouheif","sumDD") ){
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## handle arguments
     x <- as(x, "phylo4")

@@ -11,7 +11,7 @@
 # listTips
 ############
 listTips <- function(x){
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(x, "phylo4")
@@ -37,7 +37,7 @@ listTips <- function(x){
 # treePart
 ###########
 treePart <- function(x, result=c("dummy", "orthobasis")){
-    if(!require(phylobase)) stop("phylobase package is not installed")
+    ## if(!require(phylobase)) stop("phylobase package is not installed")
 
     ## conversion from phylo, phylo4 and phylo4d
     x <- as(x, "phylo4")

@@ -34,6 +34,8 @@ This data set was obtained by Clémentine Gimaret-Carpentier\cr
   This dataset replaces the former version in ade4.
 }
 \examples{
+if(require(ape) && require(phylobase)){
+
 ## load data, make a tree and a phylo4d object
 data(palm)
 tre <- read.tree(text=palm$tre)
@@ -50,6 +52,7 @@ if(require(ade4)){
 prox <- proxTips(x, method="sumDD")
 phylAutoTests <- gearymoran(prox, traits[,-3], nrep=499)
 plot(phylAutoTests)
+}
 }
 }
 \keyword{datasets}

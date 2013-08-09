@@ -4,7 +4,7 @@ orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
                         high.scores = 0,alter=c("greater", "less", "two-sided")){
 
     ## some checks and preliminary assignements
-    if(!require(ade4)) stop("The ade4 package is not installed.")
+    ## if(!require(ade4)) stop("The ade4 package is not installed.")
 
     nobs <- length(x)
     alter <- match.arg(alter)

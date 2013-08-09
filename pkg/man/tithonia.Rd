@@ -39,6 +39,8 @@ a comparative approach. \emph{Evolution}, \bold{54}, 2, 475--484.
   This dataset replaces the former version in ade4.
 }
 \examples{
+if(require(ape) && require(phylobase)){
+
 data(tithonia)
 tre <- read.tree(text=tithonia$tre)
 traits <- log(tithonia$tab + 1)
@@ -58,6 +60,7 @@ gearymoran(prox1, traits)
 ## use Abouheif's proximity
 prox2 <- proxTips(tre, method="Abouheif")
 gearymoran(prox2, traits)
+}
 }
 }
 \keyword{datasets}

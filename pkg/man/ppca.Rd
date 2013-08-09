@@ -130,6 +130,7 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
  }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
+if(require(ape) && require(phylobase)){
 
 #### ORIGINAL EXAMPLE FROM JOMBART ET AL 2010 ####
 data(lizards)
@@ -245,5 +246,6 @@ table.phylo4d(temp) # plot of most structured traits
 prox <- proxTips(tre, method="Abouheif")
 abouheif.moran(dat[, names(highContrib)], prox)
 
+}
 }
 \keyword{multivariate}

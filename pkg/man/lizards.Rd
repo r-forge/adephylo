@@ -33,6 +33,8 @@ See a data description at \url{http://pbil.univ-lyon1.fr/R/pps/pps063.pdf} (in F
   This dataset replaces the former version in ade4.
 }
 \examples{
+if(require(ape) && require(phylobase)){
+
 ## see data
 data(lizards)
 liz.tr <- read.tree(tex=lizards$hprA) # make a tree
@@ -60,6 +62,7 @@ liz.noSize <- phylo4d(liz.tr, temp)
 ppca1 <- ppca(liz.noSize, method="Abouheif", scale=FALSE, scannf=FALSE)
 plot(ppca1)
 
+}
 }
 }
 \keyword{datasets}
