@@ -130,10 +130,11 @@ ppca(x, prox=NULL, method=c("patristic","nNodes","oriAbouheif","Abouheif","sumDD
  }
 \author{ Thibaut Jombart \email{tjombart@imperial.ac.uk} }
 \examples{
-if(require(ape) && require(phylobase)){
+data(lizards)
+
+if(require(ape) && require(phylobase) && require(ade4)){
 
 #### ORIGINAL EXAMPLE FROM JOMBART ET AL 2010 ####
-data(lizards)
 
 
 ## BUILD A TREE AND A PHYLO4D OBJECT
