@@ -37,8 +37,13 @@ moran.idx(x, prox, addInfo=FALSE)
   between tips of a phylogeny.
 }
 \examples{
+\dontrun{
 ## use maples dataset
-example(maples)
+data(maples)
+tre <- read.tree(text=maples$tre)
+dom <- maples$tab$Dom
+bif <- maples$tab$Bif
+
 
 ## get a proximity matrix between tips 
 W <- proxTips(tre, met="Abouheif")
@@ -59,5 +64,6 @@ hist(sim, col="grey", main="Moran's I Monte Carlo test for 'bif'") # plot
 mtext("Histogram of permutations and observation (in red)")
 abline(v=sim[1], col="red", lwd=3)
 
+}
 }
 \keyword{manip}

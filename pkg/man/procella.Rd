@@ -34,30 +34,16 @@ See a data description at
   This dataset replaces the former version in ade4.
 }
 \examples{
+\dontrun{
 if(require(ape) && require(phylobase)){
+
 ## load data, make tree and phylo4d object
 data(procella)
 tre <- read.tree(text=procella$tre)
 x <- phylo4d(tre, procella$traits)
 par(mar=rep(.1,4))
 table.phylo4d(x,cex.lab=.7)
-
-## test phylogenetic autocorrelation in traits
-if(require(ade4)){
-
-f1 <- function(vec){ # to replace missing data
-m <- mean(vec,na.rm=TRUE)
-vec[is.na(vec)] <- m
-return(vec)
-}
-
-traits <- data.frame(lapply(procella$traits, f1))
-prox <- proxTips(tre)
-
-myTests <- gearymoran(prox, traits)
-plot(myTests)
 }
 }
-
 }
 \keyword{datasets}

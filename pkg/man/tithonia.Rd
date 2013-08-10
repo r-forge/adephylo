@@ -39,27 +39,19 @@ a comparative approach. \emph{Evolution}, \bold{54}, 2, 475--484.
   This dataset replaces the former version in ade4.
 }
 \examples{
+\dontrun{
 if(require(ape) && require(phylobase)){
 
 data(tithonia)
 tre <- read.tree(text=tithonia$tre)
 traits <- log(tithonia$tab + 1)
+rownames(traits) <- gsub("_", ".", rownames(traits))
 
 ## build a phylo4d object
 x <- phylo4d(tre, traits)
 par(mar=rep(.1,4))
 table.phylo4d(x)
 
-## perform a Geary/Moran test to detect phylogenetic signal in variables
-if(require(ade4)){
-
-## use branch length to define proximities
-prox1 <- proxTips(tre, method="patristic")
-gearymoran(prox1, traits)
-
-## use Abouheif's proximity
-prox2 <- proxTips(tre, method="Abouheif")
-gearymoran(prox2, traits)
 }
 }
 }

@@ -40,6 +40,7 @@ sp.tips(x, tip1, tip2, useTipNames=FALSE, quiet=FALSE, include.mrca=TRUE)
   slowly. \cr
 }
 \examples{
+\dontrun{
 if(require(ape) & require(phylobase)){
 ## make a tree
 x <- as(rtree(20),"phylo4")
@@ -47,6 +48,7 @@ plot(x,show.node=TRUE)
 ## get shortest path between tip 1 and all other tips.
 sp.tips(x, "t1", "t2")
 sp.tips(x, 1, 2:20, TRUE)
+}
 }
 }
 \keyword{manip}

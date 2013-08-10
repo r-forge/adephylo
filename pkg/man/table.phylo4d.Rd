@@ -121,6 +121,8 @@ varlab <- paste("Principal \ncomponent", 1:2) # make labels for PCs
 table.phylo4d(myPC, ratio=.8, var.lab=varlab) # plot the PCs
 add.scatter.eig(liz.pca1$eig,2,1,2,posi="topleft", inset=c(0,.15))
 title("Phylogeny and the principal components")
+
+detach("package:ade4")
 }
 }
 \keyword{hplot}

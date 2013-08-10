@@ -44,6 +44,7 @@ patterns of teleos fishes.  \emph{Oïkos}, \bold{91}, 255--270.
   This dataset replaces the former version in ade4.
 }
 \examples{
+\dontrun{
 if(require(ape) && require(phylobase)){
 
 data(mjrochet)
@@ -60,6 +61,7 @@ table.phylo4d(mjr,cex.lab=.5,show.node=FALSE,symb="square")
 mjr.tests <- abouheif.moran(mjr, nrep=499)
 mjr.tests
 
+}
 }
 }
 \keyword{datasets}

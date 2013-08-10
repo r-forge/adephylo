@@ -26,6 +26,7 @@ world terrestrial carnivora. \emph{Evolutionary Ecology}, \bold{16},
   This dataset replaces the former version in ade4.
 }
 \examples{
+\dontrun{
 if(require(ape) && require(phylobase)){
 
 data(carni70)
@@ -47,6 +48,7 @@ orthogram(size, tre)
 yrange <- scale(carni70$tab)[,2]
 names(yrange) <- row.names(carni70$tab)
 orthogram(yrange, tre)
+}
 }
 }
 \keyword{datasets}

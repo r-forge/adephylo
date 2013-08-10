@@ -247,6 +247,7 @@ table.phylo4d(temp) # plot of most structured traits
 prox <- proxTips(tre, method="Abouheif")
 abouheif.moran(dat[, names(highContrib)], prox)
 
+detach("package:ade4")
 }
 }
 \keyword{multivariate}

@@ -43,6 +43,8 @@ Tree. \emph{Biometrics}, \bold{62}, 471--477.
   from the ade4 package.
 }
 \examples{
+\dontrun{
+
 if(require(ape) & require(phylobase)){
 ## make a tree
 x <- as(rtree(10),"phylo4")
@@ -53,19 +55,6 @@ partition
 temp <- phylo4d(x, partition)
 table.phylo4d(temp, cent=FALSE, scale=FALSE)
 }
-
-if(require(ade4)){
-## former orthobasis in ade4
-data(ungulates)
-ung.Bscores <- newick2phylog(ungulates$tre)$Bscores
-
-## version using treePart
-ung <- read.tree(text=ungulates$tre)
-ung.orthobas <- treePart(ung, res="orthobasis")
-
-## comparison of the first 3 vectors
-cbind(ung.Bscores[,1], ung.orthobas[,1],ung.Bscores[,2],
-   ung.orthobas[,2], ung.Bscores[,3], ung.orthobas[,3])
 }
 }
 \keyword{manip}

@@ -1,3 +1,15 @@
+			CHANGES IN ADEPHYLO VERSION 1.1-5
+
+FIXES
+	o the new NAMESPACE selectively imports procedures to avoid
+	conflicts between ape, phylobase, and ade4. Thes packages are no
+	longer attached when loading adephylo
+
+	o most dataset examples have been 'dontrun-ed' to save time during
+	checks of the package on CRAN
+
+
+
 			CHANGES IN ADEPHYLO VERSION 1.1-4
 
 
