@@ -13,7 +13,7 @@ importFrom(ape, "as.character.DNAbin", "as.DNAbin", "as.DNAbin.alignment", "as.D
            "plot.phylo", "root", "nj", "bionj", "read.tree", ".PlotPhyloEnv")
 
 importFrom(ade4, "as.krandtest", "as.dudi", "as.randtest", "orthobasis.mat", "dudi.acm", "redo.dudi",
-           "plot.randtest", "s.arrow", "s.label", "scatter", "scalewt", "dudi.pca", "plot.krandtest",
+            "s.arrow", "s.label", "scatter", "scalewt", "dudi.pca",
            "add.scatter", "add.scatter.eig")
 
 importFrom(adegenet, "bluepal", "redpal", "greenpal", "seasun", "spectral", "funky",
