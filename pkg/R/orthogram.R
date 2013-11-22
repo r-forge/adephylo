@@ -185,14 +185,14 @@ orthogram <- function (x, tre=NULL, orthobas = NULL, prox = NULL,
         nclass <- as.integer (nrepet/25)
         nclass <- min(c(nclass,40))
     }
-    plot.randtest (as.randtest (w$R2Max[-1],w$R2Max[1],call=match.call()),main = "R2Max",nclass=nclass)
+    plot(as.randtest (w$R2Max[-1],w$R2Max[1],call=match.call()),main = "R2Max",nclass=nclass)
     if (posinega !=0) {
-        plot.randtest (as.randtest (w$ratio[-1],w$ratio[1],call=match.call()),main = "Ratio",nclass=nclass)
+        plot(as.randtest (w$ratio[-1],w$ratio[1],call=match.call()),main = "Ratio",nclass=nclass)
     } else {
-        plot.randtest (as.randtest (w$SkR2k[-1],w$SkR2k[1],call=match.call()),main = "SkR2k",nclass=nclass)
+        plot(as.randtest (w$SkR2k[-1],w$SkR2k[1],call=match.call()),main = "SkR2k",nclass=nclass)
     }
-    plot.randtest (as.randtest (w$Dmax[-1],w$Dmax[1],call=match.call()),main = "DMax",nclass=nclass)
-    plot.randtest (as.randtest (w$SCE[-1],w$SCE[1],call=match.call()),main = "SCE",nclass=nclass)
+    plot(as.randtest (w$Dmax[-1],w$Dmax[1],call=match.call()),main = "DMax",nclass=nclass)
+    plot(as.randtest (w$SCE[-1],w$SCE[1],call=match.call()),main = "SCE",nclass=nclass)
 
     w$param <- w$observed <- w$vecpro <- NULL
     w$phylo95 <- w$sig025 <- w$sig975 <- NULL
