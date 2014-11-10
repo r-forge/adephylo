@@ -136,14 +136,14 @@
   \tabular{ll}{
     Package: \tab adephylo\cr
     Type: \tab Package\cr
-    Version: \tab 1.1-4\cr
-    Date: \tab 2013-05-15 \cr
+    Version: \tab 1.1-7\cr
+    Date: \tab 2014-11-10 \cr
     License: \tab GPL (>=2)
   }  
 }
 \author{
   Thibaut Jombart <tjombart@imperial.ac.uk>\cr
-  with contributions Stéphane Dray <dray@biomserv.univ-lyon1.fr>. \cr
+  with contributions Stéphane Dray <dray@biomserv.univ-lyon1.fr> and Anders Ellern Bilgrau <abilgrau@math.aau.dk>. \cr
   Parts of former code from \code{ade4} by Daniel Chessel and Sébastien
   Ollier.
 }
