@@ -92,7 +92,7 @@
    signals. They can be used as covariables to remove phylogenetic
    autocorrelation from data.\cr
 
-   - \code{\link{orthogram}}: the orthogram mentionned above also
+   - \code{\link{orthogram}}: the orthogram mentioned above also
    provides a description of how biological variability is structured
    on a phylogeny.\cr
 
